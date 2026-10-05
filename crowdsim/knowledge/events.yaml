@@ -1,0 +1,588 @@
+# Historical public-reaction library.
+#
+# Every number here is a HAND-CODED ESTIMATE on a common scale, made from widely reported public
+# facts, so events can be compared with each other. They are not measurements. Use
+# `python tools/learn_attention.py` to replace attention numbers with real Wikipedia-pageview
+# curves where available, and add your own events in the same format.
+#
+# features (what the event was like when it hit):
+#   valence      -1..1  how it first reflected on the brand/organisation
+#   emotionality  0..1  how much it made people feel something (anger, delight, fear)
+#   identity      0..1  how much it touched values, politics, group identity
+#   lean         -1..1  which side of the cultural axis it flattered (-1 progressive-coded, +1 traditional-coded)
+#   harm          0..1  physical, financial or personal harm to people
+#   responsibility 0..1 how much the organisation was to blame
+#   hype          0..1  anticipation beforehand
+#   price         0..1  how central money/price was
+#   prominence    0..1  how famous the brand was
+#   novelty       0..1  how surprising it was
+# outcome:
+#   awareness 0..1 of the main market's public · halflife_days of attention · peak_day
+#   opinion_shift -1..1 · commercial -1..1 (sales/users/value) · polarization 0..1
+# response: what the organisation did and roughly how many hours it took.
+
+events:
+  - id: iphone_2007
+    name: Apple unveils the iPhone
+    year: 2007
+    archetype: product_launch
+    features: {valence: 0.8, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.95, price: 0.5, prominence: 0.8, novelty: 1.0}
+    outcome: {awareness: 0.8, halflife_days: 6, peak_day: 0, opinion_shift: 0.3, commercial: 0.9, polarization: 0.2}
+    response: {type: none, hours: null}
+    summary: Unveiled on stage in January 2007 and shipped in June; months of anticipation, sustained coverage and lines at stores on release day.
+    lessons: [A live, demo-led reveal followed by a wait before release stretches attention over months.]
+
+  - id: note7_2016
+    name: Samsung Galaxy Note 7 battery fires
+    year: 2016
+    archetype: safety_defect
+    wiki: {title: Samsung_Galaxy_Note_7, date: 2016-08-24}
+    features: {valence: -0.8, emotionality: 0.9, identity: 0.0, lean: 0.0, harm: 0.8, responsibility: 0.9, hype: 0.6, price: 0.2, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.85, halflife_days: 10, peak_day: 40, opinion_shift: -0.4, commercial: -0.7, polarization: 0.1}
+    response: {type: recall, hours: 216}
+    summary: Overheating batteries led to a recall in September 2016; replacement phones also caught fire, the model was discontinued in October and banned from flights. Samsung's next flagship sold well the following year.
+    lessons:
+      - Physical-harm stories escalate through regulators and airlines, not just social media.
+      - A fix that fails is worse than the original defect.
+
+  - id: tylenol_1982
+    name: Tylenol poisonings and recall
+    year: 1982
+    archetype: safety_defect
+    features: {valence: -0.7, emotionality: 0.95, identity: 0.0, lean: 0.0, harm: 1.0, responsibility: 0.1, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.9}
+    outcome: {awareness: 0.95, halflife_days: 14, peak_day: 3, opinion_shift: -0.3, commercial: -0.5, polarization: 0.05}
+    response: {type: recall, hours: 120}
+    summary: After capsules were laced with cyanide in Chicago, Johnson & Johnson recalled about 31 million bottles nationwide and introduced tamper-resistant packaging; the brand largely recovered within about a year.
+    lessons:
+      - Fast, costly, customer-first action rebuilt trust even after deaths.
+      - When the company is also a victim, the public credits visible sacrifice.
+
+  - id: new_coke_1985
+    name: New Coke replaces the original formula
+    year: 1985
+    archetype: rebrand
+    features: {valence: -0.4, emotionality: 0.7, identity: 0.3, lean: -0.3, harm: 0.0, responsibility: 1.0, hype: 0.6, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.9, halflife_days: 20, peak_day: 30, opinion_shift: -0.3, commercial: -0.2, polarization: 0.3}
+    response: {type: reversal, hours: 1900}
+    summary: Coca-Cola changed its formula in April 1985; loyal drinkers protested by letter and phone, and the original returned as Coca-Cola Classic 79 days later.
+    lessons:
+      - Taste tests didn't measure attachment; nostalgic loyalists are louder than their numbers.
+      - Reversing course turned the backlash into renewed affection for the original.
+
+  - id: bud_light_2023
+    name: Bud Light boycott
+    year: 2023
+    archetype: values_controversy
+    wiki: {title: 2023_Bud_Light_boycott, date: 2023-04-01}
+    features: {valence: -0.2, emotionality: 0.9, identity: 0.95, lean: -0.8, harm: 0.0, responsibility: 0.6, hype: 0.2, price: 0.0, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.8, halflife_days: 8, peak_day: 7, opinion_shift: -0.4, commercial: -0.7, polarization: 0.9}
+    response: {type: noncommittal_statement, hours: 300}
+    summary: A promotional can for transgender influencer Dylan Mulvaney in April 2023 set off a boycott by conservative drinkers; the brand's response satisfied neither side, US sales fell sharply for months and Modelo Especial overtook it as America's top-selling beer.
+    lessons:
+      - Boycotts bite when the product is easy to substitute and consuming it is socially visible.
+      - A response that tries to please both sides can alienate both.
+
+  - id: nike_kaepernick_2018
+    name: Nike's Dream Crazy campaign with Colin Kaepernick
+    year: 2018
+    archetype: values_controversy
+    wiki: {title: Dream_Crazy, date: 2018-09-03}
+    features: {valence: 0.1, emotionality: 0.9, identity: 0.95, lean: -0.8, harm: 0.0, responsibility: 0.5, hype: 0.5, price: 0.0, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.85, halflife_days: 5, peak_day: 1, opinion_shift: 0.0, commercial: 0.3, polarization: 0.95}
+    response: {type: stand_firm, hours: 0}
+    summary: The September 2018 ad drew boycott calls and videos of people burning their shoes; Nike held firm, third-party data showed online sales rising, and its share price later hit record highs.
+    lessons:
+      - When core customers sit on one side of a values split, the other side's boycott can be outweighed by a buycott.
+      - Holding firm reads as conviction, and works when the stance matches the core audience.
+
+  - id: gillette_2019
+    name: Gillette "The Best Men Can Be" ad
+    year: 2019
+    archetype: ad_misfire
+    wiki: {title: "We_Believe:_The_Best_Men_Can_Be", date: 2019-01-13}
+    features: {valence: -0.1, emotionality: 0.8, identity: 0.85, lean: -0.6, harm: 0.0, responsibility: 0.4, hype: 0.3, price: 0.0, prominence: 0.8, novelty: 0.6}
+    outcome: {awareness: 0.6, halflife_days: 4, peak_day: 2, opinion_shift: -0.15, commercial: -0.1, polarization: 0.8}
+    response: {type: stand_firm, hours: 0}
+    summary: The January 2019 ad about toxic masculinity became one of the most disliked videos on YouTube while also drawing praise; its effect on sales is disputed.
+    lessons: [Lecturing your own customers invites backlash, even from some who agree with the message.]
+
+  - id: pepsi_jenner_2017
+    name: Pepsi protest ad with Kendall Jenner
+    year: 2017
+    archetype: ad_misfire
+    features: {valence: -0.6, emotionality: 0.8, identity: 0.6, lean: -0.3, harm: 0.0, responsibility: 0.9, hype: 0.2, price: 0.0, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.7, halflife_days: 2, peak_day: 1, opinion_shift: -0.2, commercial: -0.05, polarization: 0.3}
+    response: {type: reversal, hours: 24}
+    summary: An April 2017 ad in which Kendall Jenner hands a police officer a Pepsi at a protest was mocked for trivialising protest movements; Pepsi pulled it about a day later and apologised.
+    lessons: [Pulling fast and apologising plainly turns a scandal into a short-lived meme.]
+
+  - id: united_3411_2017
+    name: Passenger dragged off United flight
+    year: 2017
+    archetype: service_incident
+    wiki: {title: United_Express_Flight_3411_incident, date: 2017-04-09}
+    features: {valence: -0.9, emotionality: 1.0, identity: 0.1, lean: 0.0, harm: 0.6, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.9}
+    outcome: {awareness: 0.85, halflife_days: 4, peak_day: 2, opinion_shift: -0.4, commercial: -0.1, polarization: 0.05}
+    response: {type: defensive_then_apology, hours: 48}
+    summary: Bystander video of a passenger being dragged off an overbooked flight spread worldwide; the CEO's first statement about having to "re-accommodate" passengers inflamed the story before a fuller apology and policy changes.
+    lessons:
+      - One bystander video can become global news within 48 hours.
+      - Corporate language in the first statement can become the story itself.
+
+  - id: cybertruck_2019
+    name: Cybertruck reveal and the cracked window
+    year: 2019
+    archetype: product_launch
+    wiki: {title: Tesla_Cybertruck, date: 2019-11-21}
+    features: {valence: 0.2, emotionality: 0.8, identity: 0.3, lean: 0.0, harm: 0.0, responsibility: 0.5, hype: 0.9, price: 0.4, prominence: 0.9, novelty: 1.0}
+    outcome: {awareness: 0.7, halflife_days: 3, peak_day: 1, opinion_shift: 0.0, commercial: 0.4, polarization: 0.7}
+    response: {type: humor, hours: 12}
+    summary: A demonstration meant to show unbreakable windows cracked them on stage in November 2019. The moment became a meme, yet Elon Musk reported roughly 250,000 refundable reservations within days.
+    lessons:
+      - A launch gaffe can widen reach without denting demand among fans when commitment is cheap and refundable.
+      - Polarising design splits opinion sharply; loved and mocked at once.
+
+  - id: peloton_2019
+    name: Peloton holiday ad
+    year: 2019
+    archetype: ad_misfire
+    features: {valence: -0.5, emotionality: 0.7, identity: 0.3, lean: -0.3, harm: 0.0, responsibility: 0.7, hype: 0.1, price: 0.3, prominence: 0.5, novelty: 0.7}
+    outcome: {awareness: 0.5, halflife_days: 3, peak_day: 2, opinion_shift: -0.2, commercial: -0.2, polarization: 0.3}
+    response: {type: stand_firm, hours: 48}
+    summary: The 2019 ad in which a husband gifts his wife an exercise bike was mocked as tone-deaf; the share price fell, and Aviation Gin quickly released a parody starring the same actress.
+    lessons:
+      - Competitors can ride your backlash within days.
+      - Mockery spreads faster than anger and is harder to answer.
+
+  - id: kfc_uk_2018
+    name: KFC UK runs out of chicken
+    year: 2018
+    archetype: outage
+    features: {valence: -0.5, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.1, responsibility: 0.8, hype: 0.0, price: 0.0, prominence: 0.7, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 4, peak_day: 3, opinion_shift: 0.05, commercial: -0.2, polarization: 0.05}
+    response: {type: humor, hours: 96}
+    summary: A logistics switch in February 2018 left hundreds of UK restaurants without chicken; KFC ran a full-page apology rearranging its logo into "FCK", widely praised for owning the mistake.
+    lessons: [Self-aware humour works when the harm is an inconvenience, not an injury.]
+
+  - id: dominos_2009
+    name: Domino's employee prank video
+    year: 2009
+    archetype: service_incident
+    features: {valence: -0.8, emotionality: 0.9, identity: 0.0, lean: 0.0, harm: 0.3, responsibility: 0.7, hype: 0.0, price: 0.0, prominence: 0.7, novelty: 0.9}
+    outcome: {awareness: 0.5, halflife_days: 4, peak_day: 2, opinion_shift: -0.3, commercial: -0.1, polarization: 0.05}
+    response: {type: apology, hours: 48}
+    summary: Two employees posted a video of themselves tampering with food in April 2009; Domino's answered with a YouTube apology from its US president within about two days, and later rebuilt its image by openly admitting its pizza needed to improve.
+    lessons:
+      - Answering on the platform where the crisis lives beats press releases.
+      - Admitting a flaw openly can become a comeback story.
+
+  - id: bp_2010
+    name: Deepwater Horizon oil spill
+    year: 2010
+    archetype: disaster
+    features: {valence: -1.0, emotionality: 0.95, identity: 0.3, lean: -0.3, harm: 1.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.9}
+    outcome: {awareness: 0.95, halflife_days: 30, peak_day: 40, opinion_shift: -0.6, commercial: -0.6, polarization: 0.2}
+    response: {type: slow_and_gaffe, hours: 72}
+    summary: The April 2010 explosion killed 11 workers and caused the largest marine oil spill in US history; CEO Tony Hayward's "I'd like my life back" came to symbolise a response seen as self-absorbed, and he was replaced within months.
+    lessons:
+      - Visible, ongoing harm keeps a crisis alive for months; every update restarts the cycle.
+      - Leaders' off-hand remarks become the headline.
+
+  - id: dieselgate_2015
+    name: Volkswagen emissions cheating
+    year: 2015
+    archetype: trust_scandal
+    wiki: {title: Volkswagen_emissions_scandal, date: 2015-09-18}
+    features: {valence: -0.9, emotionality: 0.7, identity: 0.2, lean: -0.2, harm: 0.5, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.95, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 10, peak_day: 3, opinion_shift: -0.5, commercial: -0.3, polarization: 0.1}
+    response: {type: apology, hours: 120}
+    summary: Volkswagen admitted in September 2015 that diesel cars carried software to cheat emissions tests; the CEO resigned within days and the company faced tens of billions in fines and settlements.
+    lessons: [Deliberate deception damages trust far more than accidents do.]
+
+  - id: equifax_2017
+    name: Equifax data breach
+    year: 2017
+    archetype: data_breach
+    wiki: {title: 2017_Equifax_data_breach, date: 2017-09-07}
+    features: {valence: -0.9, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.7, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.6, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 7, peak_day: 2, opinion_shift: -0.6, commercial: -0.3, polarization: 0.05}
+    response: {type: slow_disclosure, hours: 1000}
+    summary: Equifax disclosed in September 2017 that data on about 147 million people had been exposed; it had found the breach weeks earlier, its help website was confusing, and the CEO retired within weeks.
+    lessons:
+      - Late disclosure turns a breach into a cover-up story.
+      - Clumsy remediation tools create a second wave of anger.
+
+  - id: cambridge_analytica_2018
+    name: Facebook and Cambridge Analytica
+    year: 2018
+    archetype: data_breach
+    wiki: {title: Facebook–Cambridge_Analytica_data_scandal, date: 2018-03-17}
+    features: {valence: -0.8, emotionality: 0.8, identity: 0.5, lean: 0.0, harm: 0.4, responsibility: 0.8, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.8, halflife_days: 7, peak_day: 3, opinion_shift: -0.35, commercial: -0.15, polarization: 0.4}
+    response: {type: silence_then_apology, hours: 120}
+    summary: Reports in March 2018 that Cambridge Analytica had obtained data on tens of millions of Facebook users sparked #DeleteFacebook and congressional testimony by Mark Zuckerberg; the share price fell sharply, but user numbers kept growing.
+    lessons:
+      - Loud online exits rarely match actual churn when a service has strong network effects.
+      - Silence in the first days lets critics define the story.
+
+  - id: antennagate_2010
+    name: iPhone 4 antenna problem
+    year: 2010
+    archetype: safety_defect
+    features: {valence: -0.4, emotionality: 0.5, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.7, hype: 0.8, price: 0.0, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.5, halflife_days: 6, peak_day: 14, opinion_shift: -0.1, commercial: 0.0, polarization: 0.3}
+    response: {type: dismissive_then_fix, hours: 500}
+    summary: The iPhone 4 lost signal when held a certain way; Steve Jobs's advice to avoid holding it that way was mocked, and about three weeks later Apple gave out free cases. Sales stayed strong.
+    lessons:
+      - Dismissive replies prolong minor defects; a cheap fix ends them.
+      - Devoted fans and network effects absorb minor defects.
+
+  - id: batterygate_2017
+    name: Apple slows older iPhones
+    year: 2017
+    archetype: trust_scandal
+    wiki: {title: Batterygate, date: 2017-12-20}
+    features: {valence: -0.6, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.1, responsibility: 0.9, hype: 0.0, price: 0.4, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.5, halflife_days: 6, peak_day: 3, opinion_shift: -0.25, commercial: -0.05, polarization: 0.2}
+    response: {type: compensation, hours: 200}
+    summary: Apple confirmed in December 2017 that it slowed some older iPhones to prevent shutdowns from ageing batteries; it apologised and cut battery replacement prices to $29, but faced lawsuits and fines.
+    lessons: [Hidden decisions feel like deception even when the motive is technical.]
+
+  - id: xbox_drm_2013
+    name: Xbox One always-online and used-game rules
+    year: 2013
+    archetype: price_change
+    features: {valence: -0.6, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.7, price: 0.6, prominence: 0.8, novelty: 0.7}
+    outcome: {awareness: 0.4, halflife_days: 5, peak_day: 3, opinion_shift: -0.4, commercial: -0.2, polarization: 0.2}
+    response: {type: reversal, hours: 670}
+    summary: Microsoft's plan to require regular online check-ins and restrict used games drew fierce backlash; Sony mocked it at E3 and Microsoft reversed the policy within about a month, before launch.
+    lessons: [Reversing before launch limits lasting damage, but the competitor keeps the narrative win.]
+
+  - id: battlefront2_2017
+    name: Star Wars Battlefront II loot boxes
+    year: 2017
+    archetype: price_change
+    wiki: {title: Star_Wars_Battlefront_II_(2017_video_game), date: 2017-11-12}
+    features: {valence: -0.6, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.9, hype: 0.7, price: 0.8, prominence: 0.7, novelty: 0.6}
+    outcome: {awareness: 0.3, halflife_days: 4, peak_day: 2, opinion_shift: -0.4, commercial: -0.3, polarization: 0.1}
+    response: {type: defensive_then_reversal, hours: 72}
+    summary: An EA reply on Reddit defending locked characters as giving players "a sense of pride and accomplishment" became the most downvoted comment in Reddit's history; EA switched off in-game purchases the day before launch.
+    lessons: [Corporate-speak defending a monetisation choice can become the meme that defines it.]
+
+  - id: cyberpunk_2020
+    name: Cyberpunk 2077's broken console launch
+    year: 2020
+    archetype: product_launch
+    wiki: {title: Cyberpunk_2077, date: 2020-12-10}
+    features: {valence: -0.6, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.8, hype: 1.0, price: 0.3, prominence: 0.7, novelty: 0.8}
+    outcome: {awareness: 0.5, halflife_days: 6, peak_day: 3, opinion_shift: -0.5, commercial: -0.3, polarization: 0.3}
+    response: {type: apology_and_refunds, hours: 100}
+    summary: The game launched in December 2020 with severe bugs on older consoles; Sony pulled it from the PlayStation Store and refunds were offered. Years of patches and an expansion later repaired much of its reputation.
+    lessons:
+      - Peak hype raises the fall; expectations are the baseline the public judges against.
+      - Recovery is possible but takes years of visible fixes.
+
+  - id: no_mans_sky_2016
+    name: No Man's Sky launch and redemption
+    year: 2016
+    archetype: product_launch
+    wiki: {title: "No_Man's_Sky", date: 2016-08-09}
+    features: {valence: -0.5, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.8, hype: 0.95, price: 0.3, prominence: 0.4, novelty: 0.7}
+    outcome: {awareness: 0.3, halflife_days: 5, peak_day: 3, opinion_shift: -0.5, commercial: -0.2, polarization: 0.3}
+    response: {type: silence_then_fixes, hours: 2000}
+    summary: The game launched in August 2016 without features fans believed had been promised; after a long near-silence the studio shipped years of free updates and is now often cited as a redemption story.
+    lessons: [Silence fuels anger at first; sustained delivery can later rewrite the story.]
+
+  - id: unity_fee_2023
+    name: Unity runtime fee
+    year: 2023
+    archetype: price_change
+    wiki: {title: Unity_(game_engine), date: 2023-09-12}
+    features: {valence: -0.8, emotionality: 0.85, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.9, hype: 0.0, price: 1.0, prominence: 0.5, novelty: 0.8}
+    outcome: {awareness: 0.15, halflife_days: 5, peak_day: 2, opinion_shift: -0.6, commercial: -0.4, polarization: 0.1}
+    response: {type: partial_reversal, hours: 240}
+    summary: Unity's September 2023 plan to charge developers per game install triggered a revolt and threats to switch engines; it partly walked the fee back within about ten days, the CEO left weeks later, and the fee was eventually scrapped.
+    lessons:
+      - Changing terms on locked-in customers retroactively breaks trust beyond the money.
+      - Professional communities with alternatives organise fast.
+
+  - id: reddit_api_2023
+    name: Reddit API fees and subreddit blackout
+    year: 2023
+    archetype: price_change
+    wiki: {title: 2023_Reddit_API_controversy, date: 2023-06-12}
+    features: {valence: -0.5, emotionality: 0.7, identity: 0.1, lean: 0.0, harm: 0.0, responsibility: 0.9, hype: 0.0, price: 0.7, prominence: 0.7, novelty: 0.7}
+    outcome: {awareness: 0.3, halflife_days: 5, peak_day: 2, opinion_shift: -0.3, commercial: 0.0, polarization: 0.3}
+    response: {type: stand_firm, hours: 0}
+    summary: New API fees forced popular third-party Reddit apps to close; thousands of subreddits went dark in June 2023, but the company held firm, the protest faded, and it went public the next year.
+    lessons: [Protests that cost the protesters fade when the platform holds firm and has no real substitute.]
+
+  - id: qwikster_2011
+    name: Netflix price hike and Qwikster
+    year: 2011
+    archetype: price_change
+    features: {valence: -0.7, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.9, prominence: 0.8, novelty: 0.7}
+    outcome: {awareness: 0.5, halflife_days: 7, peak_day: 10, opinion_shift: -0.5, commercial: -0.6, polarization: 0.1}
+    response: {type: apology_then_reversal, hours: 700}
+    summary: Netflix raised some prices by about 60% in 2011, then announced it would split DVD rentals into a separate service called Qwikster; it lost about 800,000 US subscribers in a quarter and dropped Qwikster within weeks.
+    lessons:
+      - Stacking a price rise with a confusing change compounds anger.
+      - Churn is real when alternatives exist and the change feels like a downgrade.
+
+  - id: netflix_sharing_2023
+    name: Netflix password-sharing crackdown
+    year: 2023
+    archetype: price_change
+    features: {valence: -0.5, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.7, prominence: 0.9, novelty: 0.5}
+    outcome: {awareness: 0.7, halflife_days: 5, peak_day: 3, opinion_shift: -0.2, commercial: 0.4, polarization: 0.2}
+    response: {type: stand_firm, hours: 0}
+    summary: When Netflix began charging for password sharing in 2023, social media filled with cancellation threats, yet it reported millions of new subscribers in the following quarters.
+    lessons: [Online outrage is a poor predictor of behaviour when the product is a habit and the alternative is losing access.]
+
+  - id: twitter_x_2023
+    name: Twitter renamed X
+    year: 2023
+    archetype: rebrand
+    wiki: {title: Twitter, date: 2023-07-23}
+    features: {valence: -0.4, emotionality: 0.6, identity: 0.6, lean: 0.3, harm: 0.0, responsibility: 1.0, hype: 0.4, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.8, halflife_days: 4, peak_day: 1, opinion_shift: -0.2, commercial: -0.2, polarization: 0.7}
+    response: {type: stand_firm, hours: 0}
+    summary: Twitter was renamed X in July 2023 and the bird logo dropped; the change was widely mocked and many people kept saying "tweet", but the company kept the new name.
+    lessons: [Brand equity doesn't transfer to a new name automatically; habits outlast logos.]
+
+  - id: jaguar_2024
+    name: Jaguar "Copy Nothing" rebrand
+    year: 2024
+    archetype: rebrand
+    wiki: {title: Jaguar_Cars, date: 2024-11-19}
+    features: {valence: -0.3, emotionality: 0.7, identity: 0.7, lean: -0.5, harm: 0.0, responsibility: 1.0, hype: 0.4, price: 0.0, prominence: 0.6, novelty: 0.9}
+    outcome: {awareness: 0.4, halflife_days: 4, peak_day: 2, opinion_shift: -0.2, commercial: 0.0, polarization: 0.8}
+    response: {type: stand_firm, hours: 24}
+    summary: Jaguar's November 2024 rebrand, launched with a video showing no cars, drew widespread ridicule and culture-war commentary; the company defended it as a reset ahead of new electric models.
+    lessons: [A rebrand that hides the product invites people to fill the gap with their own politics.]
+
+  - id: cracker_barrel_2025
+    name: Cracker Barrel logo change and reversal
+    year: 2025
+    archetype: rebrand
+    wiki: {title: Cracker_Barrel, date: 2025-08-19}
+    features: {valence: -0.4, emotionality: 0.8, identity: 0.8, lean: -0.5, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.5, novelty: 0.8}
+    outcome: {awareness: 0.5, halflife_days: 3, peak_day: 3, opinion_shift: -0.3, commercial: -0.2, polarization: 0.7}
+    response: {type: reversal, hours: 170}
+    summary: Cracker Barrel unveiled a simplified logo in August 2025 without its "old timer" figure; nostalgic customers and conservative commentators protested, the share price fell, and the old logo returned about a week later.
+    lessons:
+      - For heritage brands, modernisation is read as a statement about identity.
+      - A fast reversal shortens the cycle.
+
+  - id: threads_2023
+    name: Meta launches Threads
+    year: 2023
+    archetype: product_launch
+    wiki: {title: Threads_(social_network), date: 2023-07-05}
+    features: {valence: 0.5, emotionality: 0.6, identity: 0.2, lean: -0.1, harm: 0.0, responsibility: 0.0, hype: 0.9, price: 0.0, prominence: 0.9, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 3, peak_day: 1, opinion_shift: 0.1, commercial: 0.3, polarization: 0.3}
+    response: {type: none, hours: null}
+    summary: Threads signed up about 100 million users within five days of its July 2023 launch by riding Instagram's network, but daily engagement dropped sharply within weeks.
+    lessons:
+      - Sign-ups measure curiosity; retention measures value.
+      - Borrowed networks give instant reach, not habit.
+
+  - id: pokemon_go_2016
+    name: Pokémon Go
+    year: 2016
+    archetype: viral_fad
+    wiki: {title: Pokémon_Go, date: 2016-07-06}
+    features: {valence: 0.8, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.7, price: 0.1, prominence: 0.8, novelty: 1.0}
+    outcome: {awareness: 0.9, halflife_days: 10, peak_day: 7, opinion_shift: 0.4, commercial: 0.8, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: Pokémon Go became a global phenomenon within days of its July 2016 launch, with crowds gathering in public places; use fell from its peak within months but the game stayed highly profitable for years.
+    lessons: [Visible, social, real-world use is its own advertising.]
+
+  - id: ice_bucket_2014
+    name: Ice Bucket Challenge
+    year: 2014
+    archetype: viral_fad
+    features: {valence: 0.9, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.0, price: 0.0, prominence: 0.3, novelty: 1.0}
+    outcome: {awareness: 0.9, halflife_days: 10, peak_day: 25, opinion_shift: 0.6, commercial: 0.9, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: In summer 2014 the challenge spread through public nominations; the US ALS Association received about $115 million in roughly eight weeks.
+    lessons: [Nominations turn every participant into a new seed with a built-in call to action.]
+
+  - id: svb_2023
+    name: Silicon Valley Bank run
+    year: 2023
+    archetype: financial_panic
+    wiki: {title: Collapse_of_Silicon_Valley_Bank, date: 2023-03-10}
+    features: {valence: -0.9, emotionality: 0.95, identity: 0.0, lean: 0.0, harm: 0.8, responsibility: 0.7, hype: 0.0, price: 0.0, prominence: 0.4, novelty: 0.9}
+    outcome: {awareness: 0.7, halflife_days: 5, peak_day: 3, opinion_shift: -0.6, commercial: -1.0, polarization: 0.2}
+    response: {type: reassurance, hours: 24}
+    summary: After SVB announced a loss and a capital raise on 8 March 2023, investors urged startups to move their money via group chats and social media; customers tried to withdraw about $42 billion in a day and regulators closed the bank on 10 March.
+    lessons:
+      - When the action is cheap, fast and observable, panic is self-fulfilling.
+      - Dense, high-trust networks move as one.
+
+  - id: crowdstrike_2024
+    name: CrowdStrike global IT outage
+    year: 2024
+    archetype: outage
+    wiki: {title: 2024_CrowdStrike-related_IT_outages, date: 2024-07-19}
+    features: {valence: -0.8, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.5, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.5, novelty: 0.9}
+    outcome: {awareness: 0.9, halflife_days: 3, peak_day: 1, opinion_shift: -0.4, commercial: -0.2, polarization: 0.05}
+    response: {type: fast_acknowledgement, hours: 3}
+    summary: A faulty update on 19 July 2024 crashed about 8.5 million Windows machines, grounding flights and disrupting hospitals and banks; CrowdStrike explained the cause within hours, but a $10 gift card offered to partners was widely ridiculed.
+    lessons:
+      - Speed and technical clarity limit the damage of an outage.
+      - A token gesture next to large harm becomes the punchline.
+
+  - id: toilet_paper_2020
+    name: COVID-19 toilet-paper panic buying
+    year: 2020
+    archetype: financial_panic
+    wiki: {title: Panic_buying, date: 2020-03-01}
+    features: {valence: -0.3, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.3, responsibility: 0.0, hype: 0.0, price: 0.2, prominence: 0.3, novelty: 0.9}
+    outcome: {awareness: 0.9, halflife_days: 10, peak_day: 14, opinion_shift: 0.0, commercial: 0.5, polarization: 0.2}
+    response: {type: none, hours: null}
+    summary: In March 2020 photos of empty shelves spread faster than any real shortage, and fear of running out set off panic buying of toilet paper in many countries.
+    lessons: [Images of scarcity create scarcity; watching others hoard is the signal to hoard.]
+
+  - id: fyre_2017
+    name: Fyre Festival collapse
+    year: 2017
+    archetype: service_incident
+    wiki: {title: Fyre_Festival, date: 2017-04-27}
+    features: {valence: -0.9, emotionality: 0.9, identity: 0.0, lean: 0.0, harm: 0.4, responsibility: 1.0, hype: 0.9, price: 0.7, prominence: 0.3, novelty: 1.0}
+    outcome: {awareness: 0.5, halflife_days: 5, peak_day: 1, opinion_shift: -0.9, commercial: -1.0, polarization: 0.05}
+    response: {type: none, hours: null}
+    summary: The influencer-promoted luxury festival collapsed in April 2017; guests' photos of relief tents and a sad cheese sandwich went viral, and the founder was later convicted of fraud.
+    lessons:
+      - Influencer-built hype collapses into ridicule once reality is photographed.
+      - The gap between promise and reality sets the size of the backlash.
+
+  - id: tide_pods_2018
+    name: Tide Pod challenge
+    year: 2018
+    archetype: viral_fad
+    wiki: {title: Tide_Pod_challenge, date: 2018-01-10}
+    features: {valence: -0.4, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.5, responsibility: 0.2, hype: 0.0, price: 0.0, prominence: 0.7, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 7, peak_day: 10, opinion_shift: -0.05, commercial: 0.0, polarization: 0.1}
+    response: {type: safety_campaign, hours: 300}
+    summary: A meme about eating laundry pods turned into a "challenge" in early 2018; Procter & Gamble ran safety messaging with NFL player Rob Gronkowski and platforms removed videos.
+    lessons: [Brands can be dragged into memes they didn't start; safety messages work best through voices the audience already follows.]
+
+  - id: gemini_images_2024
+    name: Google Gemini image-generation errors
+    year: 2024
+    archetype: product_launch
+    features: {valence: -0.5, emotionality: 0.8, identity: 0.85, lean: -0.6, harm: 0.1, responsibility: 0.9, hype: 0.6, price: 0.0, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.4, halflife_days: 4, peak_day: 3, opinion_shift: -0.3, commercial: -0.1, polarization: 0.8}
+    response: {type: pause_and_apology, hours: 72}
+    summary: In February 2024 Gemini produced historically inaccurate images of people; Google paused image generation of people and its CEO called some responses completely unacceptable.
+    lessons: [AI product errors are read as ideology, not bugs, when they touch identity.]
+
+  - id: vision_pro_2024
+    name: Apple Vision Pro launch
+    year: 2024
+    archetype: product_launch
+    wiki: {title: Apple_Vision_Pro, date: 2024-02-02}
+    features: {valence: 0.4, emotionality: 0.5, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.8, price: 1.0, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.5, halflife_days: 5, peak_day: 1, opinion_shift: 0.05, commercial: -0.1, polarization: 0.4}
+    response: {type: none, hours: null}
+    summary: The $3,499 headset launched in February 2024 to strong curiosity and impressive demos, but reports soon described cooling demand; price kept it niche.
+    lessons: [Curiosity doesn't convert when the price is far above what most of the audience will pay.]
+
+  - id: stanley_fire_2023
+    name: Stanley cup survives a car fire
+    year: 2023
+    archetype: viral_fad
+    features: {valence: 0.8, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.5, price: 0.3, prominence: 0.4, novelty: 0.9}
+    outcome: {awareness: 0.4, halflife_days: 10, peak_day: 3, opinion_shift: 0.4, commercial: 0.8, polarization: 0.3}
+    response: {type: amplify, hours: 48}
+    summary: A November 2023 TikTok showed a Stanley tumbler surviving a car fire with ice still inside; it drew tens of millions of views and Stanley's president offered to replace the owner's car, feeding an already viral sales boom.
+    lessons: [One authentic customer moment can beat any ad when the brand amplifies it quickly.]
+
+  - id: barbenheimer_2023
+    name: Barbenheimer
+    year: 2023
+    archetype: viral_fad
+    wiki: {title: Barbenheimer, date: 2023-07-21}
+    features: {valence: 0.9, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.9, price: 0.0, prominence: 0.9, novelty: 0.9}
+    outcome: {awareness: 0.8, halflife_days: 10, peak_day: 20, opinion_shift: 0.4, commercial: 0.9, polarization: 0.1}
+    response: {type: amplify, hours: null}
+    summary: Fans turned the same-day release of Barbie and Oppenheimer in July 2023 into a meme event, and both films far outperformed expectations at the box office.
+    lessons: [Audiences build the campaign for you when there's a playful, participatory frame.]
+
+  - id: gamestop_2021
+    name: GameStop short squeeze
+    year: 2021
+    archetype: financial_panic
+    wiki: {title: GameStop_short_squeeze, date: 2021-01-22}
+    features: {valence: 0.3, emotionality: 0.95, identity: 0.4, lean: 0.0, harm: 0.4, responsibility: 0.6, hype: 0.9, price: 0.5, prominence: 0.6, novelty: 1.0}
+    outcome: {awareness: 0.7, halflife_days: 6, peak_day: 10, opinion_shift: 0.2, commercial: 0.5, polarization: 0.7}
+    response: {type: restrict_trading, hours: 120}
+    summary: Retail traders organised on Reddit drove GameStop's share price up many times over in January 2021; when Robinhood restricted buying, it faced backlash from across the political spectrum.
+    lessons: [Collective action online can move markets; a platform seen as siding with incumbents becomes the villain.]
+
+  - id: starbucks_cup_2015
+    name: Starbucks red holiday cup
+    year: 2015
+    archetype: values_controversy
+    features: {valence: -0.2, emotionality: 0.6, identity: 0.7, lean: -0.3, harm: 0.0, responsibility: 0.3, hype: 0.3, price: 0.0, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.4, halflife_days: 3, peak_day: 3, opinion_shift: -0.05, commercial: 0.0, polarization: 0.5}
+    response: {type: none, hours: null}
+    summary: A plain red holiday cup in 2015 sparked a viral claim that Starbucks was waging a war on Christmas; it made headlines with no visible effect on sales.
+    lessons: [Outrage about symbols, at no cost to the outraged, rarely changes behaviour.]
+
+  - id: hm_hoodie_2018
+    name: H&M "coolest monkey" hoodie
+    year: 2018
+    archetype: ad_misfire
+    features: {valence: -0.7, emotionality: 0.9, identity: 0.8, lean: 0.0, harm: 0.2, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.8}
+    outcome: {awareness: 0.5, halflife_days: 4, peak_day: 3, opinion_shift: -0.3, commercial: -0.1, polarization: 0.2}
+    response: {type: apology, hours: 24}
+    summary: In January 2018 H&M advertised a hoodie reading "Coolest monkey in the jungle" on a Black child model; it apologised and withdrew the item, but celebrity partners cut ties and stores in South Africa were targeted by protesters.
+    lessons: [The public holds review processes accountable, not intent.]
+
+  - id: target_pride_2023
+    name: Target Pride merchandise backlash
+    year: 2023
+    archetype: values_controversy
+    features: {valence: -0.2, emotionality: 0.8, identity: 0.95, lean: -0.7, harm: 0.0, responsibility: 0.7, hype: 0.1, price: 0.0, prominence: 0.8, novelty: 0.5}
+    outcome: {awareness: 0.5, halflife_days: 7, peak_day: 10, opinion_shift: -0.25, commercial: -0.3, polarization: 0.9}
+    response: {type: partial_reversal, hours: 200}
+    summary: Target's 2023 Pride merchandise drew a conservative backlash and confrontations in stores; it pulled some items, which then angered LGBTQ advocates, and it reported a sales decline that quarter.
+    lessons: [Retreating halfway can anger both sides at once.]
+
+  - id: boeing_737max
+    name: Boeing 737 MAX crashes and grounding
+    year: 2019
+    archetype: safety_defect
+    wiki: {title: Boeing_737_MAX_groundings, date: 2019-03-10}
+    features: {valence: -1.0, emotionality: 0.95, identity: 0.0, lean: 0.0, harm: 1.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.8, halflife_days: 20, peak_day: 3, opinion_shift: -0.6, commercial: -0.8, polarization: 0.1}
+    response: {type: slow_and_defensive, hours: 72}
+    summary: After two crashes killed 346 people in 2018 and 2019, regulators grounded the 737 MAX worldwide for about 20 months; a door plug blew out of a new 737 MAX 9 in January 2024, reopening scrutiny.
+    lessons: [Safety failures reopen with every new incident; the story never fully resets.]
+
+  - id: chatgpt_2022
+    name: ChatGPT launch
+    year: 2022
+    archetype: product_launch
+    wiki: {title: ChatGPT, date: 2022-11-30}
+    features: {valence: 0.7, emotionality: 0.7, identity: 0.2, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.3, price: 0.0, prominence: 0.3, novelty: 1.0}
+    outcome: {awareness: 0.7, halflife_days: 30, peak_day: 60, opinion_shift: 0.3, commercial: 0.9, polarization: 0.4}
+    response: {type: none, hours: null}
+    summary: ChatGPT was released as a free preview on 30 November 2022; people shared screenshots of its answers and it passed a million users in about five days.
+    lessons:
+      - Shareable outputs turn users into the marketing channel.
+      - A free, frictionless trial removes the price barrier to word of mouth.
+
+  - id: openai_board_2023
+    name: Sam Altman fired and reinstated
+    year: 2023
+    archetype: trust_scandal
+    wiki: {title: Removal_of_Sam_Altman_from_OpenAI, date: 2023-11-17}
+    features: {valence: -0.4, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.6, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 1.0}
+    outcome: {awareness: 0.4, halflife_days: 3, peak_day: 2, opinion_shift: -0.1, commercial: 0.0, polarization: 0.3}
+    response: {type: reversal, hours: 110}
+    summary: OpenAI's board fired its CEO on 17 November 2023; after most staff threatened to quit, he was reinstated within five days with a new board.
+    lessons: [Public insider solidarity can reverse a leadership decision within days.]

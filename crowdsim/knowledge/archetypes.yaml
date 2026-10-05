@@ -1,0 +1,184 @@
+# What tends to happen around each kind of event, distilled from the event library.
+# `stories` are the secondary narratives that historically emerge on their own; each has a start
+# hour, an optional `when` condition on the event's features, and seeding. Special values:
+#   lean: same | opposite      -> copies or flips the event's cultural lean
+#   identity: same             -> copies the event's identity charge
+#   seed target: lean_same | lean_opposite -> activists on that side of the cultural axis
+# `dynamics` override engine constants for this archetype; `crisis: true` adds a silence penalty
+# when the organisation doesn't respond within 48 hours.
+
+product_launch:
+  label: Product launch
+  core_kind: official
+  crisis: false
+  dynamics: {novelty_halflife: 48, adopt_base_rate: 0.002, churn_rate: 0.001}
+  audience:
+    - {name: existing customers, share: 0.08, baseline_opinion: 0.5, can_adopt: true, need: 0.6, price_sensitivity: 0.35, traits: {trust_brand: 0.7}}
+    - {name: in-market shoppers, share: 0.2, baseline_opinion: 0.05, can_adopt: true, need: 0.65, price_sensitivity: 0.55}
+    - {name: rival loyalists, share: 0.14, baseline_opinion: -0.3, can_adopt: true, need: 0.35, price_sensitivity: 0.5, traits: {trust_brand: 0.3}}
+    - {name: general public, share: 0.58, baseline_opinion: 0.0, can_adopt: false, activity: 0.8}
+  stories:
+    - {id: hands_on_reviews, label: early hands-on reviews, kind: news, valence: quality, credibility: 0.8, emotionality: 0.4, start: 24, seed: {target: active, share: 0.0002}, media: [{start: 24, end: 60, intensity: 0.03}], description: Press and creators publish first impressions.}
+    - {id: price_gripes, label: complaints about the price, kind: ugc, when: "price>0.55", valence: -0.4, credibility: 0.6, emotionality: 0.6, start: 4, seed: {target: active, share: 0.0003}, description: '"Who is this even for at that price?"'}
+    - {id: hype_memes, label: hype memes, kind: ugc, when: "hype>0.6", valence: 0.3, credibility: 0.5, emotionality: 0.8, start: 2, seed: {target: active, share: 0.0003}, description: Fans turn the reveal into jokes and reaction posts.}
+    - {id: rival_jab, label: a rival's jab, kind: ad, source: none, when: "prominence>0.6", valence: -0.2, credibility: 0.55, emotionality: 0.5, start: 30, seed: {target: influencers, count: 20}, description: A competitor pokes fun at the launch.}
+
+safety_defect:
+  label: Safety problem or defect
+  core_kind: news
+  crisis: true
+  dynamics: {novelty_halflife: 72, churn_rate: 0.004, defect_rate: 0.01, negativity_bias: 0.7}
+  audience:
+    - {name: owners, share: 0.1, baseline_opinion: 0.35, can_adopt: true, already_adopted: 1.0, need: 0.5, price_sensitivity: 0.4, traits: {trust_brand: 0.65}}
+    - {name: considering buying, share: 0.15, baseline_opinion: 0.1, can_adopt: true, need: 0.55, price_sensitivity: 0.5}
+    - {name: general public, share: 0.75, baseline_opinion: 0.0, can_adopt: false}
+  stories:
+    - {id: exaggerated_claims, label: exaggerated danger claims, kind: rumor, truth: false, valence: -0.85, credibility: 0.35, emotionality: 0.95, start: 14, seed: {target: active, share: 0.0005}, media_pickup: {threshold: 0.01, delay: 3, duration: 36, intensity: 0.04}, description: '"It''s not just a few units - all of them are dangerous."'}
+    - {id: regulator_probe, label: regulators step in, kind: news, when: "harm>0.5", valence: -0.5, credibility: 0.9, emotionality: 0.5, start: 72, seed: {target: influencers, count: 30}, media: [{start: 72, end: 110, intensity: 0.05}], description: A regulator or airline restriction makes it official.}
+
+values_controversy:
+  label: Values or culture-war controversy
+  core_kind: official
+  crisis: true
+  dynamics: {novelty_halflife: 60, churn_rate: 0.005, w_identity: 2.5}
+  audience:
+    - {name: customers who share the stance, share: 0.1, baseline_opinion: 0.4, can_adopt: true, already_adopted: 1.0, ideology: -0.4, need: 0.5}
+    - {name: customers who oppose it, share: 0.1, baseline_opinion: 0.35, can_adopt: true, already_adopted: 1.0, ideology: 0.45, need: 0.5}
+    - {name: activists, share: 0.03, baseline_opinion: -0.1, ideology: 0.0, traits: {expressiveness: 0.3, reactivity: 0.7}}
+    - {name: general public, share: 0.77, baseline_opinion: 0.05}
+  stories:
+    - {id: boycott_call, label: the boycott call, kind: movement, valence: -0.6, credibility: 0.5, emotionality: 0.9, identity: same, lean: opposite, start: 10, seed: {target: lean_opposite, share: 0.0006}, media_pickup: {threshold: 0.015, delay: 4, duration: 48, intensity: 0.05}, description: '"Stop buying from them."'}
+    - {id: support_wave, label: the counter-wave of support, kind: movement, valence: 0.5, credibility: 0.55, emotionality: 0.75, identity: same, lean: same, start: 30, seed: {target: lean_same, share: 0.0004}, description: '"Buying it on purpose this week."'}
+    - {id: mockery, label: mockery and memes, kind: ugc, valence: -0.35, credibility: 0.4, emotionality: 0.85, identity: 0.5, lean: opposite, start: 6, seed: {target: active, share: 0.0003}, description: Parodies and reaction videos.}
+
+ad_misfire:
+  label: Ad or campaign misfire
+  core_kind: official
+  crisis: true
+  dynamics: {novelty_halflife: 30, churn_rate: 0.002}
+  audience:
+    - {name: customers, share: 0.15, baseline_opinion: 0.35, can_adopt: true, already_adopted: 1.0, need: 0.5}
+    - {name: critics, share: 0.05, baseline_opinion: -0.3, traits: {expressiveness: 0.2, reactivity: 0.65}}
+    - {name: general public, share: 0.8, baseline_opinion: 0.05}
+  stories:
+    - {id: parodies, label: parodies and memes, kind: ugc, valence: -0.5, credibility: 0.6, emotionality: 0.85, start: 3, seed: {target: active, share: 0.0004}, description: The ad gets remixed into jokes.}
+    - {id: think_pieces, label: think-pieces about the ad, kind: news, valence: -0.4, credibility: 0.8, emotionality: 0.5, start: 24, seed: {target: active, count: 50}, media_pickup: {threshold: 0.02, delay: 2, duration: 30, intensity: 0.03}, description: Columnists explain what went wrong.}
+    - {id: defenders, label: people defending the ad, kind: ugc, when: "identity>0.4", valence: 0.3, credibility: 0.5, emotionality: 0.6, identity: same, lean: same, start: 12, seed: {target: lean_same, share: 0.0002}, description: '"Honestly I don''t see the problem."'}
+
+price_change:
+  label: Price rise or policy change
+  core_kind: official
+  crisis: true
+  dynamics: {novelty_halflife: 48, churn_rate: 0.004, adopt_base_rate: 0.0008}
+  audience:
+    - {name: subscribers, share: 0.25, baseline_opinion: 0.3, can_adopt: true, already_adopted: 1.0, need: 0.6, price_sensitivity: 0.55}
+    - {name: former users, share: 0.1, baseline_opinion: -0.1, can_adopt: true, need: 0.4, price_sensitivity: 0.6}
+    - {name: general public, share: 0.65, baseline_opinion: 0.0}
+  stories:
+    - {id: cancellation_threats, label: cancellation threats, kind: ugc, valence: -0.6, credibility: 0.7, emotionality: 0.8, start: 2, seed: {target: active, share: 0.0005}, description: Screenshots of cancelled subscriptions.}
+    - {id: worth_it, label: '"still worth it" replies', kind: ugc, valence: 0.3, credibility: 0.6, emotionality: 0.35, start: 24, seed: {target: "segment:subscribers", share: 0.0002}, description: Loyal users argue it's still good value.}
+    - {id: rival_offer, label: a rival's discount offer, kind: ad, source: none, valence: -0.3, credibility: 0.7, emotionality: 0.4, start: 48, seed: {target: influencers, count: 30}, description: A competitor offers a deal to switchers.}
+
+rebrand:
+  label: Rebrand or redesign
+  core_kind: official
+  crisis: false
+  dynamics: {novelty_halflife: 36, churn_rate: 0.0015}
+  audience:
+    - {name: long-time customers, share: 0.15, baseline_opinion: 0.45, can_adopt: true, already_adopted: 1.0, need: 0.5, ideology: 0.2}
+    - {name: younger customers, share: 0.1, baseline_opinion: 0.2, can_adopt: true, need: 0.5, ideology: -0.2}
+    - {name: general public, share: 0.75, baseline_opinion: 0.05}
+  stories:
+    - {id: logo_mockery, label: mockery of the new look, kind: ugc, valence: -0.4, credibility: 0.6, emotionality: 0.8, start: 1, seed: {target: active, share: 0.0004}, description: '"My kid could design that."'}
+    - {id: bring_it_back, label: '"bring back the old one"', kind: movement, valence: -0.5, credibility: 0.6, emotionality: 0.8, identity: 0.5, lean: 0.5, start: 12, seed: {target: "segment:long-time customers", share: 0.0003}, media_pickup: {threshold: 0.02, delay: 3, duration: 36, intensity: 0.04}, description: Nostalgic customers demand a reversal.}
+
+data_breach:
+  label: Data breach or privacy failure
+  core_kind: news
+  crisis: true
+  dynamics: {novelty_halflife: 60, churn_rate: 0.003, negativity_bias: 0.7}
+  audience:
+    - {name: affected customers, share: 0.15, baseline_opinion: 0.25, can_adopt: true, already_adopted: 1.0, need: 0.5, traits: {reactivity: 0.6}}
+    - {name: privacy advocates, share: 0.02, baseline_opinion: -0.35, traits: {expressiveness: 0.3, skepticism: 0.6}}
+    - {name: general public, share: 0.83, baseline_opinion: 0.05}
+  stories:
+    - {id: everything_leaked, label: '"everything was leaked" claims', kind: rumor, truth: false, valence: -0.9, credibility: 0.3, emotionality: 0.95, start: 8, seed: {target: "segment:privacy advocates", share: 0.0003}, media_pickup: {threshold: 0.015, delay: 4, duration: 24, intensity: 0.03}, description: The breach is exaggerated as it spreads.}
+    - {id: protect_yourself, label: how-to-protect-yourself guides, kind: news, valence: -0.15, credibility: 0.9, emotionality: 0.3, start: 12, seed: {target: active, count: 60}, media: [{start: 12, end: 48, intensity: 0.02}], description: Media explain what affected people should do.}
+    - {id: lawsuit, label: class-action lawsuit, kind: news, valence: -0.5, credibility: 0.85, emotionality: 0.5, start: 96, seed: {target: influencers, count: 20}, media: [{start: 96, end: 120, intensity: 0.03}], description: Lawyers file on behalf of customers.}
+
+outage:
+  label: Outage or service failure
+  core_kind: news
+  crisis: true
+  dynamics: {novelty_halflife: 18, churn_rate: 0.002}
+  audience:
+    - {name: affected users, share: 0.3, baseline_opinion: 0.3, can_adopt: true, already_adopted: 1.0, need: 0.6, traits: {reactivity: 0.6}}
+    - {name: general public, share: 0.7, baseline_opinion: 0.05}
+  stories:
+    - {id: outage_memes, label: outage memes, kind: ugc, valence: -0.3, credibility: 0.6, emotionality: 0.7, start: 1, seed: {target: active, share: 0.0005}, description: Jokes about everything being down.}
+    - {id: attack_rumor, label: '"it was a cyberattack" speculation', kind: rumor, truth: false, valence: -0.6, credibility: 0.4, emotionality: 0.85, start: 2, seed: {target: active, share: 0.0003}, media_pickup: {threshold: 0.02, delay: 2, duration: 18, intensity: 0.03}, description: Speculation fills the gap before facts arrive.}
+    - {id: rival_jab, label: a rival's jab, kind: ad, source: none, valence: -0.25, credibility: 0.6, emotionality: 0.5, start: 6, seed: {target: influencers, count: 20}, description: '"We''re up, by the way."'}
+
+trust_scandal:
+  label: Deception, fraud or leadership scandal
+  core_kind: news
+  crisis: true
+  dynamics: {novelty_halflife: 60, churn_rate: 0.004, negativity_bias: 0.7}
+  audience:
+    - {name: customers, share: 0.15, baseline_opinion: 0.35, can_adopt: true, already_adopted: 1.0, need: 0.5}
+    - {name: investors and insiders, share: 0.02, baseline_opinion: 0.3, traits: {expressiveness: 0.25}}
+    - {name: general public, share: 0.83, baseline_opinion: 0.05}
+  stories:
+    - {id: more_revelations, label: further revelations, kind: news, valence: -0.6, credibility: 0.8, emotionality: 0.7, start: 48, seed: {target: influencers, count: 30}, media: [{start: 48, end: 72, intensity: 0.04}], description: Journalists dig up more.}
+    - {id: resign_calls, label: calls for resignations, kind: movement, valence: -0.6, credibility: 0.6, emotionality: 0.8, start: 12, seed: {target: active, share: 0.0003}, description: '"Whoever approved this has to go."'}
+
+service_incident:
+  label: Viral customer incident
+  core_kind: ugc
+  crisis: true
+  dynamics: {novelty_halflife: 30, churn_rate: 0.002}
+  audience:
+    - {name: customers, share: 0.2, baseline_opinion: 0.3, can_adopt: true, already_adopted: 1.0, need: 0.5}
+    - {name: general public, share: 0.8, baseline_opinion: 0.0}
+  stories:
+    - {id: pile_on, label: '"this happened to me too" stories', kind: ugc, valence: -0.6, credibility: 0.65, emotionality: 0.85, start: 10, seed: {target: active, share: 0.0004}, media_pickup: {threshold: 0.02, delay: 3, duration: 30, intensity: 0.04}, description: Other customers share their own bad experiences.}
+    - {id: parody, label: parodies, kind: ugc, valence: -0.4, credibility: 0.5, emotionality: 0.8, start: 20, seed: {target: active, share: 0.0003}, description: The incident becomes a format.}
+
+disaster:
+  label: Disaster with real harm
+  core_kind: news
+  crisis: true
+  dynamics: {novelty_halflife: 120, churn_rate: 0.003, negativity_bias: 0.8}
+  audience:
+    - {name: customers, share: 0.15, baseline_opinion: 0.2, can_adopt: true, already_adopted: 1.0, need: 0.5}
+    - {name: affected communities, share: 0.05, baseline_opinion: -0.1, traits: {reactivity: 0.75, expressiveness: 0.2}}
+    - {name: general public, share: 0.8, baseline_opinion: 0.0}
+  stories:
+    - {id: damage_updates, label: ongoing damage updates, kind: news, valence: -0.7, credibility: 0.9, emotionality: 0.8, start: 48, seed: {target: influencers, count: 40}, media: [{start: 48, end: 96, intensity: 0.05}, {start: 144, end: 168, intensity: 0.03}], description: Each new update restarts the cycle.}
+    - {id: blame_claims, label: unproven blame claims, kind: rumor, truth: false, valence: -0.8, credibility: 0.35, emotionality: 0.9, start: 20, seed: {target: active, share: 0.0003}, description: Speculation about who knew what.}
+
+viral_fad:
+  label: Viral moment or trend
+  core_kind: ugc
+  crisis: false
+  dynamics: {novelty_halflife: 72, adopt_base_rate: 0.004, churn_rate: 0.0005}
+  audience:
+    - {name: early fans, share: 0.08, baseline_opinion: 0.4, can_adopt: true, need: 0.5, traits: {novelty: 0.6, expressiveness: 0.15}}
+    - {name: curious mainstream, share: 0.3, baseline_opinion: 0.1, can_adopt: true, need: 0.4}
+    - {name: general public, share: 0.62, baseline_opinion: 0.0}
+  stories:
+    - {id: copycats, label: people joining in, kind: ugc, valence: 0.45, credibility: 0.7, emotionality: 0.8, start: 6, seed: {target: active, share: 0.0005}, description: Others post their own versions.}
+    - {id: overrated, label: '"it''s overrated" backlash', kind: ugc, valence: -0.3, credibility: 0.6, emotionality: 0.5, start: 72, seed: {target: active, share: 0.0003}, description: The inevitable eye-roll phase.}
+
+financial_panic:
+  label: Panic, run or rush
+  core_kind: rumor
+  crisis: true
+  dynamics: {novelty_halflife: 24, churn_rate: 0.03, churn_threshold: -0.1}
+  audience:
+    - {name: customers, share: 0.15, baseline_opinion: 0.3, can_adopt: true, already_adopted: 1.0, need: 0.5, traits: {reactivity: 0.6}}
+    - {name: insiders and advisors, share: 0.01, baseline_opinion: 0.0, traits: {expressiveness: 0.35, trust_brand: 0.4}}
+    - {name: general public, share: 0.84, baseline_opinion: 0.0}
+  stories:
+    - {id: get_out_now, label: '"get out now" warnings', kind: rumor, truth: false, valence: -0.9, credibility: 0.5, emotionality: 1.0, start: 1, seed: {target: "segment:insiders and advisors", share: 0.0005}, media_pickup: {threshold: 0.01, delay: 2, duration: 24, intensity: 0.05}, description: Trusted contacts tell each other to act before it's too late.}
+    - {id: proof_posts, label: posts showing others acting, kind: ugc, valence: -0.7, credibility: 0.75, emotionality: 0.9, start: 6, seed: {target: active, share: 0.0004}, description: Screenshots of withdrawals, empty shelves or queues.}
