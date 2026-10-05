@@ -88,7 +88,7 @@ export GEMINI_API_KEY=your-key            # Windows PowerShell: $env:GEMINI_API_
 uvicorn crowdsim.server:app --port 7860
 ```
 
-The default model is `gemini-2.5-flash`. Free models get renamed over time; if you see a "model not
+The default model is `gemini-flash-latest`, an alias that always points to Google's newest Flash model; if you see a "model not
 found" note in the app, check the model list in AI Studio and set `CROWDSIM_LLM_MODEL` to a current
 free Flash model. Each analysis uses about two or three requests, so free daily limits go a long way.
 
