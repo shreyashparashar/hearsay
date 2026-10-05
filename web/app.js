@@ -14,9 +14,9 @@ const h = (tag, attrs = {}, ...kids) => {
 const fmtPct = (x, d = 0) => (x * 100 < 10 && d === 0 ? (x * 100).toFixed(1) : (x * 100).toFixed(d)) + "%";
 const fmtSigned = x => Math.abs(x) < 0.005 ? "0.00" : (x > 0 ? "+" : "−") + Math.abs(x).toFixed(2);
 const dayLabel = hr => `Day ${(hr / 24).toFixed(1)}`;
-const C = { for: "#69c2ae", against: "#e27c90", mixed: "#8d9bb3", none: "#3a4658", accent: "#d1ae68", text: "#e5e9ef",
-  muted: "#93a0b3", faint: "#6a778b", line: "#2b3647", spread: "#f1d48a" };
-const STORY_COLORS = ["#f1d48a", "#7fb7ff", "#e27c90", "#69c2ae", "#c39bff", "#f0a35e", "#8fd3e8", "#d6d68a", "#b0b8c4", "#ff9fbf", "#9be39b"];
+const C = { for: "#6ef2c0", against: "#ff6fb5", mixed: "#b9a6d9", none: "#4a2c57", accent: "#ffd23f", text: "#fff4d6",
+  muted: "#d3bfdf", faint: "#a089b0", line: "#3d2049", spread: "#ffd23f", ink: "#0b0410", stage: "#170820" };
+const STORY_COLORS = ["#ffd23f", "#8db7ff", "#ff6fb5", "#6ef2c0", "#ff8a3d", "#c9a2ff", "#7fe7ff", "#f4ff7a", "#ffb3d9", "#a8ffcf", "#ffc78a"];
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const S = { images: [], spec: null, archetypes: {}, fullPlan: [], disabled: new Set(), hours: {}, result: null, preview: null };
@@ -666,10 +666,10 @@ const Net = {
   },
   draw(now) {
     const c = this.ctx, g = this.g, n = g.n, W = this.W, H = this.H;
-    c.fillStyle = "#0d131b"; c.fillRect(0, 0, W, H);
+    c.fillStyle = C.stage; c.fillRect(0, 0, W, H);
     const hr = Math.max(0, Math.floor(this.head));
     // every tie, faintly: the web the stories can travel on
-    c.lineWidth = 0.6; c.strokeStyle = this.showTies ? "rgba(148,160,179,.16)" : "rgba(148,160,179,.055)";
+    c.lineWidth = 0.6; c.strokeStyle = this.showTies ? "rgba(211,191,223,.18)" : "rgba(211,191,223,.06)";
     c.beginPath();
     for (const [a, b] of g.ties) { c.moveTo(this.sx(a), this.sy(a)); c.lineTo(this.sx(b), this.sy(b)); }
     c.stroke();
@@ -681,7 +681,7 @@ const Net = {
     }
     c.globalAlpha = 1;
     if (this.pin >= 0) {
-      c.strokeStyle = "rgba(229,233,239,.5)"; c.lineWidth = 1; c.beginPath();
+      c.strokeStyle = "rgba(255,244,214,.6)"; c.lineWidth = 1.2; c.beginPath();
       for (const t of this.out[this.pin]) { c.moveTo(this.sx(this.pin), this.sy(this.pin)); c.lineTo(this.sx(t), this.sy(t)); }
       c.stroke();
     }
@@ -694,10 +694,11 @@ const Net = {
       c.globalAlpha = f & 1 ? 0.55 + 0.45 * Math.min(1, Math.abs(o) * 1.4 + 0.2) : 0.9;
       c.fillStyle = col; c.beginPath(); c.arc(X, Y, r, 0, 6.283); c.fill();
       c.globalAlpha = 1;
-      if (f & 2) { c.strokeStyle = f & 4 ? "rgba(241,212,138,.95)" : "rgba(241,212,138,.7)"; c.lineWidth = 1.3; c.beginPath(); c.arc(X, Y, r + 2.2, 0, 6.283); c.stroke(); }
-      if (g.hub[i]) { c.strokeStyle = "rgba(229,233,239,.75)"; c.lineWidth = 1; c.beginPath(); c.arc(X, Y, r + (f & 2 ? 4.5 : 2), 0, 6.283); c.stroke(); }
-      if (f & 8) { c.fillStyle = "#fff"; c.beginPath(); c.arc(X, Y, Math.max(0.9, r * 0.35), 0, 6.283); c.fill(); }
-      if (f & 16) { c.strokeStyle = "#fff"; c.lineWidth = 1; c.beginPath(); c.moveTo(X - r, Y - r); c.lineTo(X + r, Y + r); c.moveTo(X + r, Y - r); c.lineTo(X - r, Y + r); c.stroke(); }
+      if (r > 3) { c.strokeStyle = C.ink; c.lineWidth = 1.2; c.stroke(); }
+      if (f & 2) { c.strokeStyle = f & 4 ? "rgba(255,138,61,.95)" : "rgba(255,210,63,.9)"; c.lineWidth = 1.6; c.beginPath(); c.arc(X, Y, r + 2.4, 0, 6.283); c.stroke(); }
+      if (g.hub[i]) { c.strokeStyle = "rgba(255,244,214,.85)"; c.lineWidth = 1.4; c.setLineDash([3, 2]); c.beginPath(); c.arc(X, Y, r + (f & 2 ? 5 : 2.5), 0, 6.283); c.stroke(); c.setLineDash([]); }
+      if (f & 8) { c.fillStyle = C.ink; c.beginPath(); c.arc(X, Y, Math.max(1, r * 0.38), 0, 6.283); c.fill(); }
+      if (f & 16) { c.strokeStyle = C.text; c.lineWidth = 1.2; c.beginPath(); c.moveTo(X - r, Y - r); c.lineTo(X + r, Y + r); c.moveTo(X + r, Y - r); c.lineTo(X - r, Y + r); c.stroke(); }
     }
     // pulses: a story moving along a tie, or arriving from the feed or the news
     this.pulses = this.pulses.filter(p => now < p.t0 + p.dur);
@@ -719,17 +720,19 @@ const Net = {
     c.globalAlpha = 1;
     // speech bubbles
     this.bubbles = this.bubbles.filter(b => now < b.t0 + b.dur);
-    c.font = '13px "Newsreader", Georgia, serif';
+    c.font = '600 13px "Bricolage Grotesque", system-ui, sans-serif';
     for (const b of this.bubbles) {
       const a = Math.min(1, (now - b.t0) / 200, (b.t0 + b.dur - now) / 400);
       let text = b.text.length > 64 ? b.text.slice(0, 62) + "…" : b.text;
-      const w = c.measureText(text).width + 16, X = Math.min(W - w - 6, Math.max(6, this.sx(b.i) + 8)), Y = Math.max(8, this.sy(b.i) - 34);
-      c.globalAlpha = a * 0.95; c.fillStyle = "#202a38"; c.strokeStyle = this.storyCol[b.k]; c.lineWidth = 1;
-      c.beginPath(); c.roundRect ? c.roundRect(X, Y, w, 24, 6) : c.rect(X, Y, w, 24); c.fill(); c.stroke();
-      c.fillStyle = C.text; c.fillText(text, X + 8, Y + 16);
+      const w = c.measureText(text).width + 20, X = Math.min(W - w - 8, Math.max(6, this.sx(b.i) + 8)), Y = Math.max(8, this.sy(b.i) - 38);
+      c.globalAlpha = a;
+      c.fillStyle = C.ink; c.beginPath(); c.roundRect ? c.roundRect(X + 3, Y + 3, w, 26, [13, 13, 13, 3]) : c.rect(X + 3, Y + 3, w, 26); c.fill();
+      c.fillStyle = this.storyCol[b.k]; c.strokeStyle = C.ink; c.lineWidth = 2;
+      c.beginPath(); c.roundRect ? c.roundRect(X, Y, w, 26, [13, 13, 13, 3]) : c.rect(X, Y, w, 26); c.fill(); c.stroke();
+      c.fillStyle = C.ink; c.fillText(text, X + 10, Y + 17.5);
     }
     c.globalAlpha = 1;
-    if (this.hoverI >= 0) { c.strokeStyle = C.text; c.lineWidth = 1.5; c.beginPath(); c.arc(this.sx(this.hoverI), this.sy(this.hoverI), this.r[this.hoverI] * this.k + 5, 0, 6.283); c.stroke(); }
+    if (this.hoverI >= 0) { c.strokeStyle = C.accent; c.lineWidth = 2.5; c.beginPath(); c.arc(this.sx(this.hoverI), this.sy(this.hoverI), this.r[this.hoverI] * this.k + 5, 0, 6.283); c.stroke(); }
     this.hud(hr);
   },
   hud(hr) {
