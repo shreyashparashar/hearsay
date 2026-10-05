@@ -1,0 +1,20 @@
+# Keeps your free Hugging Face Space in sync with this repo on every push to main.
+# One-time setup in GitHub: Settings -> Secrets and variables -> Actions
+#   secret   HF_TOKEN  (a Hugging Face access token with "write" permission)
+#   variable HF_SPACE  (e.g. yourname/hearsay)
+name: deploy to hugging face
+on:
+  push: {branches: [main]}
+  workflow_dispatch:
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    if: ${{ vars.HF_SPACE != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Push to the Space
+        env: {HF_TOKEN: "${{ secrets.HF_TOKEN }}"}
+        run: |
+          USER_NAME="${{ vars.HF_SPACE }}"; USER_NAME="${USER_NAME%%/*}"
+          git push --force "https://${USER_NAME}:${HF_TOKEN}@huggingface.co/spaces/${{ vars.HF_SPACE }}" HEAD:main
