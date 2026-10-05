@@ -1,0 +1,2781 @@
+# Historical public-reaction library.
+#
+# Every number here is a HAND-CODED ESTIMATE on a common scale, made from widely reported public
+# facts, so events can be compared with each other. They are not measurements. Use
+# `python tools/learn_attention.py` to replace attention numbers with real Wikipedia-pageview
+# curves where available, and add your own events in the same format.
+#
+# features (what the event was like when it hit):
+#   valence      -1..1  how it first reflected on the brand/organisation
+#   emotionality  0..1  how much it made people feel something (anger, delight, fear)
+#   identity      0..1  how much it touched values, politics, group identity
+#   lean         -1..1  which side of the cultural axis it flattered (-1 progressive-coded, +1 traditional-coded)
+#   harm          0..1  physical, financial or personal harm to people
+#   responsibility 0..1 how much the organisation was to blame
+#   hype          0..1  anticipation beforehand
+#   price         0..1  how central money/price was
+#   prominence    0..1  how famous the brand was
+#   novelty       0..1  how surprising it was
+# outcome:
+#   awareness 0..1 of the main market's public · halflife_days of attention · peak_day
+#   opinion_shift -1..1 · commercial -1..1 (sales/users/value) · polarization 0..1
+# response: what the organisation did and roughly how many hours it took.
+# domain: brand | policy | economy | geopolitics | health | politics | labour | tech  · country: main market
+# For governments, parties and countries, "brand" means whoever is at the centre of the event, and
+# commercial means how well it went for them in practical terms (-1 failed or reversed .. +1 achieved its aims).
+
+events:
+  - id: iphone_2007
+    name: Apple unveils the iPhone
+    year: 2007
+    archetype: product_launch
+    domain: brand
+    country: "Global"
+    features: {valence: 0.8, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.95, price: 0.5, prominence: 0.8, novelty: 1.0}
+    outcome: {awareness: 0.8, halflife_days: 6, peak_day: 0, opinion_shift: 0.3, commercial: 0.9, polarization: 0.2}
+    response: {type: none, hours: null}
+    summary: Unveiled on stage in January 2007 and shipped in June; months of anticipation, sustained coverage and lines at stores on release day.
+    lessons: [A live, demo-led reveal followed by a wait before release stretches attention over months.]
+
+  - id: note7_2016
+    name: Samsung Galaxy Note 7 battery fires
+    year: 2016
+    archetype: safety_defect
+    domain: brand
+    country: "Global"
+    wiki: {title: Samsung_Galaxy_Note_7, date: 2016-08-24}
+    features: {valence: -0.8, emotionality: 0.9, identity: 0.0, lean: 0.0, harm: 0.8, responsibility: 0.9, hype: 0.6, price: 0.2, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.85, halflife_days: 10, peak_day: 40, opinion_shift: -0.4, commercial: -0.7, polarization: 0.1}
+    response: {type: recall, hours: 216}
+    summary: Overheating batteries led to a recall in September 2016; replacement phones also caught fire, the model was discontinued in October and banned from flights. Samsung's next flagship sold well the following year.
+    lessons:
+      - Physical-harm stories escalate through regulators and airlines, not just social media.
+      - A fix that fails is worse than the original defect.
+
+  - id: tylenol_1982
+    name: Tylenol poisonings and recall
+    year: 1982
+    archetype: safety_defect
+    domain: brand
+    country: "US"
+    features: {valence: -0.7, emotionality: 0.95, identity: 0.0, lean: 0.0, harm: 1.0, responsibility: 0.1, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.9}
+    outcome: {awareness: 0.95, halflife_days: 14, peak_day: 3, opinion_shift: -0.3, commercial: -0.5, polarization: 0.05}
+    response: {type: recall, hours: 120}
+    summary: After capsules were laced with cyanide in Chicago, Johnson & Johnson recalled about 31 million bottles nationwide and introduced tamper-resistant packaging; the brand largely recovered within about a year.
+    lessons:
+      - Fast, costly, customer-first action rebuilt trust even after deaths.
+      - When the company is also a victim, the public credits visible sacrifice.
+
+  - id: new_coke_1985
+    name: New Coke replaces the original formula
+    year: 1985
+    archetype: rebrand
+    domain: brand
+    country: "US"
+    features: {valence: -0.4, emotionality: 0.7, identity: 0.3, lean: -0.3, harm: 0.0, responsibility: 1.0, hype: 0.6, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.9, halflife_days: 20, peak_day: 30, opinion_shift: -0.3, commercial: -0.2, polarization: 0.3}
+    response: {type: reversal, hours: 1900}
+    summary: Coca-Cola changed its formula in April 1985; loyal drinkers protested by letter and phone, and the original returned as Coca-Cola Classic 79 days later.
+    lessons:
+      - Taste tests didn't measure attachment; nostalgic loyalists are louder than their numbers.
+      - Reversing course turned the backlash into renewed affection for the original.
+
+  - id: bud_light_2023
+    name: Bud Light boycott
+    year: 2023
+    archetype: values_controversy
+    domain: brand
+    country: "US"
+    wiki: {title: 2023_Bud_Light_boycott, date: 2023-04-01}
+    features: {valence: -0.2, emotionality: 0.9, identity: 0.95, lean: -0.8, harm: 0.0, responsibility: 0.6, hype: 0.2, price: 0.0, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.8, halflife_days: 8, peak_day: 7, opinion_shift: -0.4, commercial: -0.7, polarization: 0.9}
+    response: {type: noncommittal_statement, hours: 300}
+    summary: A promotional can for transgender influencer Dylan Mulvaney in April 2023 set off a boycott by conservative drinkers; the brand's response satisfied neither side, US sales fell sharply for months and Modelo Especial overtook it as America's top-selling beer.
+    lessons:
+      - Boycotts bite when the product is easy to substitute and consuming it is socially visible.
+      - A response that tries to please both sides can alienate both.
+
+  - id: nike_kaepernick_2018
+    name: Nike's Dream Crazy campaign with Colin Kaepernick
+    year: 2018
+    archetype: values_controversy
+    domain: brand
+    country: "US"
+    wiki: {title: Dream_Crazy, date: 2018-09-03}
+    features: {valence: 0.1, emotionality: 0.9, identity: 0.95, lean: -0.8, harm: 0.0, responsibility: 0.5, hype: 0.5, price: 0.0, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.85, halflife_days: 5, peak_day: 1, opinion_shift: 0.0, commercial: 0.3, polarization: 0.95}
+    response: {type: stand_firm, hours: 0}
+    summary: The September 2018 ad drew boycott calls and videos of people burning their shoes; Nike held firm, third-party data showed online sales rising, and its share price later hit record highs.
+    lessons:
+      - When core customers sit on one side of a values split, the other side's boycott can be outweighed by a buycott.
+      - Holding firm reads as conviction, and works when the stance matches the core audience.
+
+  - id: gillette_2019
+    name: Gillette "The Best Men Can Be" ad
+    year: 2019
+    archetype: ad_misfire
+    domain: brand
+    country: "US"
+    wiki: {title: "We_Believe:_The_Best_Men_Can_Be", date: 2019-01-13}
+    features: {valence: -0.1, emotionality: 0.8, identity: 0.85, lean: -0.6, harm: 0.0, responsibility: 0.4, hype: 0.3, price: 0.0, prominence: 0.8, novelty: 0.6}
+    outcome: {awareness: 0.6, halflife_days: 4, peak_day: 2, opinion_shift: -0.15, commercial: -0.1, polarization: 0.8}
+    response: {type: stand_firm, hours: 0}
+    summary: The January 2019 ad about toxic masculinity became one of the most disliked videos on YouTube while also drawing praise; its effect on sales is disputed.
+    lessons: [Lecturing your own customers invites backlash, even from some who agree with the message.]
+
+  - id: pepsi_jenner_2017
+    name: Pepsi protest ad with Kendall Jenner
+    year: 2017
+    archetype: ad_misfire
+    domain: brand
+    country: "US"
+    features: {valence: -0.6, emotionality: 0.8, identity: 0.6, lean: -0.3, harm: 0.0, responsibility: 0.9, hype: 0.2, price: 0.0, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.7, halflife_days: 2, peak_day: 1, opinion_shift: -0.2, commercial: -0.05, polarization: 0.3}
+    response: {type: reversal, hours: 24}
+    summary: An April 2017 ad in which Kendall Jenner hands a police officer a Pepsi at a protest was mocked for trivialising protest movements; Pepsi pulled it about a day later and apologised.
+    lessons: [Pulling fast and apologising plainly turns a scandal into a short-lived meme.]
+
+  - id: united_3411_2017
+    name: Passenger dragged off United flight
+    year: 2017
+    archetype: service_incident
+    domain: brand
+    country: "US"
+    wiki: {title: United_Express_Flight_3411_incident, date: 2017-04-09}
+    features: {valence: -0.9, emotionality: 1.0, identity: 0.1, lean: 0.0, harm: 0.6, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.9}
+    outcome: {awareness: 0.85, halflife_days: 4, peak_day: 2, opinion_shift: -0.4, commercial: -0.1, polarization: 0.05}
+    response: {type: defensive_then_apology, hours: 48}
+    summary: Bystander video of a passenger being dragged off an overbooked flight spread worldwide; the CEO's first statement about having to "re-accommodate" passengers inflamed the story before a fuller apology and policy changes.
+    lessons:
+      - One bystander video can become global news within 48 hours.
+      - Corporate language in the first statement can become the story itself.
+
+  - id: cybertruck_2019
+    name: Cybertruck reveal and the cracked window
+    year: 2019
+    archetype: product_launch
+    domain: brand
+    country: "US"
+    wiki: {title: Tesla_Cybertruck, date: 2019-11-21}
+    features: {valence: 0.2, emotionality: 0.8, identity: 0.3, lean: 0.0, harm: 0.0, responsibility: 0.5, hype: 0.9, price: 0.4, prominence: 0.9, novelty: 1.0}
+    outcome: {awareness: 0.7, halflife_days: 3, peak_day: 1, opinion_shift: 0.0, commercial: 0.4, polarization: 0.7}
+    response: {type: humor, hours: 12}
+    summary: A demonstration meant to show unbreakable windows cracked them on stage in November 2019. The moment became a meme, yet Elon Musk reported roughly 250,000 refundable reservations within days.
+    lessons:
+      - A launch gaffe can widen reach without denting demand among fans when commitment is cheap and refundable.
+      - Polarising design splits opinion sharply; loved and mocked at once.
+
+  - id: peloton_2019
+    name: Peloton holiday ad
+    year: 2019
+    archetype: ad_misfire
+    domain: brand
+    country: "US"
+    features: {valence: -0.5, emotionality: 0.7, identity: 0.3, lean: -0.3, harm: 0.0, responsibility: 0.7, hype: 0.1, price: 0.3, prominence: 0.5, novelty: 0.7}
+    outcome: {awareness: 0.5, halflife_days: 3, peak_day: 2, opinion_shift: -0.2, commercial: -0.2, polarization: 0.3}
+    response: {type: stand_firm, hours: 48}
+    summary: The 2019 ad in which a husband gifts his wife an exercise bike was mocked as tone-deaf; the share price fell, and Aviation Gin quickly released a parody starring the same actress.
+    lessons:
+      - Competitors can ride your backlash within days.
+      - Mockery spreads faster than anger and is harder to answer.
+
+  - id: kfc_uk_2018
+    name: KFC UK runs out of chicken
+    year: 2018
+    archetype: outage
+    domain: brand
+    country: "UK"
+    features: {valence: -0.5, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.1, responsibility: 0.8, hype: 0.0, price: 0.0, prominence: 0.7, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 4, peak_day: 3, opinion_shift: 0.05, commercial: -0.2, polarization: 0.05}
+    response: {type: humor, hours: 96}
+    summary: A logistics switch in February 2018 left hundreds of UK restaurants without chicken; KFC ran a full-page apology rearranging its logo into "FCK", widely praised for owning the mistake.
+    lessons: [Self-aware humour works when the harm is an inconvenience, not an injury.]
+
+  - id: dominos_2009
+    name: Domino's employee prank video
+    year: 2009
+    archetype: service_incident
+    domain: brand
+    country: "US"
+    features: {valence: -0.8, emotionality: 0.9, identity: 0.0, lean: 0.0, harm: 0.3, responsibility: 0.7, hype: 0.0, price: 0.0, prominence: 0.7, novelty: 0.9}
+    outcome: {awareness: 0.5, halflife_days: 4, peak_day: 2, opinion_shift: -0.3, commercial: -0.1, polarization: 0.05}
+    response: {type: apology, hours: 48}
+    summary: Two employees posted a video of themselves tampering with food in April 2009; Domino's answered with a YouTube apology from its US president within about two days, and later rebuilt its image by openly admitting its pizza needed to improve.
+    lessons:
+      - Answering on the platform where the crisis lives beats press releases.
+      - Admitting a flaw openly can become a comeback story.
+
+  - id: bp_2010
+    name: Deepwater Horizon oil spill
+    year: 2010
+    archetype: disaster
+    domain: brand
+    country: "US"
+    features: {valence: -1.0, emotionality: 0.95, identity: 0.3, lean: -0.3, harm: 1.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.9}
+    outcome: {awareness: 0.95, halflife_days: 30, peak_day: 40, opinion_shift: -0.6, commercial: -0.6, polarization: 0.2}
+    response: {type: slow_and_gaffe, hours: 72}
+    summary: The April 2010 explosion killed 11 workers and caused the largest marine oil spill in US history; CEO Tony Hayward's "I'd like my life back" came to symbolise a response seen as self-absorbed, and he was replaced within months.
+    lessons:
+      - Visible, ongoing harm keeps a crisis alive for months; every update restarts the cycle.
+      - Leaders' off-hand remarks become the headline.
+
+  - id: dieselgate_2015
+    name: Volkswagen emissions cheating
+    year: 2015
+    archetype: trust_scandal
+    domain: brand
+    country: "Global"
+    wiki: {title: Volkswagen_emissions_scandal, date: 2015-09-18}
+    features: {valence: -0.9, emotionality: 0.7, identity: 0.2, lean: -0.2, harm: 0.5, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.95, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 10, peak_day: 3, opinion_shift: -0.5, commercial: -0.3, polarization: 0.1}
+    response: {type: apology, hours: 120}
+    summary: Volkswagen admitted in September 2015 that diesel cars carried software to cheat emissions tests; the CEO resigned within days and the company faced tens of billions in fines and settlements.
+    lessons: [Deliberate deception damages trust far more than accidents do.]
+
+  - id: equifax_2017
+    name: Equifax data breach
+    year: 2017
+    archetype: data_breach
+    domain: tech
+    country: "US"
+    wiki: {title: 2017_Equifax_data_breach, date: 2017-09-07}
+    features: {valence: -0.9, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.7, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.6, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 7, peak_day: 2, opinion_shift: -0.6, commercial: -0.3, polarization: 0.05}
+    response: {type: slow_disclosure, hours: 1000}
+    summary: Equifax disclosed in September 2017 that data on about 147 million people had been exposed; it had found the breach weeks earlier, its help website was confusing, and the CEO retired within weeks.
+    lessons:
+      - Late disclosure turns a breach into a cover-up story.
+      - Clumsy remediation tools create a second wave of anger.
+
+  - id: cambridge_analytica_2018
+    name: Facebook and Cambridge Analytica
+    year: 2018
+    archetype: data_breach
+    domain: tech
+    country: "Global"
+    wiki: {title: Facebook–Cambridge_Analytica_data_scandal, date: 2018-03-17}
+    features: {valence: -0.8, emotionality: 0.8, identity: 0.5, lean: 0.0, harm: 0.4, responsibility: 0.8, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.8, halflife_days: 7, peak_day: 3, opinion_shift: -0.35, commercial: -0.15, polarization: 0.4}
+    response: {type: silence_then_apology, hours: 120}
+    summary: Reports in March 2018 that Cambridge Analytica had obtained data on tens of millions of Facebook users sparked #DeleteFacebook and congressional testimony by Mark Zuckerberg; the share price fell sharply, but user numbers kept growing.
+    lessons:
+      - Loud online exits rarely match actual churn when a service has strong network effects.
+      - Silence in the first days lets critics define the story.
+
+  - id: antennagate_2010
+    name: iPhone 4 antenna problem
+    year: 2010
+    archetype: safety_defect
+    domain: brand
+    country: "Global"
+    features: {valence: -0.4, emotionality: 0.5, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.7, hype: 0.8, price: 0.0, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.5, halflife_days: 6, peak_day: 14, opinion_shift: -0.1, commercial: 0.0, polarization: 0.3}
+    response: {type: dismissive_then_fix, hours: 500}
+    summary: The iPhone 4 lost signal when held a certain way; Steve Jobs's advice to avoid holding it that way was mocked, and about three weeks later Apple gave out free cases. Sales stayed strong.
+    lessons:
+      - Dismissive replies prolong minor defects; a cheap fix ends them.
+      - Devoted fans and network effects absorb minor defects.
+
+  - id: batterygate_2017
+    name: Apple slows older iPhones
+    year: 2017
+    archetype: trust_scandal
+    domain: brand
+    country: "Global"
+    wiki: {title: Batterygate, date: 2017-12-20}
+    features: {valence: -0.6, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.1, responsibility: 0.9, hype: 0.0, price: 0.4, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.5, halflife_days: 6, peak_day: 3, opinion_shift: -0.25, commercial: -0.05, polarization: 0.2}
+    response: {type: compensation, hours: 200}
+    summary: Apple confirmed in December 2017 that it slowed some older iPhones to prevent shutdowns from ageing batteries; it apologised and cut battery replacement prices to $29, but faced lawsuits and fines.
+    lessons: [Hidden decisions feel like deception even when the motive is technical.]
+
+  - id: xbox_drm_2013
+    name: Xbox One always-online and used-game rules
+    year: 2013
+    archetype: price_change
+    domain: brand
+    country: "Global"
+    features: {valence: -0.6, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.7, price: 0.6, prominence: 0.8, novelty: 0.7}
+    outcome: {awareness: 0.4, halflife_days: 5, peak_day: 3, opinion_shift: -0.4, commercial: -0.2, polarization: 0.2}
+    response: {type: reversal, hours: 670}
+    summary: Microsoft's plan to require regular online check-ins and restrict used games drew fierce backlash; Sony mocked it at E3 and Microsoft reversed the policy within about a month, before launch.
+    lessons: [Reversing before launch limits lasting damage, but the competitor keeps the narrative win.]
+
+  - id: battlefront2_2017
+    name: Star Wars Battlefront II loot boxes
+    year: 2017
+    archetype: price_change
+    domain: brand
+    country: "Global"
+    wiki: {title: Star_Wars_Battlefront_II_(2017_video_game), date: 2017-11-12}
+    features: {valence: -0.6, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.9, hype: 0.7, price: 0.8, prominence: 0.7, novelty: 0.6}
+    outcome: {awareness: 0.3, halflife_days: 4, peak_day: 2, opinion_shift: -0.4, commercial: -0.3, polarization: 0.1}
+    response: {type: defensive_then_reversal, hours: 72}
+    summary: An EA reply on Reddit defending locked characters as giving players "a sense of pride and accomplishment" became the most downvoted comment in Reddit's history; EA switched off in-game purchases the day before launch.
+    lessons: [Corporate-speak defending a monetisation choice can become the meme that defines it.]
+
+  - id: cyberpunk_2020
+    name: Cyberpunk 2077's broken console launch
+    year: 2020
+    archetype: product_launch
+    domain: brand
+    country: "Global"
+    wiki: {title: Cyberpunk_2077, date: 2020-12-10}
+    features: {valence: -0.6, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.8, hype: 1.0, price: 0.3, prominence: 0.7, novelty: 0.8}
+    outcome: {awareness: 0.5, halflife_days: 6, peak_day: 3, opinion_shift: -0.5, commercial: -0.3, polarization: 0.3}
+    response: {type: apology_and_refunds, hours: 100}
+    summary: The game launched in December 2020 with severe bugs on older consoles; Sony pulled it from the PlayStation Store and refunds were offered. Years of patches and an expansion later repaired much of its reputation.
+    lessons:
+      - Peak hype raises the fall; expectations are the baseline the public judges against.
+      - Recovery is possible but takes years of visible fixes.
+
+  - id: no_mans_sky_2016
+    name: No Man's Sky launch and redemption
+    year: 2016
+    archetype: product_launch
+    domain: brand
+    country: "Global"
+    wiki: {title: "No_Man's_Sky", date: 2016-08-09}
+    features: {valence: -0.5, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.8, hype: 0.95, price: 0.3, prominence: 0.4, novelty: 0.7}
+    outcome: {awareness: 0.3, halflife_days: 5, peak_day: 3, opinion_shift: -0.5, commercial: -0.2, polarization: 0.3}
+    response: {type: silence_then_fixes, hours: 2000}
+    summary: The game launched in August 2016 without features fans believed had been promised; after a long near-silence the studio shipped years of free updates and is now often cited as a redemption story.
+    lessons: [Silence fuels anger at first; sustained delivery can later rewrite the story.]
+
+  - id: unity_fee_2023
+    name: Unity runtime fee
+    year: 2023
+    archetype: price_change
+    domain: tech
+    country: "Global"
+    wiki: {title: Unity_(game_engine), date: 2023-09-12}
+    features: {valence: -0.8, emotionality: 0.85, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.9, hype: 0.0, price: 1.0, prominence: 0.5, novelty: 0.8}
+    outcome: {awareness: 0.15, halflife_days: 5, peak_day: 2, opinion_shift: -0.6, commercial: -0.4, polarization: 0.1}
+    response: {type: partial_reversal, hours: 240}
+    summary: Unity's September 2023 plan to charge developers per game install triggered a revolt and threats to switch engines; it partly walked the fee back within about ten days, the CEO left weeks later, and the fee was eventually scrapped.
+    lessons:
+      - Changing terms on locked-in customers retroactively breaks trust beyond the money.
+      - Professional communities with alternatives organise fast.
+
+  - id: reddit_api_2023
+    name: Reddit API fees and subreddit blackout
+    year: 2023
+    archetype: price_change
+    domain: tech
+    country: "Global"
+    wiki: {title: 2023_Reddit_API_controversy, date: 2023-06-12}
+    features: {valence: -0.5, emotionality: 0.7, identity: 0.1, lean: 0.0, harm: 0.0, responsibility: 0.9, hype: 0.0, price: 0.7, prominence: 0.7, novelty: 0.7}
+    outcome: {awareness: 0.3, halflife_days: 5, peak_day: 2, opinion_shift: -0.3, commercial: 0.0, polarization: 0.3}
+    response: {type: stand_firm, hours: 0}
+    summary: New API fees forced popular third-party Reddit apps to close; thousands of subreddits went dark in June 2023, but the company held firm, the protest faded, and it went public the next year.
+    lessons: [Protests that cost the protesters fade when the platform holds firm and has no real substitute.]
+
+  - id: qwikster_2011
+    name: Netflix price hike and Qwikster
+    year: 2011
+    archetype: price_change
+    domain: brand
+    country: "US"
+    features: {valence: -0.7, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.9, prominence: 0.8, novelty: 0.7}
+    outcome: {awareness: 0.5, halflife_days: 7, peak_day: 10, opinion_shift: -0.5, commercial: -0.6, polarization: 0.1}
+    response: {type: apology_then_reversal, hours: 700}
+    summary: Netflix raised some prices by about 60% in 2011, then announced it would split DVD rentals into a separate service called Qwikster; it lost about 800,000 US subscribers in a quarter and dropped Qwikster within weeks.
+    lessons:
+      - Stacking a price rise with a confusing change compounds anger.
+      - Churn is real when alternatives exist and the change feels like a downgrade.
+
+  - id: netflix_sharing_2023
+    name: Netflix password-sharing crackdown
+    year: 2023
+    archetype: price_change
+    domain: brand
+    country: "Global"
+    features: {valence: -0.5, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.7, prominence: 0.9, novelty: 0.5}
+    outcome: {awareness: 0.7, halflife_days: 5, peak_day: 3, opinion_shift: -0.2, commercial: 0.4, polarization: 0.2}
+    response: {type: stand_firm, hours: 0}
+    summary: When Netflix began charging for password sharing in 2023, social media filled with cancellation threats, yet it reported millions of new subscribers in the following quarters.
+    lessons: [Online outrage is a poor predictor of behaviour when the product is a habit and the alternative is losing access.]
+
+  - id: twitter_x_2023
+    name: Twitter renamed X
+    year: 2023
+    archetype: rebrand
+    domain: tech
+    country: "Global"
+    wiki: {title: Twitter, date: 2023-07-23}
+    features: {valence: -0.4, emotionality: 0.6, identity: 0.6, lean: 0.3, harm: 0.0, responsibility: 1.0, hype: 0.4, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.8, halflife_days: 4, peak_day: 1, opinion_shift: -0.2, commercial: -0.2, polarization: 0.7}
+    response: {type: stand_firm, hours: 0}
+    summary: Twitter was renamed X in July 2023 and the bird logo dropped; the change was widely mocked and many people kept saying "tweet", but the company kept the new name.
+    lessons: [Brand equity doesn't transfer to a new name automatically; habits outlast logos.]
+
+  - id: jaguar_2024
+    name: Jaguar "Copy Nothing" rebrand
+    year: 2024
+    archetype: rebrand
+    domain: brand
+    country: "UK"
+    wiki: {title: Jaguar_Cars, date: 2024-11-19}
+    features: {valence: -0.3, emotionality: 0.7, identity: 0.7, lean: -0.5, harm: 0.0, responsibility: 1.0, hype: 0.4, price: 0.0, prominence: 0.6, novelty: 0.9}
+    outcome: {awareness: 0.4, halflife_days: 4, peak_day: 2, opinion_shift: -0.2, commercial: 0.0, polarization: 0.8}
+    response: {type: stand_firm, hours: 24}
+    summary: Jaguar's November 2024 rebrand, launched with a video showing no cars, drew widespread ridicule and culture-war commentary; the company defended it as a reset ahead of new electric models.
+    lessons: [A rebrand that hides the product invites people to fill the gap with their own politics.]
+
+  - id: cracker_barrel_2025
+    name: Cracker Barrel logo change and reversal
+    year: 2025
+    archetype: rebrand
+    domain: brand
+    country: "US"
+    wiki: {title: Cracker_Barrel, date: 2025-08-19}
+    features: {valence: -0.4, emotionality: 0.8, identity: 0.8, lean: -0.5, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.5, novelty: 0.8}
+    outcome: {awareness: 0.5, halflife_days: 3, peak_day: 3, opinion_shift: -0.3, commercial: -0.2, polarization: 0.7}
+    response: {type: reversal, hours: 170}
+    summary: Cracker Barrel unveiled a simplified logo in August 2025 without its "old timer" figure; nostalgic customers and conservative commentators protested, the share price fell, and the old logo returned about a week later.
+    lessons:
+      - For heritage brands, modernisation is read as a statement about identity.
+      - A fast reversal shortens the cycle.
+
+  - id: threads_2023
+    name: Meta launches Threads
+    year: 2023
+    archetype: product_launch
+    domain: tech
+    country: "Global"
+    wiki: {title: Threads_(social_network), date: 2023-07-05}
+    features: {valence: 0.5, emotionality: 0.6, identity: 0.2, lean: -0.1, harm: 0.0, responsibility: 0.0, hype: 0.9, price: 0.0, prominence: 0.9, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 3, peak_day: 1, opinion_shift: 0.1, commercial: 0.3, polarization: 0.3}
+    response: {type: none, hours: null}
+    summary: Threads signed up about 100 million users within five days of its July 2023 launch by riding Instagram's network, but daily engagement dropped sharply within weeks.
+    lessons:
+      - Sign-ups measure curiosity; retention measures value.
+      - Borrowed networks give instant reach, not habit.
+
+  - id: pokemon_go_2016
+    name: Pokémon Go
+    year: 2016
+    archetype: viral_fad
+    domain: brand
+    country: "Global"
+    wiki: {title: Pokémon_Go, date: 2016-07-06}
+    features: {valence: 0.8, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.7, price: 0.1, prominence: 0.8, novelty: 1.0}
+    outcome: {awareness: 0.9, halflife_days: 10, peak_day: 7, opinion_shift: 0.4, commercial: 0.8, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: Pokémon Go became a global phenomenon within days of its July 2016 launch, with crowds gathering in public places; use fell from its peak within months but the game stayed highly profitable for years.
+    lessons: [Visible, social, real-world use is its own advertising.]
+
+  - id: ice_bucket_2014
+    name: Ice Bucket Challenge
+    year: 2014
+    archetype: viral_fad
+    domain: brand
+    country: "Global"
+    features: {valence: 0.9, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.0, price: 0.0, prominence: 0.3, novelty: 1.0}
+    outcome: {awareness: 0.9, halflife_days: 10, peak_day: 25, opinion_shift: 0.6, commercial: 0.9, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: In summer 2014 the challenge spread through public nominations; the US ALS Association received about $115 million in roughly eight weeks.
+    lessons: [Nominations turn every participant into a new seed with a built-in call to action.]
+
+  - id: svb_2023
+    name: Silicon Valley Bank run
+    year: 2023
+    archetype: financial_panic
+    domain: economy
+    country: "US"
+    wiki: {title: Collapse_of_Silicon_Valley_Bank, date: 2023-03-10}
+    features: {valence: -0.9, emotionality: 0.95, identity: 0.0, lean: 0.0, harm: 0.8, responsibility: 0.7, hype: 0.0, price: 0.0, prominence: 0.4, novelty: 0.9}
+    outcome: {awareness: 0.7, halflife_days: 5, peak_day: 3, opinion_shift: -0.6, commercial: -1.0, polarization: 0.2}
+    response: {type: reassurance, hours: 24}
+    summary: After SVB announced a loss and a capital raise on 8 March 2023, investors urged startups to move their money via group chats and social media; customers tried to withdraw about $42 billion in a day and regulators closed the bank on 10 March.
+    lessons:
+      - When the action is cheap, fast and observable, panic is self-fulfilling.
+      - Dense, high-trust networks move as one.
+
+  - id: crowdstrike_2024
+    name: CrowdStrike global IT outage
+    year: 2024
+    archetype: outage
+    domain: tech
+    country: "Global"
+    wiki: {title: 2024_CrowdStrike-related_IT_outages, date: 2024-07-19}
+    features: {valence: -0.8, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.5, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.5, novelty: 0.9}
+    outcome: {awareness: 0.9, halflife_days: 3, peak_day: 1, opinion_shift: -0.4, commercial: -0.2, polarization: 0.05}
+    response: {type: fast_acknowledgement, hours: 3}
+    summary: A faulty update on 19 July 2024 crashed about 8.5 million Windows machines, grounding flights and disrupting hospitals and banks; CrowdStrike explained the cause within hours, but a $10 gift card offered to partners was widely ridiculed.
+    lessons:
+      - Speed and technical clarity limit the damage of an outage.
+      - A token gesture next to large harm becomes the punchline.
+
+  - id: toilet_paper_2020
+    name: COVID-19 toilet-paper panic buying
+    year: 2020
+    archetype: financial_panic
+    domain: health
+    country: "Global"
+    wiki: {title: Panic_buying, date: 2020-03-01}
+    features: {valence: -0.3, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.3, responsibility: 0.0, hype: 0.0, price: 0.2, prominence: 0.3, novelty: 0.9}
+    outcome: {awareness: 0.9, halflife_days: 10, peak_day: 14, opinion_shift: 0.0, commercial: 0.5, polarization: 0.2}
+    response: {type: none, hours: null}
+    summary: In March 2020 photos of empty shelves spread faster than any real shortage, and fear of running out set off panic buying of toilet paper in many countries.
+    lessons: [Images of scarcity create scarcity; watching others hoard is the signal to hoard.]
+
+  - id: fyre_2017
+    name: Fyre Festival collapse
+    year: 2017
+    archetype: service_incident
+    domain: brand
+    country: "US"
+    wiki: {title: Fyre_Festival, date: 2017-04-27}
+    features: {valence: -0.9, emotionality: 0.9, identity: 0.0, lean: 0.0, harm: 0.4, responsibility: 1.0, hype: 0.9, price: 0.7, prominence: 0.3, novelty: 1.0}
+    outcome: {awareness: 0.5, halflife_days: 5, peak_day: 1, opinion_shift: -0.9, commercial: -1.0, polarization: 0.05}
+    response: {type: none, hours: null}
+    summary: The influencer-promoted luxury festival collapsed in April 2017; guests' photos of relief tents and a sad cheese sandwich went viral, and the founder was later convicted of fraud.
+    lessons:
+      - Influencer-built hype collapses into ridicule once reality is photographed.
+      - The gap between promise and reality sets the size of the backlash.
+
+  - id: tide_pods_2018
+    name: Tide Pod challenge
+    year: 2018
+    archetype: viral_fad
+    domain: brand
+    country: "US"
+    wiki: {title: Tide_Pod_challenge, date: 2018-01-10}
+    features: {valence: -0.4, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.5, responsibility: 0.2, hype: 0.0, price: 0.0, prominence: 0.7, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 7, peak_day: 10, opinion_shift: -0.05, commercial: 0.0, polarization: 0.1}
+    response: {type: safety_campaign, hours: 300}
+    summary: A meme about eating laundry pods turned into a "challenge" in early 2018; Procter & Gamble ran safety messaging with NFL player Rob Gronkowski and platforms removed videos.
+    lessons: [Brands can be dragged into memes they didn't start; safety messages work best through voices the audience already follows.]
+
+  - id: gemini_images_2024
+    name: Google Gemini image-generation errors
+    year: 2024
+    archetype: product_launch
+    domain: tech
+    country: "Global"
+    features: {valence: -0.5, emotionality: 0.8, identity: 0.85, lean: -0.6, harm: 0.1, responsibility: 0.9, hype: 0.6, price: 0.0, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.4, halflife_days: 4, peak_day: 3, opinion_shift: -0.3, commercial: -0.1, polarization: 0.8}
+    response: {type: pause_and_apology, hours: 72}
+    summary: In February 2024 Gemini produced historically inaccurate images of people; Google paused image generation of people and its CEO called some responses completely unacceptable.
+    lessons: [AI product errors are read as ideology, not bugs, when they touch identity.]
+
+  - id: vision_pro_2024
+    name: Apple Vision Pro launch
+    year: 2024
+    archetype: product_launch
+    domain: brand
+    country: "US"
+    wiki: {title: Apple_Vision_Pro, date: 2024-02-02}
+    features: {valence: 0.4, emotionality: 0.5, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.8, price: 1.0, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.5, halflife_days: 5, peak_day: 1, opinion_shift: 0.05, commercial: -0.1, polarization: 0.4}
+    response: {type: none, hours: null}
+    summary: The $3,499 headset launched in February 2024 to strong curiosity and impressive demos, but reports soon described cooling demand; price kept it niche.
+    lessons: [Curiosity doesn't convert when the price is far above what most of the audience will pay.]
+
+  - id: stanley_fire_2023
+    name: Stanley cup survives a car fire
+    year: 2023
+    archetype: viral_fad
+    domain: brand
+    country: "US"
+    features: {valence: 0.8, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.5, price: 0.3, prominence: 0.4, novelty: 0.9}
+    outcome: {awareness: 0.4, halflife_days: 10, peak_day: 3, opinion_shift: 0.4, commercial: 0.8, polarization: 0.3}
+    response: {type: amplify, hours: 48}
+    summary: A November 2023 TikTok showed a Stanley tumbler surviving a car fire with ice still inside; it drew tens of millions of views and Stanley's president offered to replace the owner's car, feeding an already viral sales boom.
+    lessons: [One authentic customer moment can beat any ad when the brand amplifies it quickly.]
+
+  - id: barbenheimer_2023
+    name: Barbenheimer
+    year: 2023
+    archetype: viral_fad
+    domain: brand
+    country: "Global"
+    wiki: {title: Barbenheimer, date: 2023-07-21}
+    features: {valence: 0.9, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.9, price: 0.0, prominence: 0.9, novelty: 0.9}
+    outcome: {awareness: 0.8, halflife_days: 10, peak_day: 20, opinion_shift: 0.4, commercial: 0.9, polarization: 0.1}
+    response: {type: amplify, hours: null}
+    summary: Fans turned the same-day release of Barbie and Oppenheimer in July 2023 into a meme event, and both films far outperformed expectations at the box office.
+    lessons: [Audiences build the campaign for you when there's a playful, participatory frame.]
+
+  - id: gamestop_2021
+    name: GameStop short squeeze
+    year: 2021
+    archetype: financial_panic
+    domain: economy
+    country: "US"
+    wiki: {title: GameStop_short_squeeze, date: 2021-01-22}
+    features: {valence: 0.3, emotionality: 0.95, identity: 0.4, lean: 0.0, harm: 0.4, responsibility: 0.6, hype: 0.9, price: 0.5, prominence: 0.6, novelty: 1.0}
+    outcome: {awareness: 0.7, halflife_days: 6, peak_day: 10, opinion_shift: 0.2, commercial: 0.5, polarization: 0.7}
+    response: {type: restrict_trading, hours: 120}
+    summary: Retail traders organised on Reddit drove GameStop's share price up many times over in January 2021; when Robinhood restricted buying, it faced backlash from across the political spectrum.
+    lessons: [Collective action online can move markets; a platform seen as siding with incumbents becomes the villain.]
+
+  - id: starbucks_cup_2015
+    name: Starbucks red holiday cup
+    year: 2015
+    archetype: values_controversy
+    domain: brand
+    country: "US"
+    features: {valence: -0.2, emotionality: 0.6, identity: 0.7, lean: -0.3, harm: 0.0, responsibility: 0.3, hype: 0.3, price: 0.0, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.4, halflife_days: 3, peak_day: 3, opinion_shift: -0.05, commercial: 0.0, polarization: 0.5}
+    response: {type: none, hours: null}
+    summary: A plain red holiday cup in 2015 sparked a viral claim that Starbucks was waging a war on Christmas; it made headlines with no visible effect on sales.
+    lessons: [Outrage about symbols, at no cost to the outraged, rarely changes behaviour.]
+
+  - id: hm_hoodie_2018
+    name: H&M "coolest monkey" hoodie
+    year: 2018
+    archetype: ad_misfire
+    domain: brand
+    country: "Global"
+    features: {valence: -0.7, emotionality: 0.9, identity: 0.8, lean: 0.0, harm: 0.2, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.8}
+    outcome: {awareness: 0.5, halflife_days: 4, peak_day: 3, opinion_shift: -0.3, commercial: -0.1, polarization: 0.2}
+    response: {type: apology, hours: 24}
+    summary: In January 2018 H&M advertised a hoodie reading "Coolest monkey in the jungle" on a Black child model; it apologised and withdrew the item, but celebrity partners cut ties and stores in South Africa were targeted by protesters.
+    lessons: [The public holds review processes accountable, not intent.]
+
+  - id: target_pride_2023
+    name: Target Pride merchandise backlash
+    year: 2023
+    archetype: values_controversy
+    domain: brand
+    country: "US"
+    features: {valence: -0.2, emotionality: 0.8, identity: 0.95, lean: -0.7, harm: 0.0, responsibility: 0.7, hype: 0.1, price: 0.0, prominence: 0.8, novelty: 0.5}
+    outcome: {awareness: 0.5, halflife_days: 7, peak_day: 10, opinion_shift: -0.25, commercial: -0.3, polarization: 0.9}
+    response: {type: partial_reversal, hours: 200}
+    summary: Target's 2023 Pride merchandise drew a conservative backlash and confrontations in stores; it pulled some items, which then angered LGBTQ advocates, and it reported a sales decline that quarter.
+    lessons: [Retreating halfway can anger both sides at once.]
+
+  - id: boeing_737max
+    name: Boeing 737 MAX crashes and grounding
+    year: 2019
+    archetype: safety_defect
+    domain: brand
+    country: "Global"
+    wiki: {title: Boeing_737_MAX_groundings, date: 2019-03-10}
+    features: {valence: -1.0, emotionality: 0.95, identity: 0.0, lean: 0.0, harm: 1.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.8, halflife_days: 20, peak_day: 3, opinion_shift: -0.6, commercial: -0.8, polarization: 0.1}
+    response: {type: slow_and_defensive, hours: 72}
+    summary: After two crashes killed 346 people in 2018 and 2019, regulators grounded the 737 MAX worldwide for about 20 months; a door plug blew out of a new 737 MAX 9 in January 2024, reopening scrutiny.
+    lessons: [Safety failures reopen with every new incident; the story never fully resets.]
+
+  - id: chatgpt_2022
+    name: ChatGPT launch
+    year: 2022
+    archetype: product_launch
+    domain: tech
+    country: "Global"
+    wiki: {title: ChatGPT, date: 2022-11-30}
+    features: {valence: 0.7, emotionality: 0.7, identity: 0.2, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.3, price: 0.0, prominence: 0.3, novelty: 1.0}
+    outcome: {awareness: 0.7, halflife_days: 30, peak_day: 60, opinion_shift: 0.3, commercial: 0.9, polarization: 0.4}
+    response: {type: none, hours: null}
+    summary: ChatGPT was released as a free preview on 30 November 2022; people shared screenshots of its answers and it passed a million users in about five days.
+    lessons:
+      - Shareable outputs turn users into the marketing channel.
+      - A free, frictionless trial removes the price barrier to word of mouth.
+
+  - id: openai_board_2023
+    name: Sam Altman fired and reinstated
+    year: 2023
+    archetype: trust_scandal
+    domain: tech
+    country: "Global"
+    wiki: {title: Removal_of_Sam_Altman_from_OpenAI, date: 2023-11-17}
+    features: {valence: -0.4, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.6, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 1.0}
+    outcome: {awareness: 0.4, halflife_days: 3, peak_day: 2, opinion_shift: -0.1, commercial: 0.0, polarization: 0.3}
+    response: {type: reversal, hours: 110}
+    summary: OpenAI's board fired its CEO on 17 November 2023; after most staff threatened to quit, he was reinstated within five days with a new board.
+    lessons: [Public insider solidarity can reverse a leadership decision within days.]
+
+  - id: tanishq_2020
+    name: "Tanishq withdraws its interfaith baby shower ad"
+    year: 2020
+    archetype: values_controversy
+    domain: brand
+    country: "India"
+    features: {valence: -0.3, emotionality: 0.9, identity: 0.95, lean: -0.7, harm: 0.0, responsibility: 0.4, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.7, halflife_days: 4, peak_day: 1, opinion_shift: -0.1, commercial: 0.0, polarization: 0.9}
+    response: {type: reversal, hours: 48}
+    summary: "In October 2020 Tanishq's 'Ekatvam' ad showed a Hindu woman's baby shower hosted by her Muslim in-laws. A boycott campaign attacked it as promoting interfaith marriage; the company withdrew the ad within days, citing the safety of its staff, and was then criticised by others for giving in."
+    lessons:
+      - "Withdrawing an ad under pressure ends the boycott but makes the brand the story in the other camp."
+
+  - id: fabindia_2021
+    name: "Fabindia withdraws its 'Jashn-e-Riwaaz' post"
+    year: 2021
+    archetype: values_controversy
+    domain: brand
+    country: "India"
+    features: {valence: -0.3, emotionality: 0.8, identity: 0.9, lean: -0.6, harm: 0.0, responsibility: 0.4, hype: 0.0, price: 0.0, prominence: 0.7, novelty: 0.6}
+    outcome: {awareness: 0.5, halflife_days: 2, peak_day: 1, opinion_shift: -0.1, commercial: 0.0, polarization: 0.8}
+    response: {type: reversal, hours: 24}
+    summary: "In October 2021 Fabindia promoted a festive collection with the Urdu name 'Jashn-e-Riwaaz' (celebration of tradition). Politicians and online campaigners objected to an Urdu name for a Diwali collection, and the company removed the post soon after."
+    lessons:
+      - "Fast withdrawal shortens a values row to a day or two."
+
+  - id: zomato_veg_2024
+    name: "Zomato's 'pure veg fleet' reversal"
+    year: 2024
+    archetype: values_controversy
+    domain: brand
+    country: "India"
+    features: {valence: -0.3, emotionality: 0.75, identity: 0.8, lean: 0.4, harm: 0.1, responsibility: 0.8, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 2, peak_day: 0.0, opinion_shift: -0.05, commercial: 0.0, polarization: 0.5}
+    response: {type: reversal, hours: 24}
+    summary: "On 19 March 2024 Zomato launched a 'pure veg' delivery fleet dressed in green. Critics said it would stigmatise riders and invite harassment in housing societies; the next day the CEO dropped the separate uniform colour while keeping the service."
+    lessons:
+      - "Fixing the visible part of a mistake within a day, while keeping the useful part, ended the row quickly."
+
+  - id: zomato_religion_2019
+    name: "Zomato: 'Food doesn't have a religion'"
+    year: 2019
+    archetype: values_controversy
+    domain: brand
+    country: "India"
+    features: {valence: 0.4, emotionality: 0.8, identity: 0.9, lean: -0.5, harm: 0.0, responsibility: 0.3, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 3, peak_day: 0.0, opinion_shift: 0.15, commercial: 0.1, polarization: 0.7}
+    response: {type: stand_firm, hours: 0}
+    summary: "In July 2019 a customer cancelled an order because the delivery rider was not Hindu and posted about it. Zomato replied 'Food doesn't have a religion. It is a religion', which went viral; it won wide praise along with some boycott calls."
+    lessons:
+      - "A short, confident line that matches most customers' values can turn a provocation into a brand moment."
+
+  - id: surf_excel_holi_2019
+    name: "Surf Excel's Holi ad"
+    year: 2019
+    archetype: values_controversy
+    domain: brand
+    country: "India"
+    features: {valence: -0.2, emotionality: 0.8, identity: 0.9, lean: -0.5, harm: 0.0, responsibility: 0.3, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.6, halflife_days: 3, peak_day: 1, opinion_shift: 0.0, commercial: 0.0, polarization: 0.8}
+    response: {type: stand_firm, hours: 0}
+    summary: "In March 2019 a Surf Excel Holi ad showing a Hindu girl shielding a Muslim boy from colours on his way to prayers drew boycott calls. Hindustan Unilever kept the ad running; some angry users mistakenly left bad reviews for the Microsoft Excel app instead."
+    lessons:
+      - "A boycott of a household staple rarely changes buying when few people actually switch."
+
+  - id: dabur_karva_2021
+    name: "Dabur withdraws a same-sex Karva Chauth ad"
+    year: 2021
+    archetype: values_controversy
+    domain: brand
+    country: "India"
+    features: {valence: -0.2, emotionality: 0.75, identity: 0.9, lean: -0.7, harm: 0.0, responsibility: 0.4, hype: 0.0, price: 0.0, prominence: 0.7, novelty: 0.8}
+    outcome: {awareness: 0.4, halflife_days: 2, peak_day: 1, opinion_shift: -0.05, commercial: 0.0, polarization: 0.8}
+    response: {type: reversal, hours: 24}
+    summary: "In October 2021 an ad for Dabur's Fem bleach showed a lesbian couple celebrating Karva Chauth. After a state minister threatened legal action, Dabur withdrew it and apologised."
+    lessons:
+      - "When a government official joins a row, companies usually retreat fast."
+
+  - id: paytm_bank_2024
+    name: "RBI curbs Paytm Payments Bank"
+    year: 2024
+    archetype: financial_panic
+    domain: brand
+    country: "India"
+    features: {valence: -0.8, emotionality: 0.85, identity: 0.1, lean: 0.0, harm: 0.6, responsibility: 0.9, hype: 0.0, price: 0.7, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.85, halflife_days: 8, peak_day: 3, opinion_shift: -0.5, commercial: -0.7, polarization: 0.3}
+    response: {type: clarification, hours: 48}
+    summary: "On 31 January 2024 the RBI barred Paytm Payments Bank from taking new deposits after 29 February, later extended to 15 March, citing persistent compliance failures. Paytm's shares fell by more than half within weeks, merchants worried about their QR codes and the company scrambled to move payments to partner banks."
+    lessons:
+      - "Uncertainty about whether your money and payments still work spreads faster than any explanation."
+      - "Clear 'what still works' messages to users matter more than statements to investors."
+
+  - id: ola_fires_2022
+    name: "Ola Electric scooter fires"
+    year: 2022
+    archetype: safety_defect
+    domain: brand
+    country: "India"
+    features: {valence: -0.7, emotionality: 0.85, identity: 0.0, lean: 0.0, harm: 0.7, responsibility: 0.7, hype: 0.6, price: 0.0, prominence: 0.8, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 8, peak_day: 5, opinion_shift: -0.3, commercial: -0.3, polarization: 0.1}
+    response: {type: recall, hours: 600}
+    summary: "In March 2022 a video of a parked Ola S1 Pro catching fire in Pune went viral, alongside fires involving other electric scooter brands. Ola recalled 1,441 scooters in April, and the government ordered an inquiry and tighter battery standards."
+    lessons:
+      - "In a new product category, one brand's fire becomes the whole category's safety question."
+
+  - id: ola_service_2024
+    name: "Ola Electric's service backlog and the Kunal Kamra spat"
+    year: 2024
+    archetype: service_incident
+    domain: brand
+    country: "India"
+    features: {valence: -0.7, emotionality: 0.8, identity: 0.2, lean: 0.0, harm: 0.3, responsibility: 0.9, hype: 0.0, price: 0.3, prominence: 0.8, novelty: 0.6}
+    outcome: {awareness: 0.6, halflife_days: 5, peak_day: 1, opinion_shift: -0.35, commercial: -0.5, polarization: 0.4}
+    response: {type: denial, hours: 6}
+    summary: "In October 2024 comedian Kunal Kamra posted pictures of piled-up Ola scooters at a service centre, and founder Bhavish Aggarwal replied with insults. The exchange went viral, thousands of customers shared their own complaints, the consumer regulator issued a notice and Ola's market share fell in the following months."
+    lessons:
+      - "A founder attacking a critic in public turns individual complaints into a collective story."
+
+  - id: satyam_2009
+    name: "Satyam's accounting fraud"
+    year: 2009
+    archetype: trust_scandal
+    domain: brand
+    country: "India"
+    features: {valence: -0.9, emotionality: 0.9, identity: 0.0, lean: 0.0, harm: 0.6, responsibility: 1.0, hype: 0.0, price: 0.6, prominence: 0.9, novelty: 1.0}
+    outcome: {awareness: 0.8, halflife_days: 10, peak_day: 2, opinion_shift: -0.8, commercial: -0.9, polarization: 0.1}
+    response: {type: apology, hours: 0}
+    summary: "On 7 January 2009 Satyam Computer Services chairman Ramalinga Raju confessed in a letter that the accounts had been inflated by about ₹7,000 crore. The shares collapsed, the government replaced the board and Tech Mahindra bought the company that April."
+    lessons:
+      - "A confession ends the uncertainty but not the damage; a fast new owner saved the business."
+
+  - id: air_india_urination_2022
+    name: "Air India passenger urination incident"
+    year: 2022
+    archetype: service_incident
+    domain: brand
+    country: "India"
+    features: {valence: -0.7, emotionality: 0.85, identity: 0.0, lean: 0.0, harm: 0.4, responsibility: 0.7, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.9}
+    outcome: {awareness: 0.6, halflife_days: 5, peak_day: 2, opinion_shift: -0.3, commercial: -0.2, polarization: 0.1}
+    response: {type: apology, hours: 960}
+    summary: "On a November 2022 New York–Delhi flight a drunk passenger urinated on a woman passenger. It became public only in January 2023 through her letter to the Tata Group chairman; the regulator fined the airline for not reporting it and Air India's CEO apologised."
+    lessons:
+      - "Late disclosure, not the incident itself, turned this into a story about the airline."
+
+  - id: indigo_2025
+    name: "IndiGo's mass flight cancellations"
+    year: 2025
+    archetype: outage
+    domain: brand
+    country: "India"
+    features: {valence: -0.7, emotionality: 0.85, identity: 0.1, lean: 0.0, harm: 0.4, responsibility: 0.9, hype: 0.0, price: 0.6, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.85, halflife_days: 6, peak_day: 4, opinion_shift: -0.4, commercial: -0.3, polarization: 0.2}
+    response: {type: apology, hours: 72}
+    summary: "In early December 2025 India's largest airline cancelled thousands of flights over several days after failing to roster enough pilots under new duty-time rules. Airports filled with stranded passengers and fares on other airlines soared; the regulator temporarily relaxed the rules for IndiGo and the government capped fares."
+    lessons:
+      - "When a near-monopoly fails, anger turns quickly to the regulator and government as well."
+      - "Scenes from crowded airports keep the story on screen for as long as the disruption lasts."
+
+  - id: air_india_171_2025
+    name: "Air India flight 171 crash"
+    year: 2025
+    archetype: disaster
+    domain: brand
+    country: "India"
+    features: {valence: -0.9, emotionality: 1.0, identity: 0.0, lean: 0.0, harm: 1.0, responsibility: 0.5, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 0.98, halflife_days: 10, peak_day: 1, opinion_shift: -0.3, commercial: -0.3, polarization: 0.1}
+    response: {type: clarification, hours: 12}
+    summary: "On 12 June 2025 a Boeing 787 bound for London crashed into a medical college hostel moments after taking off from Ahmedabad, killing 241 of the 242 people on board and many on the ground. Air India and Tata announced compensation, and attention turned to the investigation and to Boeing."
+    lessons:
+      - "In an air disaster the public waits for the cause; speculation fills every gap investigators leave."
+
+  - id: tata_nano_2008
+    name: "Tata Nano, the ₹1 lakh car"
+    year: 2008
+    archetype: product_launch
+    domain: brand
+    country: "India"
+    features: {valence: 0.6, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.2, hype: 0.9, price: 1.0, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 0.9, halflife_days: 15, peak_day: 0.0, opinion_shift: 0.2, commercial: -0.6, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "Unveiled in January 2008 as the world's cheapest car at about ₹1 lakh, the Nano drew huge attention and bookings. Production delays after protests at its Singur plant, a few early fires and its 'cheapest car' image hurt sales, and production ended in 2018."
+    lessons:
+      - "'Cheapest' attracts attention but repels buyers for whom a car is a status symbol."
+      - "Hype does not survive a long gap between launch and delivery."
+
+  - id: bournvita_2023
+    name: "Bournvita sugar video"
+    year: 2023
+    archetype: trust_scandal
+    domain: brand
+    country: "India"
+    features: {valence: -0.6, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.4, responsibility: 0.6, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 6, peak_day: 2, opinion_shift: -0.3, commercial: -0.1, polarization: 0.1}
+    response: {type: denial, hours: 48}
+    summary: "In April 2023 a health influencer's video said Bournvita, sold as a health drink for children, was nearly half sugar. Mondelez sent a legal notice and the video came down, but the claim kept spreading, and the brand later cut its added sugar."
+    lessons:
+      - "Legal threats against a critic can spread the claim further."
+      - "Quietly changing the product afterwards concedes the point without the credit."
+
+  - id: everest_mdh_2024
+    name: "Spice recalls in Hong Kong and Singapore"
+    year: 2024
+    archetype: safety_defect
+    domain: brand
+    country: "India"
+    features: {valence: -0.6, emotionality: 0.7, identity: 0.1, lean: 0.0, harm: 0.6, responsibility: 0.6, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.8}
+    outcome: {awareness: 0.5, halflife_days: 6, peak_day: 3, opinion_shift: -0.25, commercial: -0.2, polarization: 0.1}
+    response: {type: denial, hours: 48}
+    summary: "In April 2024 Hong Kong and Singapore recalled some spice mixes made by Everest and MDH over ethylene oxide, a pesticide not allowed in food there. Indian regulators began testing spices nationwide, and both companies said their products were safe."
+    lessons:
+      - "Scares that begin abroad reach home markets through news coverage within days."
+
+  - id: patanjali_2024
+    name: "Supreme Court rebukes Patanjali over misleading ads"
+    year: 2024
+    archetype: trust_scandal
+    domain: brand
+    country: "India"
+    features: {valence: -0.6, emotionality: 0.7, identity: 0.4, lean: 0.4, harm: 0.4, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.6, halflife_days: 10, peak_day: 30, opinion_shift: -0.2, commercial: -0.1, polarization: 0.5}
+    response: {type: apology, hours: 600}
+    summary: "In 2024 the Supreme Court pulled up Patanjali and its founders for continuing to advertise that its remedies cured diseases, in breach of earlier undertakings. Ramdev and Balkrishna apologised in court and in newspaper ads, after the court said the first apology was too small."
+    lessons:
+      - "An apology that looks minimal becomes its own story."
+
+  - id: byjus_2023
+    name: "Byju's collapse"
+    year: 2023
+    archetype: trust_scandal
+    domain: brand
+    country: "India"
+    features: {valence: -0.8, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.4, responsibility: 0.9, hype: 0.0, price: 0.5, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.6, halflife_days: 30, peak_day: 60, opinion_shift: -0.6, commercial: -0.9, polarization: 0.1}
+    response: {type: denial, hours: 0}
+    summary: "Once India's most valuable start-up, Byju's delayed its accounts, lost its auditor and board members in June 2023, laid off thousands and faced lender lawsuits and insolvency proceedings. Parents also complained of aggressive sales tactics."
+    lessons:
+      - "Fast growth built on aggressive selling becomes a trust story when the money runs out."
+
+  - id: balenciaga_2022
+    name: "Balenciaga's children's campaign"
+    year: 2022
+    archetype: ad_misfire
+    domain: brand
+    country: "Global"
+    features: {valence: -0.8, emotionality: 0.9, identity: 0.5, lean: 0.4, harm: 0.2, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.9}
+    outcome: {awareness: 0.7, halflife_days: 6, peak_day: 4, opinion_shift: -0.5, commercial: -0.3, polarization: 0.3}
+    response: {type: apology, hours: 72}
+    summary: "In November 2022 a Balenciaga campaign showed children holding teddy bears in bondage-style harnesses, and another featured court papers about child abuse laws. The brand apologised, pulled the campaigns and dropped a lawsuit against the production company it had blamed."
+    lessons:
+      - "Blaming a supplier for your own campaign makes the apology look evasive."
+
+  - id: facebook_outage_2021
+    name: "Facebook, Instagram and WhatsApp go down for six hours"
+    year: 2021
+    archetype: outage
+    domain: tech
+    country: "Global"
+    wiki: {title: "2021_Facebook_outage", date: 2021-10-04}
+    features: {valence: -0.6, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.3, responsibility: 0.9, hype: 0.0, price: 0.3, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.9, halflife_days: 1, peak_day: 0.0, opinion_shift: -0.1, commercial: -0.1, polarization: 0.0}
+    response: {type: apology, hours: 6}
+    summary: "On 4 October 2021 a faulty configuration change took Facebook, Instagram and WhatsApp offline worldwide for about six hours. People flocked to Twitter, Telegram and Signal; the company apologised and explained the cause the same day."
+    lessons:
+      - "Outages are forgotten fast when the explanation is quick and service returns the same day."
+
+  - id: aws_outage_2025
+    name: "AWS outage takes down apps worldwide"
+    year: 2025
+    archetype: outage
+    domain: tech
+    country: "Global"
+    features: {valence: -0.5, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.3, responsibility: 0.9, hype: 0.0, price: 0.2, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.7, halflife_days: 1, peak_day: 0.0, opinion_shift: -0.1, commercial: -0.05, polarization: 0.0}
+    response: {type: clarification, hours: 4}
+    summary: "On 20 October 2025 a fault in Amazon Web Services' main US region took down many apps and sites, from games and banks to smart-home devices, for much of a day."
+    lessons:
+      - "Most users blame the app they were using, not the cloud provider underneath it."
+
+  - id: wells_fargo_2016
+    name: "Wells Fargo fake accounts scandal"
+    year: 2016
+    archetype: trust_scandal
+    domain: brand
+    country: "US"
+    features: {valence: -0.8, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.4, responsibility: 1.0, hype: 0.0, price: 0.4, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.75, halflife_days: 10, peak_day: 10, opinion_shift: -0.5, commercial: -0.4, polarization: 0.2}
+    response: {type: apology, hours: 240}
+    summary: "In September 2016 Wells Fargo was fined $185 million after staff under sales pressure opened millions of accounts customers had not asked for. The CEO's testimony to Congress went badly and he resigned the next month."
+    lessons:
+      - "Blaming junior staff for a pressure system set at the top made the scandal about leadership."
+
+  - id: theranos_2015
+    name: "Theranos exposed"
+    year: 2015
+    archetype: trust_scandal
+    domain: brand
+    country: "US"
+    features: {valence: -0.8, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.6, responsibility: 1.0, hype: 0.6, price: 0.0, prominence: 0.6, novelty: 0.9}
+    outcome: {awareness: 0.5, halflife_days: 15, peak_day: 30, opinion_shift: -0.8, commercial: -1, polarization: 0.1}
+    response: {type: denial, hours: 24}
+    summary: "A Wall Street Journal investigation in October 2015 reported that Theranos's blood-testing devices did not work as claimed. The company denied it and attacked the reporting; regulators followed, the company dissolved in 2018 and its founder was later convicted of fraud."
+    lessons:
+      - "Attacking the journalists only delays the reckoning and adds to the eventual damage."
+
+  - id: alaska_doorplug_2024
+    name: "Alaska Airlines door plug blowout"
+    year: 2024
+    archetype: safety_defect
+    domain: brand
+    country: "US"
+    features: {valence: -0.7, emotionality: 0.9, identity: 0.0, lean: 0.0, harm: 0.6, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.85, halflife_days: 8, peak_day: 3, opinion_shift: -0.4, commercial: -0.4, polarization: 0.1}
+    response: {type: recall, hours: 12}
+    summary: "On 5 January 2024 a door plug blew out of a new Boeing 737 MAX 9 shortly after take-off from Portland. Regulators grounded similar planes, investigators found bolts had not been reinstalled at Boeing's factory, and Boeing's production problems became a lasting story."
+    lessons:
+      - "A second failure revives every earlier failure; the brand's history becomes the frame."
+
+  - id: toyota_recall_2009
+    name: "Toyota unintended acceleration recalls"
+    year: 2009
+    archetype: safety_defect
+    domain: brand
+    country: "US"
+    features: {valence: -0.7, emotionality: 0.85, identity: 0.0, lean: 0.0, harm: 0.8, responsibility: 0.7, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.8, halflife_days: 20, peak_day: 120, opinion_shift: -0.3, commercial: -0.3, polarization: 0.1}
+    response: {type: recall, hours: 1500}
+    summary: "Reports of cars accelerating on their own, including a fatal crash in California in August 2009, led Toyota to recall about 9 million vehicles in 2009 and 2010 over floor mats and sticky pedals. Toyota's president apologised to Congress; sales dipped and later recovered."
+    lessons:
+      - "A brand built on reliability takes a sharper hit from defects, but that reputation also helps it recover."
+
+  - id: exxon_valdez_1989
+    name: "Exxon Valdez oil spill"
+    year: 1989
+    archetype: disaster
+    domain: brand
+    country: "US"
+    features: {valence: -0.9, emotionality: 0.9, identity: 0.3, lean: 0.0, harm: 0.9, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.9, halflife_days: 20, peak_day: 5, opinion_shift: -0.6, commercial: -0.3, polarization: 0.2}
+    response: {type: apology, hours: 240}
+    summary: "The tanker ran aground in Alaska's Prince William Sound on 24 March 1989, spilling about 11 million gallons of oil. Exxon's slow, defensive response drew criticism, and images of oiled wildlife became the defining picture of corporate environmental harm."
+    lessons:
+      - "In disasters, images of harm outlast any statement; the CEO's absence from the scene was itself a story."
+
+  - id: bhopal_1984
+    name: "Bhopal gas disaster"
+    year: 1984
+    archetype: disaster
+    domain: brand
+    country: "India"
+    features: {valence: -1.0, emotionality: 1.0, identity: 0.3, lean: 0.0, harm: 1.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 1.0}
+    outcome: {awareness: 0.95, halflife_days: 30, peak_day: 3, opinion_shift: -0.9, commercial: -0.9, polarization: 0.2}
+    response: {type: denial, hours: 48}
+    summary: "A gas leak from a Union Carbide pesticide plant in Bhopal on the night of 2–3 December 1984 killed thousands of people and harmed hundreds of thousands. Litigation and disputes over compensation lasted decades, and the company became a global symbol of corporate negligence."
+    lessons:
+      - "When harm is massive and the company far away, no response can repair the name."
+
+  - id: fukushima_2011
+    name: "Fukushima nuclear disaster"
+    year: 2011
+    archetype: disaster
+    domain: brand
+    country: "Japan"
+    features: {valence: -0.9, emotionality: 1.0, identity: 0.3, lean: 0.0, harm: 1.0, responsibility: 0.7, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 0.95, halflife_days: 15, peak_day: 4, opinion_shift: -0.6, commercial: -0.8, polarization: 0.3}
+    response: {type: clarification, hours: 48}
+    summary: "After the earthquake and tsunami of 11 March 2011, three reactors at TEPCO's Fukushima Daiichi plant melted down and over 100,000 people were evacuated. TEPCO's slow and inconsistent information damaged trust, and support for nuclear power fell sharply in Japan and abroad."
+    lessons:
+      - "Inconsistent updates in a crisis destroy trust faster than bad news delivered plainly."
+
+  - id: east_palestine_2023
+    name: "East Palestine train derailment"
+    year: 2023
+    archetype: disaster
+    domain: brand
+    country: "US"
+    features: {valence: -0.8, emotionality: 0.85, identity: 0.5, lean: 0.4, harm: 0.7, responsibility: 0.8, hype: 0.0, price: 0.0, prominence: 0.6, novelty: 0.9}
+    outcome: {awareness: 0.75, halflife_days: 8, peak_day: 10, opinion_shift: -0.5, commercial: -0.3, polarization: 0.5}
+    response: {type: compensation, hours: 100}
+    summary: "A Norfolk Southern freight train carrying hazardous chemicals derailed in East Palestine, Ohio, on 3 February 2023, and authorities later burned off vinyl chloride, sending a black plume over the town. National attention arrived about a week later, driven by social media and residents' fears, and the railway pledged compensation."
+    lessons:
+      - "Local disasters reach national news through residents' videos, often a week after the event."
+
+  - id: google_bard_2023
+    name: "Google Bard demo error"
+    year: 2023
+    archetype: product_launch
+    domain: tech
+    country: "Global"
+    features: {valence: -0.4, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.9, hype: 0.8, price: 0.0, prominence: 1.0, novelty: 0.7}
+    outcome: {awareness: 0.6, halflife_days: 2, peak_day: 1, opinion_shift: -0.1, commercial: -0.4, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "In February 2023 a promotional demo of Google's Bard chatbot gave a wrong answer about the James Webb Space Telescope. Alphabet's shares fell about 8% the next day, roughly $100 billion in value."
+    lessons:
+      - "Under high expectations, one small public error is treated as proof of being behind."
+
+  - id: apple_crush_2024
+    name: "Apple's 'Crush!' iPad ad"
+    year: 2024
+    archetype: ad_misfire
+    domain: brand
+    country: "Global"
+    features: {valence: -0.5, emotionality: 0.8, identity: 0.5, lean: -0.3, harm: 0.0, responsibility: 0.9, hype: 0.4, price: 0.0, prominence: 1.0, novelty: 0.7}
+    outcome: {awareness: 0.6, halflife_days: 3, peak_day: 1, opinion_shift: -0.1, commercial: 0.0, polarization: 0.3}
+    response: {type: apology, hours: 48}
+    summary: "In May 2024 Apple's ad for the new iPad Pro showed a hydraulic press crushing musical instruments, paint and other creative tools. Artists said it captured their fears about technology; Apple apologised and dropped plans to run it on TV."
+    lessons:
+      - "Creative communities read a metaphor literally when it touches their livelihoods."
+
+  - id: duolingo_ai_2025
+    name: "Duolingo's 'AI-first' memo"
+    year: 2025
+    archetype: ad_misfire
+    domain: tech
+    country: "Global"
+    features: {valence: -0.5, emotionality: 0.75, identity: 0.4, lean: 0.0, harm: 0.2, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.7}
+    outcome: {awareness: 0.5, halflife_days: 6, peak_day: 4, opinion_shift: -0.2, commercial: 0.0, polarization: 0.3}
+    response: {type: clarification, hours: 240}
+    summary: "In April 2025 Duolingo's CEO shared a memo saying the company would be 'AI-first' and gradually stop using contractors for work AI could do. Users threatened to quit and the company went quiet on its social accounts; the CEO later said no full-time staff were being replaced."
+    lessons:
+      - "A beloved, playful brand pays a high price for sounding like it values machines over people."
+
+  - id: sonos_app_2024
+    name: "Sonos app redesign failure"
+    year: 2024
+    archetype: product_launch
+    domain: tech
+    country: "Global"
+    features: {valence: -0.6, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.2, responsibility: 1.0, hype: 0.3, price: 0.3, prominence: 0.6, novelty: 0.5}
+    outcome: {awareness: 0.4, halflife_days: 20, peak_day: 30, opinion_shift: -0.4, commercial: -0.5, polarization: 0.1}
+    response: {type: apology, hours: 800}
+    summary: "A rebuilt Sonos app released in May 2024 removed features and made some speakers hard to use. Customer anger lasted months, a product launch was delayed and the CEO stepped down in January 2025."
+    lessons:
+      - "Breaking something people already own is punished harder than a disappointing new product."
+
+  - id: adobe_terms_2024
+    name: "Adobe terms of use backlash"
+    year: 2024
+    archetype: data_breach
+    domain: tech
+    country: "Global"
+    features: {valence: -0.5, emotionality: 0.7, identity: 0.3, lean: 0.0, harm: 0.2, responsibility: 0.7, hype: 0.0, price: 0.4, prominence: 0.8, novelty: 0.6}
+    outcome: {awareness: 0.4, halflife_days: 4, peak_day: 2, opinion_shift: -0.2, commercial: -0.1, polarization: 0.2}
+    response: {type: clarification, hours: 48}
+    summary: "In June 2024 an update to Adobe's terms led users to believe the company could access their work and use it to train AI. Adobe said it did not train on customer content and rewrote the terms in plainer language."
+    lessons:
+      - "Ambiguous legal wording in the age of AI is read in the worst possible way."
+
+  - id: twitter_bluecheck_2022
+    name: "Twitter's $8 verification and impersonation chaos"
+    year: 2022
+    archetype: price_change
+    domain: tech
+    country: "Global"
+    features: {valence: -0.6, emotionality: 0.75, identity: 0.5, lean: 0.3, harm: 0.3, responsibility: 1.0, hype: 0.3, price: 0.6, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 3, peak_day: 2, opinion_shift: -0.3, commercial: -0.3, polarization: 0.5}
+    response: {type: reversal, hours: 72}
+    summary: "In November 2022 Twitter let anyone buy a blue verification tick for $8 a month. Fake 'verified' accounts impersonated brands, most famously an Eli Lilly account announcing insulin would be free, and the company paused the scheme within days."
+    lessons:
+      - "Selling a trust signal destroys the trust it signalled."
+
+  - id: gap_logo_2010
+    name: "Gap's new logo"
+    year: 2010
+    archetype: rebrand
+    domain: brand
+    country: "US"
+    features: {valence: -0.4, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.7}
+    outcome: {awareness: 0.4, halflife_days: 2, peak_day: 2, opinion_shift: -0.1, commercial: 0.0, polarization: 0.1}
+    response: {type: reversal, hours: 144}
+    summary: "In October 2010 Gap replaced its classic blue box logo with a new design. Online mockery was immediate, and the company went back to the old logo within a week."
+    lessons:
+      - "Customers treat a familiar logo as theirs; a quick reversal ended the story."
+
+  - id: tropicana_2009
+    name: "Tropicana's packaging redesign"
+    year: 2009
+    archetype: rebrand
+    domain: brand
+    country: "US"
+    features: {valence: -0.3, emotionality: 0.4, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.7, novelty: 0.6}
+    outcome: {awareness: 0.2, halflife_days: 10, peak_day: 20, opinion_shift: -0.1, commercial: -0.4, polarization: 0.0}
+    response: {type: reversal, hours: 1000}
+    summary: "In early 2009 Tropicana replaced its orange-with-a-straw cartons with a generic-looking design. Sales reportedly fell about 20% within two months as shoppers failed to find it, and the old packaging returned."
+    lessons:
+      - "Packaging is how habitual buyers find a product; change it and they walk past."
+
+  - id: dove_ad_2017
+    name: "Dove's body wash ad"
+    year: 2017
+    archetype: ad_misfire
+    domain: brand
+    country: "Global"
+    features: {valence: -0.6, emotionality: 0.8, identity: 0.7, lean: -0.3, harm: 0.0, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.5, halflife_days: 2, peak_day: 1, opinion_shift: -0.15, commercial: 0.0, polarization: 0.3}
+    response: {type: apology, hours: 24}
+    summary: "In October 2017 a three-second Dove Facebook ad showed a Black woman removing her top to reveal a white woman. It was widely called racist; Dove apologised and removed it within a day."
+    lessons:
+      - "A short clip shared out of context becomes the whole ad in public memory."
+
+  - id: chipotle_ecoli_2015
+    name: "Chipotle food safety outbreaks"
+    year: 2015
+    archetype: safety_defect
+    domain: brand
+    country: "US"
+    features: {valence: -0.7, emotionality: 0.75, identity: 0.0, lean: 0.0, harm: 0.6, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.7}
+    outcome: {awareness: 0.7, halflife_days: 30, peak_day: 60, opinion_shift: -0.4, commercial: -0.6, polarization: 0.1}
+    response: {type: apology, hours: 500}
+    summary: "E. coli and norovirus outbreaks linked to Chipotle in late 2015 sickened hundreds of people. Sales fell sharply for more than a year despite free-food promotions and a nationwide closure for food-safety training."
+    lessons:
+      - "For a brand built on 'fresh and healthy', a food safety failure hits the core promise and takes years to repair."
+
+  - id: nestle_kitkat_2010
+    name: "Greenpeace's KitKat palm oil campaign"
+    year: 2010
+    archetype: values_controversy
+    domain: brand
+    country: "Global"
+    features: {valence: -0.5, emotionality: 0.8, identity: 0.5, lean: -0.4, harm: 0.3, responsibility: 0.6, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.7}
+    outcome: {awareness: 0.4, halflife_days: 4, peak_day: 2, opinion_shift: -0.2, commercial: 0.0, polarization: 0.3}
+    response: {type: reversal, hours: 1400}
+    summary: "In March 2010 Greenpeace released a video linking KitKat to rainforest destruction through palm oil. Nestlé had it taken off YouTube and sparred with critics on its Facebook page, spreading the video further; within two months it agreed to drop suppliers linked to deforestation."
+    lessons:
+      - "Trying to suppress a campaign video spreads it, and arguing with critics on your own page feeds them."
+
+  - id: starbucks_arrest_2018
+    name: "Starbucks Philadelphia arrests"
+    year: 2018
+    archetype: service_incident
+    domain: brand
+    country: "US"
+    features: {valence: -0.7, emotionality: 0.9, identity: 0.8, lean: -0.4, harm: 0.3, responsibility: 0.8, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 4, peak_day: 2, opinion_shift: -0.2, commercial: 0.0, polarization: 0.4}
+    response: {type: apology, hours: 48}
+    summary: "In April 2018 two Black men waiting for a meeting at a Philadelphia Starbucks were arrested after a manager called the police, and a customer's video went viral. The CEO apologised in person and the company closed 8,000 US stores for an afternoon of racial-bias training."
+    lessons:
+      - "A personal apology plus a costly, visible action can contain a viral incident."
+
+  - id: southwest_2022
+    name: "Southwest Airlines holiday meltdown"
+    year: 2022
+    archetype: outage
+    domain: brand
+    country: "US"
+    features: {valence: -0.8, emotionality: 0.85, identity: 0.0, lean: 0.0, harm: 0.5, responsibility: 1.0, hype: 0.0, price: 0.4, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.8, halflife_days: 5, peak_day: 3, opinion_shift: -0.4, commercial: -0.3, polarization: 0.1}
+    response: {type: compensation, hours: 72}
+    summary: "In the last week of December 2022 Southwest cancelled about 16,700 flights after its outdated scheduling system collapsed during winter storms. Travellers were stranded over the holidays; the airline reimbursed costs and handed out frequent-flyer points."
+    lessons:
+      - "Failures at peak family travel are remembered personally; compensation helps but the scenes stay."
+
+  - id: ticketmaster_2022
+    name: "Ticketmaster's Taylor Swift presale meltdown"
+    year: 2022
+    archetype: outage
+    domain: brand
+    country: "US"
+    features: {valence: -0.7, emotionality: 0.85, identity: 0.3, lean: 0.0, harm: 0.2, responsibility: 0.9, hype: 1.0, price: 0.6, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.75, halflife_days: 5, peak_day: 1, opinion_shift: -0.4, commercial: 0.0, polarization: 0.3}
+    response: {type: apology, hours: 72}
+    summary: "The November 2022 presale for Taylor Swift's Eras Tour crashed under demand and bots, and the general sale was cancelled. Fans' fury led to a US Senate hearing on Ticketmaster's market power."
+    lessons:
+      - "When fans with a powerful community are let down, their anger becomes political pressure."
+
+  - id: instagram_2022
+    name: "Instagram rolls back its TikTok-style feed"
+    year: 2022
+    archetype: rebrand
+    domain: tech
+    country: "Global"
+    features: {valence: -0.4, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.6, halflife_days: 3, peak_day: 2, opinion_shift: -0.1, commercial: 0.0, polarization: 0.1}
+    response: {type: reversal, hours: 96}
+    summary: "In July 2022 Instagram tested a full-screen video feed. A 'Make Instagram Instagram again' post shared by Kylie Jenner and Kim Kardashian spread widely, and Instagram rolled back the test days later."
+    lessons:
+      - "When the biggest accounts on a platform complain, the platform listens fast."
+
+  - id: gucci_2019
+    name: "Gucci's blackface sweater"
+    year: 2019
+    archetype: ad_misfire
+    domain: brand
+    country: "Global"
+    features: {valence: -0.7, emotionality: 0.85, identity: 0.7, lean: -0.3, harm: 0.0, responsibility: 0.9, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.5, halflife_days: 2, peak_day: 1, opinion_shift: -0.2, commercial: -0.1, polarization: 0.2}
+    response: {type: apology, hours: 24}
+    summary: "In February 2019 Gucci pulled a black balaclava sweater with a red cut-out mouth after it was compared to blackface. It apologised and later announced diversity programmes."
+    lessons:
+      - "An apology plus structural changes stopped the story from returning."
+
+  - id: burger_king_iwd_2021
+    name: "Burger King's 'Women belong in the kitchen' tweet"
+    year: 2021
+    archetype: ad_misfire
+    domain: brand
+    country: "UK"
+    features: {valence: -0.6, emotionality: 0.8, identity: 0.6, lean: -0.3, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.4, halflife_days: 1, peak_day: 0.0, opinion_shift: -0.15, commercial: 0.0, polarization: 0.3}
+    response: {type: reversal, hours: 36}
+    summary: "On International Women's Day 2021 Burger King UK tweeted 'Women belong in the kitchen' to promote a scholarship for female chefs. Most people only saw the first line; the brand deleted it the next day and apologised."
+    lessons:
+      - "A provocative hook only works if people read the rest, and most never do."
+
+  - id: ronaldo_coke_2021
+    name: "Ronaldo moves the Coca-Cola bottles"
+    year: 2021
+    archetype: viral_fad
+    domain: brand
+    country: "Global"
+    features: {valence: -0.3, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.75, halflife_days: 2, peak_day: 0.0, opinion_shift: -0.05, commercial: 0.0, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "At a Euro 2020 press conference in June 2021 Cristiano Ronaldo moved two Coca-Cola bottles aside and held up water. Coca-Cola's share price slipped that day, which some reports blamed on him, though the dip coincided with the stock going ex-dividend."
+    lessons:
+      - "A celebrity gesture can become a viral 'brand moment' even when the business impact is close to nil."
+
+  - id: snapchat_2018
+    name: "Snapchat's redesign and Kylie Jenner's tweet"
+    year: 2018
+    archetype: rebrand
+    domain: tech
+    country: "Global"
+    features: {valence: -0.5, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.6, halflife_days: 5, peak_day: 15, opinion_shift: -0.3, commercial: -0.3, polarization: 0.2}
+    response: {type: stand_firm, hours: 0}
+    summary: "A redesign of Snapchat in early 2018 drew a petition with over a million signatures. When Kylie Jenner tweeted in February that she no longer opened the app, Snap's shares fell about 6% in a day."
+    lessons:
+      - "One influential user can crystallise months of quiet dissatisfaction."
+
+  - id: hasbro_ogl_2023
+    name: "Dungeons & Dragons licence row"
+    year: 2023
+    archetype: price_change
+    domain: brand
+    country: "Global"
+    features: {valence: -0.7, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.3, responsibility: 1.0, hype: 0.0, price: 0.6, prominence: 0.7, novelty: 0.8}
+    outcome: {awareness: 0.4, halflife_days: 6, peak_day: 7, opinion_shift: -0.4, commercial: -0.2, polarization: 0.1}
+    response: {type: reversal, hours: 500}
+    summary: "In January 2023 a leaked draft of a new Open Game License would have let Wizards of the Coast take royalties from independent creators. Fans cancelled D&D Beyond subscriptions in protest; within weeks the company abandoned the changes and put the core rules under a Creative Commons licence."
+    lessons:
+      - "Communities that create value for a brand treat rule changes as betrayal; a full reversal was needed."
+
+  - id: helldivers_psn_2024
+    name: "Sony's PSN requirement for Helldivers 2"
+    year: 2024
+    archetype: price_change
+    domain: brand
+    country: "Global"
+    features: {valence: -0.6, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.3, prominence: 0.8, novelty: 0.7}
+    outcome: {awareness: 0.4, halflife_days: 3, peak_day: 2, opinion_shift: -0.3, commercial: 0.0, polarization: 0.1}
+    response: {type: reversal, hours: 72}
+    summary: "In May 2024 Sony said PC players of the hit game Helldivers 2 would need PlayStation Network accounts, unavailable in many countries. Players review-bombed the game on Steam, and Sony dropped the requirement within days."
+    lessons:
+      - "Review-bombing gives players a visible, measurable weapon that forces fast reversals."
+
+  - id: gta6_trailer_2023
+    name: "Grand Theft Auto VI trailer"
+    year: 2023
+    archetype: product_launch
+    domain: brand
+    country: "Global"
+    features: {valence: 0.8, emotionality: 0.9, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.1, hype: 1.0, price: 0.0, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.8, halflife_days: 4, peak_day: 0.0, opinion_shift: 0.3, commercial: 0.6, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "Rockstar released the first GTA VI trailer in December 2023, a day early after a leak. It drew about 90 million YouTube views in 24 hours, a record for a non-music video."
+    lessons:
+      - "Years of pent-up anticipation make even a short trailer a global event."
+
+  - id: humane_pin_2024
+    name: "Humane AI Pin reviews"
+    year: 2024
+    archetype: product_launch
+    domain: tech
+    country: "US"
+    features: {valence: -0.4, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.8, hype: 0.8, price: 0.6, prominence: 0.4, novelty: 0.9}
+    outcome: {awareness: 0.35, halflife_days: 4, peak_day: 0.0, opinion_shift: -0.3, commercial: -0.9, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "The $699 AI Pin, a screenless wearable, shipped in April 2024 to scathing reviews about slowness and overheating. Sales fell far short of plans, and in early 2025 HP bought the company's assets and the device was shut down."
+    lessons:
+      - "Reviewers decide a hyped new category's fate within days of launch."
+
+  - id: labubu_2025
+    name: "The Labubu craze"
+    year: 2025
+    archetype: viral_fad
+    domain: brand
+    country: "Global"
+    features: {valence: 0.6, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.5, price: 0.5, prominence: 0.6, novelty: 0.9}
+    outcome: {awareness: 0.6, halflife_days: 30, peak_day: 60, opinion_shift: 0.2, commercial: 0.9, polarization: 0.2}
+    response: {type: none, hours: null}
+    summary: "Pop Mart's Labubu, a toothy monster sold in blind boxes, became a global collecting craze in 2025 after celebrities were seen with them on bags. Shops sold out, resale prices soared, fakes spread and Pop Mart's sales and share price jumped."
+    lessons:
+      - "Scarcity plus surprise (blind boxes) plus celebrity sightings turns a toy into status."
+
+  - id: ghibli_2025
+    name: "ChatGPT's Ghibli-style image trend"
+    year: 2025
+    archetype: viral_fad
+    domain: tech
+    country: "Global"
+    features: {valence: 0.5, emotionality: 0.8, identity: 0.3, lean: 0.0, harm: 0.0, responsibility: 0.3, hype: 0.4, price: 0.0, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.85, halflife_days: 5, peak_day: 2, opinion_shift: 0.1, commercial: 0.8, polarization: 0.4}
+    response: {type: none, hours: null}
+    summary: "After OpenAI added image generation to ChatGPT in March 2025, millions of people turned photos into Studio Ghibli-style pictures, straining its servers. The trend also revived debate about AI and artists' rights."
+    lessons:
+      - "A free, personal and shareable result makes a feature spread on its own; the criticism rides the same wave."
+
+  - id: wordle_2022
+    name: "Wordle"
+    year: 2022
+    archetype: viral_fad
+    domain: brand
+    country: "Global"
+    features: {valence: 0.7, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.0, price: 0.0, prominence: 0.3, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 30, peak_day: 30, opinion_shift: 0.2, commercial: 0.8, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "The free daily word game grew from a few dozen players in late 2021 to millions in January 2022, helped by its shareable grid of coloured squares. The New York Times bought it that month."
+    lessons:
+      - "A share format that hides spoilers but shows your result lets every player advertise the product."
+
+  - id: ratner_1991
+    name: "Gerald Ratner calls his products 'total crap'"
+    year: 1991
+    archetype: trust_scandal
+    domain: brand
+    country: "UK"
+    features: {valence: -0.8, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.6, prominence: 0.8, novelty: 1.0}
+    outcome: {awareness: 0.8, halflife_days: 10, peak_day: 1, opinion_shift: -0.6, commercial: -0.9, polarization: 0.1}
+    response: {type: apology, hours: 72}
+    summary: "In an April 1991 speech, jewellery chief Gerald Ratner joked that one of his products was 'total crap'. The remark became a national joke; the company's value collapsed and he left the business."
+    lessons:
+      - "Mocking your own customers is remembered for decades."
+
+  - id: mcd_szechuan_2017
+    name: "McDonald's Szechuan sauce frenzy"
+    year: 2017
+    archetype: viral_fad
+    domain: brand
+    country: "US"
+    features: {valence: -0.2, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.6, hype: 0.8, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.4, halflife_days: 3, peak_day: 7, opinion_shift: -0.1, commercial: 0.0, polarization: 0.1}
+    response: {type: apology, hours: 48}
+    summary: "After a Rick and Morty episode, McDonald's brought back a 1998 promotional sauce for one day in October 2017 but supplied only a few packets per store. Crowds and scuffles followed, and the chain apologised and promised more."
+    lessons:
+      - "Under-supplying a hyped fan item turns a promotion into a fiasco."
+
+  - id: microsoft_recall_2024
+    name: "Microsoft's Recall feature"
+    year: 2024
+    archetype: data_breach
+    domain: tech
+    country: "Global"
+    features: {valence: -0.4, emotionality: 0.6, identity: 0.2, lean: 0.0, harm: 0.3, responsibility: 0.8, hype: 0.5, price: 0.0, prominence: 1.0, novelty: 0.7}
+    outcome: {awareness: 0.4, halflife_days: 5, peak_day: 7, opinion_shift: -0.15, commercial: -0.1, polarization: 0.1}
+    response: {type: reversal, hours: 500}
+    summary: "Announced in May 2024, Recall would screenshot everything users did on new Windows PCs. Security researchers showed the data was easy to extract; Microsoft delayed it, made it opt-in and added encryption."
+    lessons:
+      - "Features that feel like surveillance are judged by security experts first, and their verdict sets the public view."
+
+  - id: coca_cola_ai_2024
+    name: "Coca-Cola's AI-made Christmas ad"
+    year: 2024
+    archetype: ad_misfire
+    domain: brand
+    country: "Global"
+    features: {valence: -0.3, emotionality: 0.5, identity: 0.3, lean: 0.0, harm: 0.0, responsibility: 0.8, hype: 0.5, price: 0.0, prominence: 1.0, novelty: 0.5}
+    outcome: {awareness: 0.4, halflife_days: 2, peak_day: 1, opinion_shift: -0.05, commercial: 0.0, polarization: 0.3}
+    response: {type: stand_firm, hours: 0}
+    summary: "In November 2024 Coca-Cola remade its classic 'Holidays are coming' ad with generative AI. Many viewers called it soulless; the company defended it and the criticism faded within days."
+    lessons:
+      - "Low-harm controversies fade quickly when a brand holds steady."
+
+  - id: lehman_2008
+    name: "Lehman Brothers collapses"
+    year: 2008
+    archetype: economic_shock
+    domain: economy
+    country: "Global"
+    wiki: {title: "Bankruptcy_of_Lehman_Brothers", date: 2008-09-15}
+    features: {valence: -0.9, emotionality: 0.9, identity: 0.3, lean: 0.0, harm: 0.9, responsibility: 1.0, hype: 0.0, price: 0.9, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.9, halflife_days: 20, peak_day: 1, opinion_shift: -0.6, commercial: -1, polarization: 0.4}
+    response: {type: none, hours: null}
+    summary: "Lehman Brothers filed for bankruptcy on 15 September 2008, the largest in US history. Credit markets froze, stock markets crashed worldwide and governments launched huge bank rescues, which were deeply unpopular."
+    lessons:
+      - "In a financial panic, rescuing the institutions that caused it is necessary and still enrages the public."
+
+  - id: black_monday_1987
+    name: "Black Monday stock crash"
+    year: 1987
+    archetype: economic_shock
+    domain: economy
+    country: "US"
+    features: {valence: -0.8, emotionality: 0.9, identity: 0.0, lean: 0.0, harm: 0.6, responsibility: 0.5, hype: 0.0, price: 1.0, prominence: 0.9, novelty: 1.0}
+    outcome: {awareness: 0.8, halflife_days: 5, peak_day: 0.0, opinion_shift: -0.2, commercial: -0.5, polarization: 0.1}
+    response: {type: clarification, hours: 24}
+    summary: "On 19 October 1987 the Dow Jones fell 22.6% in one day, still its largest one-day percentage drop. The Federal Reserve promised liquidity the next morning, and markets recovered their losses within about two years."
+    lessons:
+      - "A fast, plain promise from the central bank stopped a crash from becoming a banking crisis."
+
+  - id: dotcom_2000
+    name: "The dot-com crash"
+    year: 2000
+    archetype: economic_shock
+    domain: economy
+    country: "US"
+    features: {valence: -0.7, emotionality: 0.7, identity: 0.0, lean: 0.0, harm: 0.6, responsibility: 0.7, hype: 0.9, price: 0.9, prominence: 0.8, novelty: 0.5}
+    outcome: {awareness: 0.7, halflife_days: 60, peak_day: 30, opinion_shift: -0.4, commercial: -0.8, polarization: 0.2}
+    response: {type: none, hours: null}
+    summary: "The Nasdaq peaked in March 2000 and lost nearly four-fifths of its value by October 2002. Hundreds of internet start-ups with no profits folded; survivors such as Amazon went on to dominate."
+    lessons:
+      - "Hype-driven booms end slowly and then all at once; the public's verdict on a whole technology swings too far both ways."
+
+  - id: covid_crash_2020
+    name: "COVID-19 market crash"
+    year: 2020
+    archetype: economic_shock
+    domain: economy
+    country: "Global"
+    features: {valence: -0.8, emotionality: 0.95, identity: 0.1, lean: 0.0, harm: 0.8, responsibility: 0.2, hype: 0.0, price: 0.9, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 0.95, halflife_days: 10, peak_day: 20, opinion_shift: -0.2, commercial: -0.4, polarization: 0.2}
+    response: {type: clarification, hours: 48}
+    summary: "As the pandemic spread in March 2020, US stocks fell about a third in weeks and trading was halted several times by circuit breakers. Massive central-bank and government support followed, and markets recovered their losses by August."
+    lessons:
+      - "Huge, fast official support can reverse a market panic even while the real crisis is still growing."
+
+  - id: us_inflation_2022
+    name: "US inflation peaks at 9.1%"
+    year: 2022
+    archetype: economic_shock
+    domain: economy
+    country: "US"
+    features: {valence: -0.7, emotionality: 0.8, identity: 0.5, lean: 0.3, harm: 0.5, responsibility: 0.6, hype: 0.0, price: 1.0, prominence: 1.0, novelty: 0.5}
+    outcome: {awareness: 0.9, halflife_days: 60, peak_day: 30, opinion_shift: -0.35, commercial: -0.4, polarization: 0.6}
+    response: {type: clarification, hours: 0}
+    summary: "US consumer prices rose 9.1% in the year to June 2022, the fastest in four decades, driven by pandemic disruption, stimulus and energy prices after the invasion of Ukraine. The Federal Reserve raised interest rates rapidly, and inflation became a leading election issue."
+    lessons:
+      - "Rising prices are felt every day by everyone, so they dominate opinion long after the headlines fade."
+      - "People blame whoever is in power, whatever the cause."
+
+  - id: india_onion_2019
+    name: "India's onion price spike"
+    year: 2019
+    archetype: economic_shock
+    domain: economy
+    country: "India"
+    features: {valence: -0.6, emotionality: 0.8, identity: 0.3, lean: 0.0, harm: 0.4, responsibility: 0.7, hype: 0.0, price: 1.0, prominence: 0.9, novelty: 0.5}
+    outcome: {awareness: 0.85, halflife_days: 20, peak_day: 60, opinion_shift: -0.25, commercial: -0.2, polarization: 0.3}
+    response: {type: clarification, hours: 0}
+    summary: "After floods damaged crops, retail onion prices in many Indian cities rose above ₹100 a kilo by late 2019. The government banned exports, imported onions and capped traders' stocks; jokes, memes and restaurant menu changes followed."
+    lessons:
+      - "A staple's price is a political barometer; memes make the issue national within days."
+      - "Visible emergency measures such as export bans reassure even before prices fall."
+
+  - id: sri_lanka_crisis_2022
+    name: "Sri Lanka's economic collapse"
+    year: 2022
+    archetype: economic_shock
+    domain: economy
+    country: "Sri Lanka"
+    wiki: {title: "2022_Sri_Lankan_protests", date: 2022-03-31}
+    features: {valence: -0.9, emotionality: 1.0, identity: 0.4, lean: 0.0, harm: 1.0, responsibility: 1.0, hype: 0.0, price: 1.0, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.95, halflife_days: 30, peak_day: 90, opinion_shift: -0.8, commercial: -1, polarization: 0.3}
+    response: {type: none, hours: null}
+    summary: "Sri Lanka ran out of foreign currency in 2022, leading to long power cuts, fuel queues and shortages of medicine. Mass protests, known as the Aragalaya, forced the President to flee in July 2022, and the country defaulted on its debt."
+    lessons:
+      - "When shortages are visible in every queue, anger becomes nationwide and is aimed at the people in charge."
+
+  - id: greek_debt_2015
+    name: "Greece's 2015 debt crisis and bank closures"
+    year: 2015
+    archetype: economic_shock
+    domain: economy
+    country: "Greece"
+    features: {valence: -0.7, emotionality: 0.95, identity: 0.6, lean: 0.0, harm: 0.8, responsibility: 0.6, hype: 0.3, price: 1.0, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.95, halflife_days: 10, peak_day: 10, opinion_shift: -0.3, commercial: -0.7, polarization: 0.7}
+    response: {type: stand_firm, hours: 0}
+    summary: "In late June 2015 Greece closed its banks and limited cash withdrawals to €60 a day. Voters rejected the creditors' terms in a referendum on 5 July, but the government accepted a tougher bailout days later."
+    lessons:
+      - "A referendum gives voice to anger but not leverage; the reversal afterwards damaged trust further."
+
+  - id: asian_crisis_1997
+    name: "Asian financial crisis"
+    year: 1997
+    archetype: economic_shock
+    domain: economy
+    country: "Asia"
+    features: {valence: -0.8, emotionality: 0.85, identity: 0.3, lean: 0.0, harm: 0.9, responsibility: 0.6, hype: 0.0, price: 1.0, prominence: 0.8, novelty: 0.9}
+    outcome: {awareness: 0.85, halflife_days: 40, peak_day: 60, opinion_shift: -0.5, commercial: -0.8, polarization: 0.3}
+    response: {type: none, hours: null}
+    summary: "It began when Thailand let its currency float in July 1997 and spread to Indonesia, South Korea and others. IMF rescues came with harsh conditions, and South Koreans famously donated their gold to help the country repay."
+    lessons:
+      - "In national crises people will make visible sacrifices when asked, which builds solidarity even under hardship."
+
+  - id: yes_bank_2020
+    name: "Yes Bank moratorium"
+    year: 2020
+    archetype: financial_panic
+    domain: economy
+    country: "India"
+    features: {valence: -0.8, emotionality: 0.9, identity: 0.0, lean: 0.0, harm: 0.7, responsibility: 0.9, hype: 0.0, price: 0.9, prominence: 0.7, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 6, peak_day: 1, opinion_shift: -0.6, commercial: -0.6, polarization: 0.1}
+    response: {type: clarification, hours: 24}
+    summary: "On 5 March 2020 the RBI placed Yes Bank under a moratorium and capped withdrawals at ₹50,000 a month. Depositors queued at branches and ATMs, UPI payments linked to the bank failed, and a rescue led by State Bank of India lifted the curbs on 18 March."
+    lessons:
+      - "A clear rescue with a firm end date ended the queues within two weeks."
+
+  - id: pmc_bank_2019
+    name: "PMC Bank depositors locked out"
+    year: 2019
+    archetype: financial_panic
+    domain: economy
+    country: "India"
+    features: {valence: -0.9, emotionality: 0.95, identity: 0.0, lean: 0.0, harm: 0.9, responsibility: 0.9, hype: 0.0, price: 0.9, prominence: 0.4, novelty: 0.9}
+    outcome: {awareness: 0.4, halflife_days: 15, peak_day: 3, opinion_shift: -0.7, commercial: -0.9, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "In September 2019 the RBI restricted withdrawals at Punjab and Maharashtra Co-operative Bank after hidden loans to a single developer group came to light. Depositors, many of them elderly, protested for months over frozen savings."
+    lessons:
+      - "When ordinary savers are trapped, personal hardship stories keep a local failure in the national news."
+
+  - id: adani_hindenburg_2023
+    name: "Hindenburg report on the Adani Group"
+    year: 2023
+    archetype: trust_scandal
+    domain: economy
+    country: "India"
+    features: {valence: -0.7, emotionality: 0.85, identity: 0.7, lean: 0.4, harm: 0.5, responsibility: 0.7, hype: 0.0, price: 0.9, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.8, halflife_days: 15, peak_day: 7, opinion_shift: -0.3, commercial: -0.6, polarization: 0.8}
+    response: {type: denial, hours: 72}
+    summary: "On 24 January 2023 US short seller Hindenburg Research accused the Adani Group of stock manipulation and accounting fraud. The group's companies lost over $100 billion in market value within weeks and its flagship withdrew a fully subscribed share sale; Adani called the report an attack on India, and the shares later partly recovered."
+    lessons:
+      - "Framing an attack on a company as an attack on the nation splits the public along political lines."
+      - "Markets move faster than investigations; the first verdict comes from prices."
+
+  - id: ftx_2022
+    name: "FTX collapses"
+    year: 2022
+    archetype: financial_panic
+    domain: economy
+    country: "Global"
+    wiki: {title: "Bankruptcy_of_FTX", date: 2022-11-11}
+    features: {valence: -0.9, emotionality: 0.9, identity: 0.1, lean: 0.0, harm: 0.9, responsibility: 1.0, hype: 0.3, price: 0.9, prominence: 0.8, novelty: 1.0}
+    outcome: {awareness: 0.75, halflife_days: 8, peak_day: 3, opinion_shift: -0.8, commercial: -1, polarization: 0.2}
+    response: {type: denial, hours: 24}
+    summary: "A report on its balance sheet in early November 2022 set off a run on crypto exchange FTX; its founder assured customers all was well, then the exchange halted withdrawals and filed for bankruptcy on 11 November. Customer money had been used by an affiliated trading firm."
+    lessons:
+      - "Reassurance that later proves false destroys an organisation faster than silence."
+
+  - id: credit_suisse_2023
+    name: "Credit Suisse rescued by UBS"
+    year: 2023
+    archetype: financial_panic
+    domain: economy
+    country: "Switzerland"
+    features: {valence: -0.8, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.6, responsibility: 0.9, hype: 0.0, price: 0.9, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.6, halflife_days: 6, peak_day: 4, opinion_shift: -0.7, commercial: -1, polarization: 0.1}
+    response: {type: clarification, hours: 72}
+    summary: "After the US bank failures of March 2023, Credit Suisse's long-running troubles turned into a run on deposits. On 19 March the Swiss authorities arranged a takeover by UBS, wiping out about $17 billion of the bank's bonds."
+    lessons:
+      - "Years of scandals use up the trust a bank needs when markets panic."
+
+  - id: terra_luna_2022
+    name: "TerraUSD stablecoin collapses"
+    year: 2022
+    archetype: financial_panic
+    domain: economy
+    country: "Global"
+    features: {valence: -0.9, emotionality: 0.85, identity: 0.1, lean: 0.0, harm: 0.9, responsibility: 1.0, hype: 0.6, price: 1.0, prominence: 0.6, novelty: 0.9}
+    outcome: {awareness: 0.5, halflife_days: 6, peak_day: 4, opinion_shift: -0.9, commercial: -1, polarization: 0.2}
+    response: {type: denial, hours: 48}
+    summary: "In May 2022 the TerraUSD 'stablecoin' lost its peg to the dollar and its sister token Luna went from tens of dollars to nearly zero within days, wiping out around $40 billion."
+    lessons:
+      - "A product sold on the promise of stability collapses fastest when that promise is questioned."
+
+  - id: evergrande_2021
+    name: "Evergrande debt crisis"
+    year: 2021
+    archetype: economic_shock
+    domain: economy
+    country: "China"
+    features: {valence: -0.8, emotionality: 0.8, identity: 0.1, lean: 0.0, harm: 0.7, responsibility: 0.9, hype: 0.0, price: 0.9, prominence: 0.8, novelty: 0.6}
+    outcome: {awareness: 0.6, halflife_days: 30, peak_day: 10, opinion_shift: -0.5, commercial: -0.9, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "China's most indebted property developer missed payments in 2021, homebuyers protested at its offices over unfinished flats, and a Hong Kong court ordered it liquidated in January 2024."
+    lessons:
+      - "Unfinished homes make a debt crisis personal for millions of families."
+
+  - id: uk_energy_2022
+    name: "UK energy price cap jumps"
+    year: 2022
+    archetype: price_change
+    domain: economy
+    country: "UK"
+    features: {valence: -0.7, emotionality: 0.85, identity: 0.2, lean: 0.0, harm: 0.6, responsibility: 0.5, hype: 0.6, price: 1.0, prominence: 0.8, novelty: 0.5}
+    outcome: {awareness: 0.9, halflife_days: 20, peak_day: 30, opinion_shift: -0.3, commercial: -0.3, polarization: 0.3}
+    response: {type: compensation, hours: 2000}
+    summary: "The regulator's cap on household energy bills rose 54% in April 2022, and a further huge rise was due in October. The government instead introduced an Energy Price Guarantee from October, on top of earlier bill rebates."
+    lessons:
+      - "When a price rise is unavoidable and universal, people expect the government to step in, and it usually does."
+
+  - id: us_eggs_2025
+    name: "US egg prices hit records"
+    year: 2025
+    archetype: economic_shock
+    domain: economy
+    country: "US"
+    features: {valence: -0.5, emotionality: 0.6, identity: 0.3, lean: 0.2, harm: 0.2, responsibility: 0.4, hype: 0.0, price: 1.0, prominence: 0.7, novelty: 0.5}
+    outcome: {awareness: 0.8, halflife_days: 15, peak_day: 30, opinion_shift: -0.15, commercial: -0.2, polarization: 0.4}
+    response: {type: clarification, hours: 0}
+    summary: "Bird flu culled millions of laying hens and the average US price of a dozen eggs hit records in early 2025, with empty shelves in some stores and purchase limits. Prices fell back later in the year."
+    lessons:
+      - "A single, highly visible grocery price becomes shorthand for the whole cost of living."
+
+  - id: india_election_crash_2024
+    name: "Indian markets fall on election results day"
+    year: 2024
+    archetype: economic_shock
+    domain: economy
+    country: "India"
+    features: {valence: -0.5, emotionality: 0.8, identity: 0.5, lean: 0.3, harm: 0.4, responsibility: 0.2, hype: 0.8, price: 0.9, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.7, halflife_days: 2, peak_day: 0.0, opinion_shift: -0.05, commercial: -0.2, polarization: 0.5}
+    response: {type: none, hours: null}
+    summary: "On 4 June 2024 counting showed the ruling party falling short of a majority on its own, against exit polls predicting a landslide. The Sensex fell nearly 6% that day, its worst in four years, and recovered most of the loss within days once a coalition government was assured."
+    lessons:
+      - "When expectations are lopsided, a surprise moves markets hard; relief rallies follow once uncertainty clears."
+
+  - id: deepseek_2025
+    name: "DeepSeek shock to AI stocks"
+    year: 2025
+    archetype: economic_shock
+    domain: tech
+    country: "Global"
+    features: {valence: -0.4, emotionality: 0.75, identity: 0.4, lean: 0.0, harm: 0.3, responsibility: 0.0, hype: 0.3, price: 0.9, prominence: 0.9, novelty: 1.0}
+    outcome: {awareness: 0.7, halflife_days: 4, peak_day: 2, opinion_shift: -0.1, commercial: -0.3, polarization: 0.4}
+    response: {type: clarification, hours: 24}
+    summary: "Chinese start-up DeepSeek released an AI model in January 2025 that matched leading US models at a fraction of the reported cost and topped app-store charts. On 27 January Nvidia's shares fell about 17%, wiping close to $600 billion off its value in a day, before recovering in the following weeks."
+    lessons:
+      - "A surprise from an unexpected rival can reset a whole sector's story overnight."
+      - "Markets overreact first and re-evaluate later."
+
+  - id: jio_launch_2016
+    name: "Reliance Jio launches with free data"
+    year: 2016
+    archetype: product_launch
+    domain: economy
+    country: "India"
+    features: {valence: 0.7, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.2, hype: 0.7, price: 1.0, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.9, halflife_days: 20, peak_day: 5, opinion_shift: 0.4, commercial: 0.9, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "Reliance Jio launched its 4G network in September 2016 with months of free calls and data. It signed up 16 million customers in its first month and about 100 million in under six months, set off a price war that forced rival mergers and exits, and made mobile data in India among the cheapest in the world."
+    lessons:
+      - "Free is the most powerful launch message in a price-sensitive market."
+      - "A price war changes behaviour across the whole market, not just among the challenger's customers."
+
+  - id: russia_ukraine_2022
+    name: "Russia's full-scale invasion of Ukraine"
+    year: 2022
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "Global"
+    wiki: {title: "Russian_invasion_of_Ukraine", date: 2022-02-24}
+    features: {valence: -0.9, emotionality: 1.0, identity: 0.6, lean: 0.0, harm: 1.0, responsibility: 1.0, hype: 0.5, price: 0.6, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.98, halflife_days: 20, peak_day: 3, opinion_shift: -0.6, commercial: -0.6, polarization: 0.4}
+    response: {type: none, hours: null}
+    summary: "Russia invaded Ukraine on 24 February 2022. Western governments imposed sweeping sanctions, energy and food prices jumped worldwide, and hundreds of Western companies suspended or ended business in Russia under public pressure."
+    lessons:
+      - "Wars rally publics behind the side they see as defending itself, and force brands to pick a side quickly."
+      - "Attention fades within weeks, while price effects last for months."
+
+  - id: mcdonalds_russia_2022
+    name: "McDonald's leaves Russia"
+    year: 2022
+    archetype: values_controversy
+    domain: geopolitics
+    country: "Russia"
+    features: {valence: 0.4, emotionality: 0.7, identity: 0.6, lean: 0.0, harm: 0.0, responsibility: 0.4, hype: 0.0, price: 0.3, prominence: 1.0, novelty: 0.7}
+    outcome: {awareness: 0.6, halflife_days: 6, peak_day: 3, opinion_shift: 0.15, commercial: -0.2, polarization: 0.3}
+    response: {type: stand_firm, hours: 0}
+    summary: "After pausing its Russian restaurants in March 2022, McDonald's said in May it would sell the business entirely, taking a charge of over a billion dollars; the restaurants reopened under a local owner as Vkusno i tochka. Companies that stayed in Russia faced public lists and boycott calls in the West."
+    lessons:
+      - "Under a clear moral consensus, exiting is rewarded and staying becomes the story."
+
+  - id: galwan_2020
+    name: "India–China clash in the Galwan Valley"
+    year: 2020
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "India"
+    features: {valence: -0.7, emotionality: 0.95, identity: 0.8, lean: 0.6, harm: 0.7, responsibility: 0.8, hype: 0.0, price: 0.3, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.9, halflife_days: 8, peak_day: 1, opinion_shift: -0.5, commercial: -0.3, polarization: 0.4}
+    response: {type: stand_firm, hours: 0}
+    summary: "On 15 June 2020, 20 Indian soldiers were killed in a hand-to-hand clash with Chinese troops in Ladakh. Calls to boycott Chinese goods spread widely and India banned dozens of Chinese apps and tightened rules on Chinese investment, though imports from China kept growing."
+    lessons:
+      - "Nationalist boycotts of a country's goods are loud but hard to sustain when there are few substitutes."
+      - "Governments turn public anger into visible symbolic measures such as app bans."
+
+  - id: pulwama_2019
+    name: "Pulwama attack and the Balakot strike"
+    year: 2019
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "India"
+    wiki: {title: "2019_Pulwama_attack", date: 2019-02-14}
+    features: {valence: -0.8, emotionality: 1.0, identity: 0.8, lean: 0.7, harm: 0.9, responsibility: 0.3, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.95, halflife_days: 8, peak_day: 1, opinion_shift: 0.2, commercial: 0.0, polarization: 0.6}
+    response: {type: stand_firm, hours: 288}
+    summary: "A suicide bombing on 14 February 2019 killed 40 Indian paramilitary personnel in Kashmir. India carried out an airstrike at Balakot in Pakistan on 26 February; a dogfight followed and a captured Indian pilot was returned days later. The episode dominated the run-up to the general election, which the government won decisively."
+    lessons:
+      - "An attack from outside rallies people behind the government, especially when it answers visibly."
+
+  - id: op_sindoor_2025
+    name: "Pahalgam attack and Operation Sindoor"
+    year: 2025
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "India"
+    features: {valence: -0.8, emotionality: 1.0, identity: 0.8, lean: 0.7, harm: 0.9, responsibility: 0.3, hype: 0.0, price: 0.2, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.95, halflife_days: 7, peak_day: 15, opinion_shift: 0.2, commercial: 0.0, polarization: 0.6}
+    response: {type: stand_firm, hours: 350}
+    summary: "Militants killed 26 people, mostly tourists, near Pahalgam in Kashmir on 22 April 2025. India struck targets in Pakistan on 7 May, days of cross-border strikes followed and a ceasefire was announced on 10 May. Indian social media pushed boycotts of Turkey and Azerbaijan, seen as siding with Pakistan."
+    lessons:
+      - "After an attack, public anger looks for targets beyond the attacker, including countries and brands seen as sympathetic."
+
+  - id: turkey_boycott_india_2025
+    name: "Indian boycott of Turkey and Azerbaijan"
+    year: 2025
+    archetype: values_controversy
+    domain: geopolitics
+    country: "India"
+    features: {valence: -0.6, emotionality: 0.85, identity: 0.8, lean: 0.6, harm: 0.0, responsibility: 0.6, hype: 0.0, price: 0.4, prominence: 0.6, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 6, peak_day: 2, opinion_shift: -0.5, commercial: -0.5, polarization: 0.4}
+    response: {type: none, hours: null}
+    summary: "In May 2025, after both countries were seen as backing Pakistan, Indian travel platforms warned against or paused bookings to Turkey and Azerbaijan, traders dropped Turkish apples and marble, and India revoked the security clearance of the Turkish airport ground-handling firm Celebi."
+    lessons:
+      - "Geopolitical boycotts bite fastest on discretionary purchases like holidays, where switching is easy."
+
+  - id: maldives_row_2024
+    name: "India's boycott of the Maldives"
+    year: 2024
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "India"
+    features: {valence: -0.7, emotionality: 0.85, identity: 0.8, lean: 0.6, harm: 0.0, responsibility: 0.8, hype: 0.0, price: 0.4, prominence: 0.7, novelty: 0.9}
+    outcome: {awareness: 0.75, halflife_days: 5, peak_day: 2, opinion_shift: -0.6, commercial: -0.5, polarization: 0.5}
+    response: {type: apology, hours: 48}
+    summary: "In January 2024 Maldivian deputy ministers posted derogatory remarks about Prime Minister Modi after his visit to Lakshadweep. Indian celebrities urged people to holiday at home instead, the travel site EaseMyTrip suspended Maldives bookings and Indian arrivals to the Maldives fell sharply that year. The ministers were suspended."
+    lessons:
+      - "National pride plus an easy domestic substitute turns an online row into a measurable fall in tourism."
+      - "Disowning the remarks quickly did not stop the boycott once celebrities joined."
+
+  - id: china_nba_2019
+    name: "NBA and China over a Hong Kong tweet"
+    year: 2019
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "China"
+    features: {valence: -0.6, emotionality: 0.85, identity: 0.9, lean: -0.3, harm: 0.0, responsibility: 0.4, hype: 0.0, price: 0.4, prominence: 0.9, novelty: 0.9}
+    outcome: {awareness: 0.6, halflife_days: 7, peak_day: 3, opinion_shift: -0.3, commercial: -0.5, polarization: 0.9}
+    response: {type: noncommittal_statement, hours: 24}
+    summary: "In October 2019 Houston Rockets executive Daryl Morey tweeted support for Hong Kong protesters. Chinese state TV stopped airing NBA games and sponsors pulled out; the league's statements were attacked in the US for kowtowing and in China for not apologising enough."
+    lessons:
+      - "Caught between two countries' publics, a statement written to please both satisfies neither."
+
+  - id: hm_xinjiang_2021
+    name: "H&M boycott in China over Xinjiang cotton"
+    year: 2021
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "China"
+    features: {valence: -0.6, emotionality: 0.85, identity: 0.9, lean: 0.5, harm: 0.0, responsibility: 0.4, hype: 0.0, price: 0.3, prominence: 0.8, novelty: 0.8}
+    outcome: {awareness: 0.8, halflife_days: 6, peak_day: 1, opinion_shift: -0.5, commercial: -0.4, polarization: 0.8}
+    response: {type: noncommittal_statement, hours: 48}
+    summary: "In March 2021 a 2020 H&M statement on forced-labour concerns in Xinjiang resurfaced as Western sanctions were announced. Chinese celebrities cut ties, the brand disappeared from major Chinese e-commerce and map apps, and its China sales fell sharply that quarter."
+    lessons:
+      - "In a state-amplified boycott the platforms themselves remove the brand, so the hit is immediate."
+
+  - id: dolce_gabbana_2018
+    name: "Dolce & Gabbana's chopsticks ads in China"
+    year: 2018
+    archetype: ad_misfire
+    domain: geopolitics
+    country: "China"
+    features: {valence: -0.8, emotionality: 0.9, identity: 0.8, lean: 0.5, harm: 0.0, responsibility: 1.0, hype: 0.3, price: 0.0, prominence: 0.8, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 5, peak_day: 1, opinion_shift: -0.7, commercial: -0.6, polarization: 0.3}
+    response: {type: apology, hours: 72}
+    summary: "In November 2018 videos showing a model struggling to eat Italian food with chopsticks were called racist, and insulting messages attributed to co-founder Stefano Gabbana leaked. The Shanghai show was cancelled, Chinese retailers dropped the brand and the founders' video apology days later was widely dismissed."
+    lessons:
+      - "An apology that comes late and looks forced is read as proof of the original contempt."
+
+  - id: hyundai_kashmir_2022
+    name: "Hyundai Pakistan's Kashmir post"
+    year: 2022
+    archetype: values_controversy
+    domain: geopolitics
+    country: "India"
+    features: {valence: -0.6, emotionality: 0.85, identity: 0.85, lean: 0.6, harm: 0.0, responsibility: 0.6, hype: 0.0, price: 0.2, prominence: 0.9, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 3, peak_day: 1, opinion_shift: -0.25, commercial: -0.1, polarization: 0.4}
+    response: {type: noncommittal_statement, hours: 24}
+    summary: "On 5 February 2022 Hyundai's Pakistan distributor posted in support of Kashmiri separatism. Indian users called for a boycott of Hyundai, India's second-largest carmaker; its first statement was criticised for not apologising, and South Korea's foreign minister later expressed regret to India."
+    lessons:
+      - "A franchisee's post in one country becomes the global brand's problem in another within hours."
+      - "Car purchases are planned far ahead, so the boycott stayed mostly online."
+
+  - id: sept11_2001
+    name: "September 11 attacks"
+    year: 2001
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "US"
+    features: {valence: -0.3, emotionality: 1.0, identity: 0.6, lean: 0.5, harm: 1.0, responsibility: 0.0, hype: 0.0, price: 0.3, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 1, halflife_days: 30, peak_day: 0.0, opinion_shift: 0.4, commercial: -0.4, polarization: 0.3}
+    response: {type: stand_firm, hours: 12}
+    summary: "Hijacked planes struck the World Trade Center and the Pentagon on 11 September 2001, killing nearly 3,000 people. President Bush's approval jumped to about 90% within weeks, the largest rally effect recorded, and air travel collapsed for months."
+    lessons:
+      - "Attacks from outside produce the strongest rally behind leaders ever measured, but it fades over months."
+
+  - id: cuban_missile_1962
+    name: "Cuban missile crisis"
+    year: 1962
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "US"
+    features: {valence: -0.6, emotionality: 1.0, identity: 0.4, lean: 0.0, harm: 0.9, responsibility: 0.5, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 0.95, halflife_days: 6, peak_day: 7, opinion_shift: 0.15, commercial: 0.0, polarization: 0.2}
+    response: {type: stand_firm, hours: 0}
+    summary: "For thirteen days in October 1962 the US and the Soviet Union faced off over Soviet missiles in Cuba, with a naval quarantine and open fear of nuclear war. It ended with the missiles withdrawn in return for a US pledge not to invade Cuba and the quiet removal of US missiles from Turkey."
+    lessons:
+      - "In a direct, existential threat the public largely defers to leaders, and a calm public stance raises approval."
+
+  - id: berlin_wall_1989
+    name: "Fall of the Berlin Wall"
+    year: 1989
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "Germany"
+    features: {valence: 0.9, emotionality: 1.0, identity: 0.5, lean: 0.0, harm: 0.0, responsibility: 0.0, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 0.95, halflife_days: 10, peak_day: 0.0, opinion_shift: 0.5, commercial: 0.6, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "On 9 November 1989 East Germany unexpectedly opened its border crossings after a confused announcement, and crowds crossed and climbed the wall in Berlin. Germany reunified less than a year later."
+    lessons:
+      - "Good news that people can join in physically becomes a lasting shared memory."
+
+  - id: soleimani_2020
+    name: "US strike kills Iran's Qasem Soleimani"
+    year: 2020
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "Global"
+    wiki: {title: "Assassination_of_Qasem_Soleimani", date: 2020-01-03}
+    features: {valence: -0.4, emotionality: 0.9, identity: 0.6, lean: 0.3, harm: 0.6, responsibility: 0.9, hype: 0.0, price: 0.4, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 0.85, halflife_days: 4, peak_day: 1, opinion_shift: 0.0, commercial: -0.1, polarization: 0.7}
+    response: {type: stand_firm, hours: 0}
+    summary: "A US drone strike killed the Iranian general in Baghdad on 3 January 2020. 'World War 3' memes trended worldwide, oil prices jumped, Iran fired missiles at US bases days later, and the crisis de-escalated within about a week."
+    lessons:
+      - "Fear of war spreads online as dark humour; it peaks within days and fades unless the conflict widens."
+
+  - id: red_sea_2023
+    name: "Houthi attacks on Red Sea shipping"
+    year: 2023
+    archetype: geopolitical_crisis
+    domain: economy
+    country: "Global"
+    features: {valence: -0.5, emotionality: 0.5, identity: 0.3, lean: 0.0, harm: 0.4, responsibility: 0.8, hype: 0.0, price: 0.8, prominence: 0.6, novelty: 0.7}
+    outcome: {awareness: 0.4, halflife_days: 30, peak_day: 40, opinion_shift: -0.1, commercial: -0.3, polarization: 0.2}
+    response: {type: none, hours: null}
+    summary: "From late 2023 Houthi forces in Yemen attacked merchant ships in the Red Sea. Major shipping lines rerouted around Africa, adding days to voyages, and container freight rates rose sharply into 2024."
+    lessons:
+      - "Supply-chain shocks barely register with the public until they show up in prices and delays."
+
+  - id: crimea_2014
+    name: "Russia annexes Crimea"
+    year: 2014
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "Global"
+    features: {valence: -0.7, emotionality: 0.85, identity: 0.6, lean: 0.0, harm: 0.5, responsibility: 1.0, hype: 0.0, price: 0.3, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.8, halflife_days: 10, peak_day: 14, opinion_shift: -0.3, commercial: -0.3, polarization: 0.4}
+    response: {type: stand_firm, hours: 0}
+    summary: "Russian forces took control of Crimea in late February 2014 and Russia annexed it after a March referendum that most countries rejected. Western sanctions followed, the rouble fell and Putin's approval at home rose sharply."
+    lessons:
+      - "The same move is a triumph at home and an outrage abroad; publics judge by whose side they are on."
+
+  - id: canada_india_row_2023
+    name: "Canada–India diplomatic row"
+    year: 2023
+    archetype: geopolitical_crisis
+    domain: geopolitics
+    country: "India"
+    features: {valence: -0.5, emotionality: 0.8, identity: 0.8, lean: 0.5, harm: 0.1, responsibility: 0.6, hype: 0.0, price: 0.2, prominence: 0.8, novelty: 0.9}
+    outcome: {awareness: 0.6, halflife_days: 6, peak_day: 2, opinion_shift: -0.2, commercial: -0.2, polarization: 0.6}
+    response: {type: denial, hours: 6}
+    summary: "In September 2023 Prime Minister Trudeau told Canada's parliament there were credible allegations linking Indian agents to the killing of a Sikh separatist leader in Canada. India rejected the claims, both countries expelled diplomats and India briefly suspended visas for Canadians."
+    lessons:
+      - "An accusation from abroad tends to unite the accused country's public behind its government."
+
+  - id: ever_given_2021
+    name: "Ever Given blocks the Suez Canal"
+    year: 2021
+    archetype: disaster
+    domain: economy
+    country: "Global"
+    wiki: {title: "2021_Suez_Canal_obstruction", date: 2021-03-23}
+    features: {valence: -0.3, emotionality: 0.6, identity: 0.0, lean: 0.0, harm: 0.3, responsibility: 0.6, hype: 0.0, price: 0.6, prominence: 0.6, novelty: 1.0}
+    outcome: {awareness: 0.85, halflife_days: 4, peak_day: 3, opinion_shift: -0.05, commercial: -0.1, polarization: 0.0}
+    response: {type: clarification, hours: 24}
+    summary: "A giant container ship ran aground in the Suez Canal on 23 March 2021 and blocked it for six days, holding up hundreds of ships. A small excavator digging at its bow became a worldwide meme."
+    lessons:
+      - "A disruption with a single absurd image becomes a meme first and a supply-chain story second."
+
+  - id: israel_gaza_boycotts_2023
+    name: "Brand boycotts during the Israel–Gaza war"
+    year: 2023
+    archetype: values_controversy
+    domain: geopolitics
+    country: "Global"
+    features: {valence: -0.5, emotionality: 0.9, identity: 0.95, lean: -0.4, harm: 0.0, responsibility: 0.4, hype: 0.0, price: 0.2, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.7, halflife_days: 30, peak_day: 30, opinion_shift: -0.3, commercial: -0.4, polarization: 0.9}
+    response: {type: noncommittal_statement, hours: 72}
+    summary: "After the war in Gaza began in October 2023, boycott campaigns targeted Western chains seen as linked to Israel, including McDonald's and Starbucks. McDonald's said the boycotts had a meaningful impact on sales in the Middle East and some Muslim-majority countries, and a Starbucks franchisee in the region cut about 2,000 jobs."
+    lessons:
+      - "In a war that divides publics, customers assign a brand a side whatever it says."
+      - "Boycotts hit hardest where the cause is a near-consensus and local alternatives exist."
+
+  - id: twitter_layoffs_2022
+    name: "Twitter's mass layoffs under Musk"
+    year: 2022
+    archetype: labor_dispute
+    domain: labour
+    country: "US"
+    features: {valence: -0.4, emotionality: 0.8, identity: 0.5, lean: 0.4, harm: 0.4, responsibility: 1.0, hype: 0.5, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 6, peak_day: 2, opinion_shift: -0.2, commercial: -0.4, polarization: 0.8}
+    response: {type: stand_firm, hours: 0}
+    summary: "Days after buying Twitter, Elon Musk cut about half of its roughly 7,500 staff on 4 November 2022, notified by email, then issued an ultimatum to commit to being 'extremely hardcore' that led many more to leave. Advertisers paused spending, while the site largely kept running."
+    lessons:
+      - "Layoffs announced by email to thousands at once become a story told by the people laid off."
+      - "When a leader is polarising, reactions to the same decision split by politics."
+
+  - id: hollywood_strikes_2023
+    name: "Hollywood writers' and actors' strikes"
+    year: 2023
+    archetype: labor_dispute
+    domain: labour
+    country: "US"
+    wiki: {title: "2023_Writers_Guild_of_America_strike", date: 2023-05-02}
+    features: {valence: -0.4, emotionality: 0.75, identity: 0.5, lean: -0.4, harm: 0.4, responsibility: 0.6, hype: 0.0, price: 0.6, prominence: 0.9, novelty: 0.5}
+    outcome: {awareness: 0.75, halflife_days: 40, peak_day: 90, opinion_shift: -0.2, commercial: 0.5, polarization: 0.4}
+    response: {type: stand_firm, hours: 0}
+    summary: "Screenwriters struck from 2 May to 27 September 2023 and actors from 14 July to 9 November, halting most US film and TV production. Fears about AI and streaming pay drew broad public sympathy, and both unions won new contracts."
+    lessons:
+      - "Strikes win public support when workers are seen as underpaid and bosses as rich; AI fears gave a story everyone could relate to."
+
+  - id: uaw_strike_2023
+    name: "UAW strike against the Detroit carmakers"
+    year: 2023
+    archetype: labor_dispute
+    domain: labour
+    country: "US"
+    features: {valence: -0.3, emotionality: 0.6, identity: 0.4, lean: -0.3, harm: 0.3, responsibility: 0.6, hype: 0.3, price: 0.7, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.6, halflife_days: 15, peak_day: 10, opinion_shift: -0.1, commercial: 0.5, polarization: 0.4}
+    response: {type: stand_firm, hours: 0}
+    summary: "The United Auto Workers struck Ford, GM and Stellantis at the same time from 15 September 2023, widening the strike plant by plant. Polls showed majority public support, and in late October the union won record pay rises."
+    lessons:
+      - "Escalating a strike step by step keeps it in the news and the pressure rising."
+
+  - id: samsung_chennai_2024
+    name: "Samsung India factory strike"
+    year: 2024
+    archetype: labor_dispute
+    domain: labour
+    country: "India"
+    features: {valence: -0.3, emotionality: 0.6, identity: 0.3, lean: -0.2, harm: 0.3, responsibility: 0.6, hype: 0.0, price: 0.6, prominence: 0.8, novelty: 0.7}
+    outcome: {awareness: 0.25, halflife_days: 15, peak_day: 10, opinion_shift: -0.1, commercial: -0.1, polarization: 0.3}
+    response: {type: stand_firm, hours: 0}
+    summary: "Workers at Samsung's appliance plant near Chennai struck for more than a month from September 2024, demanding higher pay and recognition of their union. The state government mediated and the strike was called off in October, with the union question left to the courts."
+    lessons:
+      - "Recognition disputes drag on longer than pay disputes because they are about power, not money."
+
+  - id: amazon_union_2022
+    name: "Amazon warehouse workers unionise in New York"
+    year: 2022
+    archetype: labor_dispute
+    domain: labour
+    country: "US"
+    features: {valence: -0.3, emotionality: 0.65, identity: 0.5, lean: -0.4, harm: 0.0, responsibility: 0.4, hype: 0.2, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.55, halflife_days: 5, peak_day: 1, opinion_shift: -0.1, commercial: 0.0, polarization: 0.5}
+    response: {type: noncommittal_statement, hours: 48}
+    summary: "Workers at the JFK8 warehouse on Staten Island voted on 1 April 2022 to form the first union at a US Amazon facility, led by current and former workers rather than an established union. Amazon challenged the result."
+    lessons:
+      - "An underdog story with a clear villain spreads far beyond the workers involved."
+
+  - id: infosys_70h_2023
+    name: "Narayana Murthy's 70-hour work week remark"
+    year: 2023
+    archetype: labor_dispute
+    domain: labour
+    country: "India"
+    features: {valence: -0.4, emotionality: 0.8, identity: 0.4, lean: 0.3, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.2, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.7, halflife_days: 6, peak_day: 1, opinion_shift: -0.2, commercial: 0.0, polarization: 0.6}
+    response: {type: stand_firm, hours: 0}
+    summary: "In October 2023 Infosys co-founder Narayana Murthy said young Indians should be willing to work 70 hours a week to help the country compete. It set off a long debate about overwork and pay, with some business leaders backing him and many young professionals mocking it; he later repeated the view."
+    lessons:
+      - "A famous leader's offhand remark about how others should live can define how the public sees a whole company."
+
+  - id: lt_90h_2025
+    name: "L&T chairman's 90-hour work week remark"
+    year: 2025
+    archetype: labor_dispute
+    domain: labour
+    country: "India"
+    features: {valence: -0.6, emotionality: 0.85, identity: 0.4, lean: 0.3, harm: 0.0, responsibility: 1.0, hype: 0.0, price: 0.1, prominence: 0.8, novelty: 0.7}
+    outcome: {awareness: 0.65, halflife_days: 4, peak_day: 1, opinion_shift: -0.3, commercial: 0.0, polarization: 0.5}
+    response: {type: clarification, hours: 24}
+    summary: "In January 2025 a video of Larsen & Toubro chairman S. N. Subrahmanyan saying employees should work 90 hours a week, including Sundays, and asking how long they could stare at their wives went viral. Celebrities and executives criticised him, and the company issued a statement defending the ambition behind the remark."
+    lessons:
+      - "A defensive clarification of a viral remark keeps the clip circulating."
+
+  - id: ey_pune_2024
+    name: "A young EY employee's death and the overwork debate"
+    year: 2024
+    archetype: labor_dispute
+    domain: labour
+    country: "India"
+    features: {valence: -0.7, emotionality: 0.95, identity: 0.3, lean: 0.0, harm: 0.9, responsibility: 0.8, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 0.8}
+    outcome: {awareness: 0.6, halflife_days: 8, peak_day: 1, opinion_shift: -0.4, commercial: -0.1, polarization: 0.2}
+    response: {type: noncommittal_statement, hours: 48}
+    summary: "In September 2024 a letter from the mother of Anna Sebastian Perayil, a 26-year-old chartered accountant who had died in July months after joining EY in Pune, blamed overwork and went viral. The government said it would look into it, and the firm's statements were criticised as defensive."
+    lessons:
+      - "A grieving parent's letter carries more weight than any corporate statement; process language reads as coldness."
+
+  - id: uk_rail_strikes_2022
+    name: "UK rail strikes"
+    year: 2022
+    archetype: labor_dispute
+    domain: labour
+    country: "UK"
+    features: {valence: -0.3, emotionality: 0.6, identity: 0.5, lean: -0.3, harm: 0.3, responsibility: 0.5, hype: 0.4, price: 0.6, prominence: 0.7, novelty: 0.4}
+    outcome: {awareness: 0.75, halflife_days: 30, peak_day: 1, opinion_shift: -0.1, commercial: 0.0, polarization: 0.6}
+    response: {type: stand_firm, hours: 0}
+    summary: "Rail workers in Britain held a series of national strikes from June 2022 over pay and conditions, the biggest in decades, alongside strikes by nurses and others during high inflation. Most disputes were settled in 2023."
+    lessons:
+      - "Public sympathy for strikes falls as disruption drags on, unless people see the workers as falling behind like themselves."
+
+  - id: brexit_2016
+    name: "Britain votes to leave the EU"
+    year: 2016
+    archetype: political_moment
+    domain: politics
+    country: "UK"
+    wiki: {title: "United_Kingdom_European_Union_membership_referendum", date: 2016-06-23}
+    features: {valence: -0.2, emotionality: 0.95, identity: 0.95, lean: 0.6, harm: 0.3, responsibility: 0.6, hype: 0.7, price: 0.6, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.98, halflife_days: 15, peak_day: 0.0, opinion_shift: -0.1, commercial: -0.5, polarization: 0.95}
+    response: {type: none, hours: null}
+    summary: "On 23 June 2016 the UK voted 52% to 48% to leave the European Union, against most expectations. The pound fell to a 30-year low, the Prime Minister resigned the next day and the country stayed deeply split for years."
+    lessons:
+      - "Identity-coded votes harden into identities; years later few voters had changed sides."
+
+  - id: watergate_1972
+    name: "Watergate"
+    year: 1972
+    archetype: trust_scandal
+    domain: politics
+    country: "US"
+    features: {valence: -0.8, emotionality: 0.85, identity: 0.6, lean: 0.0, harm: 0.2, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.7}
+    outcome: {awareness: 0.95, halflife_days: 60, peak_day: 700, opinion_shift: -0.6, commercial: -1, polarization: 0.6}
+    response: {type: denial, hours: 2000}
+    summary: "A June 1972 break-in at the Democratic headquarters was traced to President Nixon's re-election campaign; two years of reporting and hearings revealed a cover-up. Nixon resigned in August 1974 before likely impeachment."
+    lessons:
+      - "The cover-up, not the original act, decided the outcome."
+
+  - id: partygate_2022
+    name: "UK 'Partygate' scandal"
+    year: 2022
+    archetype: trust_scandal
+    domain: politics
+    country: "UK"
+    wiki: {title: "Partygate", date: 2021-11-30}
+    features: {valence: -0.8, emotionality: 0.85, identity: 0.5, lean: 0.0, harm: 0.1, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.9, halflife_days: 20, peak_day: 30, opinion_shift: -0.5, commercial: -0.8, polarization: 0.5}
+    response: {type: denial, hours: 500}
+    summary: "From late 2021 reports showed gatherings at Downing Street during COVID lockdowns, after the Prime Minister had said no rules were broken. Police fined Boris Johnson in April 2022; further scandals led to mass ministerial resignations and his own resignation in July 2022."
+    lessons:
+      - "Rules for us, parties for them: hypocrisy during shared sacrifice is not forgiven."
+      - "Each denial that unravelled added a fresh news cycle."
+
+  - id: biden_debate_2024
+    name: "Biden's debate performance and withdrawal"
+    year: 2024
+    archetype: political_moment
+    domain: politics
+    country: "US"
+    features: {valence: -0.8, emotionality: 0.85, identity: 0.7, lean: -0.5, harm: 0.0, responsibility: 0.8, hype: 0.8, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.9, halflife_days: 8, peak_day: 1, opinion_shift: -0.3, commercial: -0.9, polarization: 0.8}
+    response: {type: stand_firm, hours: 580}
+    summary: "President Biden's faltering performance in the 27 June 2024 debate set off weeks of calls from his own party to step aside. He insisted he would stay, then withdrew from the race on 21 July and endorsed Vice President Harris."
+    lessons:
+      - "Insisting nothing is wrong after everyone has seen the clip keeps the story alive until the decision is forced."
+
+  - id: jan6_2021
+    name: "Capitol attack and corporate donation pauses"
+    year: 2021
+    archetype: political_moment
+    domain: politics
+    country: "US"
+    features: {valence: -0.8, emotionality: 1.0, identity: 0.95, lean: 0.7, harm: 0.6, responsibility: 0.6, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 0.95, halflife_days: 10, peak_day: 0.0, opinion_shift: -0.3, commercial: 0.0, polarization: 0.95}
+    response: {type: stand_firm, hours: 48}
+    summary: "Supporters of President Trump stormed the US Capitol on 6 January 2021. Dozens of large companies paused political donations, especially to lawmakers who had objected to certifying the election; many quietly resumed within a year or two."
+    lessons:
+      - "Corporate stands taken in the heat of a crisis are often quietly reversed when attention moves on."
+
+  - id: tesla_musk_2025
+    name: "Tesla backlash over Musk's political role"
+    year: 2025
+    archetype: values_controversy
+    domain: politics
+    country: "Global"
+    features: {valence: -0.6, emotionality: 0.85, identity: 0.95, lean: 0.6, harm: 0.1, responsibility: 0.6, hype: 0.0, price: 0.3, prominence: 1.0, novelty: 0.7}
+    outcome: {awareness: 0.85, halflife_days: 30, peak_day: 40, opinion_shift: -0.35, commercial: -0.5, polarization: 0.95}
+    response: {type: stand_firm, hours: 0}
+    summary: "After Elon Musk took a leading role in the US government's cost-cutting drive in early 2025, 'Tesla Takedown' protests spread to showrooms, some owners put apologetic stickers on their cars and Tesla's sales fell sharply in Europe in the first months of the year."
+    lessons:
+      - "When a founder becomes a political figure, the brand inherits his opponents."
+      - "Customers who bought for the brand's values are the quickest to leave when those values seem to change."
+
+  - id: target_dei_2025
+    name: "Target's DEI rollback and boycott"
+    year: 2025
+    archetype: values_controversy
+    domain: brand
+    country: "US"
+    features: {valence: -0.4, emotionality: 0.8, identity: 0.95, lean: 0.6, harm: 0.0, responsibility: 0.6, hype: 0.0, price: 0.2, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.7, halflife_days: 30, peak_day: 40, opinion_shift: -0.3, commercial: -0.4, polarization: 0.8}
+    response: {type: noncommittal_statement, hours: 0}
+    summary: "In January 2025 Target ended several diversity goals and programmes. Black community leaders called for a boycott and a 40-day 'fast' from the store; store visits and sales fell for months, and the CEO later announced he would step down."
+    lessons:
+      - "Retreating from a stance a customer group valued can cost more than the stance cost with its critics."
+      - "Having faced a backlash from the other side in 2023, Target ended up criticised by both."
+
+  - id: covid_pandemic_2020
+    name: "WHO declares COVID-19 a pandemic"
+    year: 2020
+    archetype: public_health
+    domain: health
+    country: "Global"
+    features: {valence: -0.6, emotionality: 1.0, identity: 0.5, lean: 0.0, harm: 1.0, responsibility: 0.3, hype: 0.0, price: 0.6, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 1, halflife_days: 40, peak_day: 10, opinion_shift: -0.1, commercial: -0.8, polarization: 0.6}
+    response: {type: clarification, hours: 0}
+    summary: "The WHO declared COVID-19 a pandemic on 11 March 2020. Within days countries closed borders and schools, panic buying emptied shelves and lockdowns followed; trust in health authorities split along political lines in many countries."
+    lessons:
+      - "Early compliance is driven by fear and trust; as fatigue grows, trust in the messenger decides who keeps complying."
+
+  - id: india_lockdown_2020
+    name: "India's nationwide COVID lockdown"
+    year: 2020
+    archetype: public_health
+    domain: health
+    country: "India"
+    wiki: {title: "COVID-19_lockdown_in_India", date: 2020-03-24}
+    features: {valence: -0.2, emotionality: 0.95, identity: 0.2, lean: 0.0, harm: 0.9, responsibility: 0.8, hype: 0.0, price: 0.6, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 0.99, halflife_days: 20, peak_day: 7, opinion_shift: 0.05, commercial: -0.5, polarization: 0.3}
+    response: {type: clarification, hours: 0}
+    summary: "On 24 March 2020 India announced a 21-day nationwide lockdown with four hours' notice. Millions of migrant workers, suddenly without wages, set out to walk hundreds of kilometres home, images that dominated coverage; most of the public still backed the lockdown."
+    lessons:
+      - "Overnight rules hit hardest the people with no savings and no home in the city, and their stories become the story."
+      - "Broad support for a measure can coexist with outrage at how it was carried out."
+
+  - id: india_vaccine_rollout_2021
+    name: "India's COVID vaccine rollout"
+    year: 2021
+    archetype: public_health
+    domain: health
+    country: "India"
+    features: {valence: 0.5, emotionality: 0.7, identity: 0.3, lean: 0.2, harm: 0.2, responsibility: 0.3, hype: 0.6, price: 0.3, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.9, halflife_days: 30, peak_day: 100, opinion_shift: 0.15, commercial: 0.6, polarization: 0.4}
+    response: {type: clarification, hours: 0}
+    summary: "India began vaccinating on 16 January 2021 using the CoWIN booking platform. Early hesitancy gave way to a rush for doses during the deadly second wave in April and May, when slots and supply ran short; the country passed one billion doses in October 2021."
+    lessons:
+      - "Fear does what campaigns cannot: hesitancy faded when the danger became visible."
+      - "A booking app becomes the face of a programme, for good and bad."
+
+  - id: covishield_2024
+    name: "AstraZeneca's rare clotting admission and Covishield worry"
+    year: 2024
+    archetype: public_health
+    domain: health
+    country: "India"
+    features: {valence: -0.5, emotionality: 0.85, identity: 0.4, lean: 0.2, harm: 0.3, responsibility: 0.6, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 5, peak_day: 3, opinion_shift: -0.2, commercial: 0.0, polarization: 0.4}
+    response: {type: clarification, hours: 72}
+    summary: "In late April 2024 UK court documents showed AstraZeneca accepting that its COVID vaccine could, very rarely, cause a clotting condition. In India, where most people had received the same vaccine as Covishield, worried posts spread widely; experts stressed the risk was very rare and limited to the weeks after a dose."
+    lessons:
+      - "Old risks reported as new revelations cause a spike of worry that fades if experts answer quickly and calmly."
+
+  - id: us_masks_2020
+    name: "Mask mandates in the US"
+    year: 2020
+    archetype: public_health
+    domain: health
+    country: "US"
+    features: {valence: -0.1, emotionality: 0.85, identity: 0.9, lean: -0.6, harm: 0.3, responsibility: 0.5, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.95, halflife_days: 40, peak_day: 60, opinion_shift: -0.1, commercial: 0.3, polarization: 0.95}
+    response: {type: clarification, hours: 0}
+    summary: "After first advising the public not to buy masks, US health authorities recommended them in April 2020. Mask-wearing became a political symbol, with mandates fought over in states, stores and on flights and confrontations filmed and shared."
+    lessons:
+      - "Changing advice without explaining why gives skeptics a lasting argument."
+      - "Once a health measure becomes an identity marker, evidence moves almost nobody."
+
+  - id: ebola_us_2014
+    name: "Ebola scare in the US"
+    year: 2014
+    archetype: public_health
+    domain: health
+    country: "US"
+    features: {valence: -0.5, emotionality: 0.9, identity: 0.3, lean: 0.0, harm: 0.4, responsibility: 0.4, hype: 0.0, price: 0.0, prominence: 0.8, novelty: 1.0}
+    outcome: {awareness: 0.85, halflife_days: 8, peak_day: 7, opinion_shift: -0.2, commercial: -0.2, polarization: 0.4}
+    response: {type: clarification, hours: 24}
+    summary: "After a traveller from Liberia was diagnosed in Dallas in September 2014 and two nurses who treated him were infected, coverage and fear far outran the actual risk, with calls for travel bans and some school closures. Only two people caught the disease in the US."
+    lessons:
+      - "Fear of a dreaded, unfamiliar disease spreads far beyond the actual risk; calm, specific local facts work better than national reassurance."
+
+  - id: maggi_2015
+    name: "Maggi noodles banned in India"
+    year: 2015
+    archetype: safety_defect
+    domain: health
+    country: "India"
+    features: {valence: -0.8, emotionality: 0.85, identity: 0.0, lean: 0.0, harm: 0.6, responsibility: 0.7, hype: 0.0, price: 0.2, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.9, halflife_days: 10, peak_day: 10, opinion_shift: -0.4, commercial: -0.6, polarization: 0.2}
+    response: {type: recall, hours: 72}
+    summary: "In 2015 regulators said samples of Nestlé's Maggi noodles had lead above permitted limits and a misleading 'no added MSG' label, and the national food regulator ordered a ban on 5 June. Nestlé withdrew and destroyed tens of thousands of tonnes while disputing the tests; a court overturned the ban, Maggi returned in November 2015 and regained much of its market share within about a year."
+    lessons:
+      - "A much-loved habit brand can recover from a safety scare once cleared, because the attachment never went away."
+      - "Disputing the tests while recalling everything let the company look both confident and responsible."
+
+  - id: cadbury_worms_2003
+    name: "Worms found in Cadbury chocolate in India"
+    year: 2003
+    archetype: safety_defect
+    domain: health
+    country: "India"
+    features: {valence: -0.7, emotionality: 0.8, identity: 0.0, lean: 0.0, harm: 0.4, responsibility: 0.6, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.9}
+    outcome: {awareness: 0.75, halflife_days: 10, peak_day: 7, opinion_shift: -0.3, commercial: -0.3, polarization: 0.1}
+    response: {type: recall, hours: 72}
+    summary: "In October 2003, during the festive season, reports of worms in Cadbury Dairy Milk bars in Maharashtra led to a regulatory crackdown and a sales slump. Cadbury introduced sealed metallic packaging and a campaign fronted by Amitabh Bachchan, and sales recovered within months."
+    lessons:
+      - "A visible fix (sealed packaging) plus a trusted face rebuilt confidence faster than reassurance."
+
+  - id: india_colas_pesticides_2003
+    name: "Pesticide residues found in Indian colas"
+    year: 2003
+    archetype: safety_defect
+    domain: health
+    country: "India"
+    features: {valence: -0.7, emotionality: 0.8, identity: 0.3, lean: 0.0, harm: 0.5, responsibility: 0.6, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.8, halflife_days: 10, peak_day: 3, opinion_shift: -0.3, commercial: -0.3, polarization: 0.3}
+    response: {type: denial, hours: 24}
+    summary: "In August 2003 the Centre for Science and Environment reported pesticide residues in Coca-Cola and Pepsi drinks sold in India. Parliament stopped serving them in its cafeteria and sales dropped; the companies disputed the findings, and a second report in 2006 led some states to restrict sales."
+    lessons:
+      - "Foreign brands denying a local watchdog's findings are judged by whom people trust more."
+
+  - id: india_demonetisation_2016
+    name: "India withdraws ₹500 and ₹1,000 notes overnight"
+    year: 2016
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    wiki: {title: "2016_Indian_banknote_demonetisation", date: 2016-11-08}
+    features: {valence: -0.2, emotionality: 0.95, identity: 0.5, lean: 0.3, harm: 0.6, responsibility: 1.0, hype: 0.0, price: 0.9, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 0.98, halflife_days: 25, peak_day: 5, opinion_shift: -0.05, commercial: -0.3, polarization: 0.6}
+    response: {type: stand_firm, hours: 0}
+    summary: "On 8 November 2016 the government announced that ₹500 and ₹1,000 notes, about 86% of the cash in circulation by value, would stop being legal tender at midnight. Weeks of bank and ATM queues and a cash crunch followed; the RBI later reported that nearly all the withdrawn notes came back to banks. The ruling party still won the Uttar Pradesh election a few months later."
+    lessons:
+      - "A sacrifice framed as a fight against the corrupt can keep public support even while it causes real hardship."
+      - "Policies with no notice create queues, rumours and hardship stories that dominate coverage for weeks."
+
+  - id: india_gst_2017
+    name: "India launches the Goods and Services Tax"
+    year: 2017
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    wiki: {title: "Goods_and_Services_Tax_(India)", date: 2017-07-01}
+    features: {valence: 0.2, emotionality: 0.6, identity: 0.2, lean: 0.0, harm: 0.3, responsibility: 0.8, hype: 0.7, price: 0.8, prominence: 1.0, novelty: 0.5}
+    outcome: {awareness: 0.85, halflife_days: 10, peak_day: 1, opinion_shift: 0.0, commercial: 0.1, polarization: 0.4}
+    response: {type: clarification, hours: 48}
+    summary: "GST replaced a web of central and state taxes from 1 July 2017, launched at a midnight session of Parliament. Traders struggled with filing and the online network in the first months, and rates were revised repeatedly, including cuts on 178 items that November."
+    lessons:
+      - "Big structural reforms are judged first on the paperwork and glitches small businesses run into."
+      - "Repeated rate tweaks after launch kept the story alive but also defused anger."
+
+  - id: india_gst_cut_2025
+    name: "India simplifies GST to two main rates"
+    year: 2025
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    features: {valence: 0.6, emotionality: 0.5, identity: 0.1, lean: 0.0, harm: 0.0, responsibility: 0.3, hype: 0.5, price: 0.9, prominence: 1.0, novelty: 0.5}
+    outcome: {awareness: 0.75, halflife_days: 6, peak_day: 2, opinion_shift: 0.15, commercial: 0.3, polarization: 0.2}
+    response: {type: none, hours: null}
+    summary: "From 22 September 2025, just before the festive season, India moved most goods to two main GST rates of 5% and 18%, cutting tax on many everyday items, small cars and appliances. Companies advertised the price cuts and car sales jumped in the following weeks."
+    lessons:
+      - "Tax cuts timed to a buying season turn into a marketing story that brands amplify for free."
+
+  - id: india_farm_laws_2020
+    name: "India's farm laws and the farmers' protest"
+    year: 2020
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    wiki: {title: "2020–2021_Indian_farmers'_protest", date: 2020-11-26}
+    features: {valence: -0.3, emotionality: 0.85, identity: 0.6, lean: 0.2, harm: 0.6, responsibility: 0.9, hype: 0.2, price: 0.8, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.85, halflife_days: 30, peak_day: 70, opinion_shift: -0.15, commercial: -0.8, polarization: 0.8}
+    response: {type: reversal, hours: 10000}
+    summary: "Three laws to open up agricultural markets were passed in September 2020. Farmers, largely from Punjab, Haryana and western Uttar Pradesh, camped on Delhi's borders for about a year; the Prime Minister announced the repeal in November 2021 and Parliament repealed the laws that month."
+    lessons:
+      - "People who see their livelihood at stake can sustain protest for months, long after the online conversation fades."
+      - "Passing a reform without consulting those it affects hands opponents the story."
+
+  - id: india_caa_2019
+    name: "India's Citizenship Amendment Act"
+    year: 2019
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    wiki: {title: "Citizenship_(Amendment)_Act,_2019", date: 2019-12-11}
+    features: {valence: -0.2, emotionality: 0.9, identity: 0.95, lean: 0.6, harm: 0.4, responsibility: 0.9, hype: 0.1, price: 0.0, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.85, halflife_days: 15, peak_day: 6, opinion_shift: -0.05, commercial: 0.2, polarization: 0.95}
+    response: {type: stand_firm, hours: 0}
+    summary: "The December 2019 law offered a faster path to citizenship for non-Muslim migrants from Pakistan, Bangladesh and Afghanistan. It set off nationwide protests, including the long Shaheen Bagh sit-in, and counter-rallies in support; the government held firm and notified the rules in March 2024."
+    lessons:
+      - "On identity-coded laws, opinion splits along existing lines; very few people change sides."
+      - "Holding firm keeps the supporting side energised even as protest grows."
+
+  - id: india_agnipath_2022
+    name: "India's Agnipath military recruitment scheme"
+    year: 2022
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    wiki: {title: "Agnipath_Scheme", date: 2022-06-14}
+    features: {valence: -0.3, emotionality: 0.85, identity: 0.3, lean: 0.0, harm: 0.5, responsibility: 0.9, hype: 0.0, price: 0.6, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.75, halflife_days: 6, peak_day: 3, opinion_shift: -0.15, commercial: 0.3, polarization: 0.5}
+    response: {type: clarification, hours: 48}
+    summary: "Announced on 14 June 2022, the scheme recruited soldiers for four-year terms, with most not retained afterwards. Violent protests broke out in several states within days, with trains set on fire; the government raised the upper age limit for the first year and announced job reservations for former recruits, but kept the scheme."
+    lessons:
+      - "Concessions in the first 48 hours took the heat out of the street protests without abandoning the policy."
+      - "Young people facing a worse deal than the one they had prepared for are the most likely to protest."
+
+  - id: india_tiktok_ban_2020
+    name: "India bans TikTok and 58 other Chinese apps"
+    year: 2020
+    archetype: government_policy
+    domain: geopolitics
+    country: "India"
+    features: {valence: 0.3, emotionality: 0.75, identity: 0.7, lean: 0.5, harm: 0.3, responsibility: 0.6, hype: 0.0, price: 0.0, prominence: 0.9, novelty: 0.9}
+    outcome: {awareness: 0.85, halflife_days: 5, peak_day: 1, opinion_shift: 0.15, commercial: 0.5, polarization: 0.4}
+    response: {type: none, hours: null}
+    summary: "On 29 June 2020, two weeks after the Galwan clash, India banned 59 Chinese apps including TikTok, which had well over 100 million Indian users. Creators moved to Instagram Reels and new Indian apps; most of the public backed the ban as a security and national-pride move."
+    lessons:
+      - "Bans framed as national security after an attack get broad support, even from users of the banned product."
+      - "When a dominant app disappears, rivals win its users within weeks."
+
+  - id: india_upi_2016
+    name: "India launches UPI instant payments"
+    year: 2016
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    features: {valence: 0.6, emotionality: 0.4, identity: 0.0, lean: 0.0, harm: 0.0, responsibility: 0.1, hype: 0.2, price: 0.5, prominence: 0.6, novelty: 0.8}
+    outcome: {awareness: 0.5, halflife_days: 20, peak_day: 120, opinion_shift: 0.2, commercial: 0.95, polarization: 0.05}
+    response: {type: none, hours: null}
+    summary: "The Unified Payments Interface went live in 2016 and took off after demonetisation pushed people away from cash. Free, instant QR payments spread to street vendors, and UPI became the main way Indians pay digitally, handling billions of transactions a month."
+    lessons:
+      - "A public utility that is free and visible at every shop spreads by imitation rather than advertising."
+      - "Adoption followed a shock (the cash shortage) more than any campaign."
+
+  - id: india_jan_dhan_2014
+    name: "India's Jan Dhan bank account drive"
+    year: 2014
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    wiki: {title: "Pradhan_Mantri_Jan_Dhan_Yojana", date: 2014-08-28}
+    features: {valence: 0.6, emotionality: 0.5, identity: 0.1, lean: 0.0, harm: 0.0, responsibility: 0.1, hype: 0.5, price: 0.4, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.7, halflife_days: 10, peak_day: 1, opinion_shift: 0.15, commercial: 0.8, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "Launched in August 2014, the Pradhan Mantri Jan Dhan Yojana opened zero-balance bank accounts for people without one, setting a record of about 18 million accounts in a single week. Many accounts stayed unused until benefit transfers were routed through them."
+    lessons:
+      - "Programmes with a clear, free benefit and a big launch push sign up millions fast; regular use takes far longer."
+
+  - id: india_swachh_bharat_2014
+    name: "India's Swachh Bharat cleanliness mission"
+    year: 2014
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    features: {valence: 0.6, emotionality: 0.55, identity: 0.2, lean: 0.1, harm: 0.0, responsibility: 0.1, hype: 0.4, price: 0.2, prominence: 1.0, novelty: 0.5}
+    outcome: {awareness: 0.85, halflife_days: 8, peak_day: 0.0, opinion_shift: 0.2, commercial: 0.5, polarization: 0.15}
+    response: {type: none, hours: null}
+    summary: "Launched on Gandhi's birthday in October 2014, the mission combined toilet building with a celebrity-led campaign in which public figures nominated others to sweep streets on camera. It built tens of millions of toilets; independent surveys found use lagged construction in places."
+    lessons:
+      - "Nomination chains turn a government campaign into a participatory trend."
+      - "Visible symbolic acts win attention; behaviour change takes infrastructure and years."
+
+  - id: india_odd_even_2016
+    name: "Delhi's odd-even car rationing trial"
+    year: 2016
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    features: {valence: 0.2, emotionality: 0.6, identity: 0.2, lean: 0.0, harm: 0.2, responsibility: 0.6, hype: 0.5, price: 0.2, prominence: 0.7, novelty: 0.8}
+    outcome: {awareness: 0.7, halflife_days: 4, peak_day: 1, opinion_shift: 0.05, commercial: 0.4, polarization: 0.4}
+    response: {type: clarification, hours: 0}
+    summary: "For two weeks in January 2016 Delhi allowed private cars on alternate days by odd or even number plates to fight winter smog, with exemptions for women drivers and two-wheelers. Compliance was high and traffic visibly lighter; the effect on pollution was disputed, and later rounds drew more fatigue."
+    lessons:
+      - "A short, clearly bounded pilot gets cooperation that a permanent rule would not."
+      - "Novelty wears off: repeat rounds drew less goodwill."
+
+  - id: india_fastag_2021
+    name: "India makes FASTag mandatory at toll plazas"
+    year: 2021
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    features: {valence: -0.1, emotionality: 0.4, identity: 0.0, lean: 0.0, harm: 0.1, responsibility: 0.6, hype: 0.2, price: 0.6, prominence: 0.6, novelty: 0.3}
+    outcome: {awareness: 0.55, halflife_days: 4, peak_day: 1, opinion_shift: 0.0, commercial: 0.7, polarization: 0.1}
+    response: {type: clarification, hours: 0}
+    summary: "From mid-February 2021 vehicles without a FASTag electronic toll tag had to pay double the toll. Earlier deadlines had been pushed back; this time tag sales spiked in the final days and most traffic switched over within weeks."
+    lessons:
+      - "Repeated deadline extensions teach people to wait; a firm date with a cost attached moves them."
+
+  - id: india_ujjwala_2016
+    name: "India's Ujjwala free cooking-gas connections"
+    year: 2016
+    archetype: government_policy
+    domain: policy
+    country: "India"
+    features: {valence: 0.6, emotionality: 0.5, identity: 0.1, lean: 0.0, harm: 0.0, responsibility: 0.1, hype: 0.3, price: 0.6, prominence: 0.8, novelty: 0.5}
+    outcome: {awareness: 0.6, halflife_days: 8, peak_day: 1, opinion_shift: 0.15, commercial: 0.6, polarization: 0.15}
+    response: {type: none, hours: null}
+    summary: "Launched in May 2016, Pradhan Mantri Ujjwala Yojana gave free LPG connections to poor households, reaching tens of millions of families. Refill rates were lower than hoped when cylinder prices rose."
+    lessons:
+      - "A free start is the easy part; the recurring cost decides whether people keep using it."
+
+  - id: india_emergency_1975
+    name: "India's Emergency"
+    year: 1975
+    archetype: government_policy
+    domain: politics
+    country: "India"
+    features: {valence: -0.7, emotionality: 0.9, identity: 0.7, lean: 0.0, harm: 0.7, responsibility: 1.0, hype: 0.0, price: 0.0, prominence: 1.0, novelty: 1.0}
+    outcome: {awareness: 0.9, halflife_days: 60, peak_day: 30, opinion_shift: -0.5, commercial: -0.9, polarization: 0.6}
+    response: {type: stand_firm, hours: 0}
+    summary: "Prime Minister Indira Gandhi declared a state of emergency in June 1975, suspending elections and civil liberties and censoring the press. Forced sterilisations and slum demolitions fed public anger, and the Congress party was defeated when elections were finally held in 1977."
+    lessons:
+      - "Suppressing news does not stop anger; it stores it until people get a chance to vote."
+
+  - id: uk_poll_tax_1990
+    name: "Britain's poll tax"
+    year: 1990
+    archetype: government_policy
+    domain: policy
+    country: "UK"
+    features: {valence: -0.6, emotionality: 0.9, identity: 0.5, lean: 0.4, harm: 0.5, responsibility: 1.0, hype: 0.2, price: 0.95, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.9, halflife_days: 20, peak_day: 30, opinion_shift: -0.4, commercial: -0.9, polarization: 0.6}
+    response: {type: reversal, hours: 8000}
+    summary: "The Community Charge, a flat per-person local tax, came in in Scotland in 1989 and in England and Wales in 1990. Mass non-payment and a riot in London on 31 March 1990 followed; it contributed to Margaret Thatcher's fall that November and was replaced by council tax."
+    lessons:
+      - "A tax that charges the poor and the rich the same is read as unfair however it is justified."
+      - "Mass non-payment is a protest that is cheap to join and hard to enforce against."
+
+  - id: uk_minibudget_2022
+    name: "Britain's 2022 mini-budget"
+    year: 2022
+    archetype: government_policy
+    domain: economy
+    country: "UK"
+    wiki: {title: "September_2022_United_Kingdom_mini-budget", date: 2022-09-23}
+    features: {valence: -0.5, emotionality: 0.85, identity: 0.4, lean: 0.4, harm: 0.6, responsibility: 1.0, hype: 0.3, price: 0.95, prominence: 1.0, novelty: 0.9}
+    outcome: {awareness: 0.85, halflife_days: 8, peak_day: 4, opinion_shift: -0.45, commercial: -0.9, polarization: 0.5}
+    response: {type: reversal, hours: 240}
+    summary: "On 23 September 2022 the Truss government announced large unfunded tax cuts. The pound fell to a record low against the dollar, mortgage deals were pulled and the Bank of England stepped in to calm the bond market. The top-rate cut was dropped within ten days, the Chancellor was sacked and Liz Truss resigned after 49 days in office."
+    lessons:
+      - "When markets react in hours, a policy's credibility is decided by lenders before voters."
+      - "U-turns under pressure ended the plan but not the damage to trust."
+
+  - id: uk_sugar_levy_2018
+    name: "UK soft drinks sugar levy"
+    year: 2018
+    archetype: government_policy
+    domain: health
+    country: "UK"
+    features: {valence: 0.2, emotionality: 0.4, identity: 0.2, lean: -0.2, harm: 0.0, responsibility: 0.4, hype: 0.2, price: 0.6, prominence: 0.8, novelty: 0.3}
+    outcome: {awareness: 0.5, halflife_days: 4, peak_day: 1, opinion_shift: 0.0, commercial: 0.6, polarization: 0.3}
+    response: {type: none, hours: null}
+    summary: "Announced in 2016 and charged from April 2018, the levy taxed drinks by their sugar content. Most manufacturers cut sugar before it started, so much of the expected tax was never collected, which supporters counted as success."
+    lessons:
+      - "Announcing a rule well before it bites lets companies adapt and avoids a consumer backlash."
+
+  - id: france_fuel_tax_2018
+    name: "France's fuel tax rise and the yellow vests"
+    year: 2018
+    archetype: government_policy
+    domain: policy
+    country: "France"
+    wiki: {title: "Yellow_vests_protests", date: 2018-11-17}
+    features: {valence: -0.5, emotionality: 0.9, identity: 0.5, lean: 0.4, harm: 0.5, responsibility: 0.9, hype: 0.2, price: 0.95, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.85, halflife_days: 15, peak_day: 20, opinion_shift: -0.35, commercial: -0.6, polarization: 0.6}
+    response: {type: reversal, hours: 450}
+    summary: "A planned rise in fuel taxes set off the gilets jaunes protests from 17 November 2018, organised on Facebook and blocking roundabouts across France. In December President Macron dropped the tax rise and announced about €10 billion of measures for low earners; protests continued into 2019."
+    lessons:
+      - "A climate tax that lands on drivers outside big cities becomes a story about who pays."
+      - "Leaderless movements organised online are hard to negotiate with and outlast concessions."
+
+  - id: france_pension_2023
+    name: "France raises the pension age to 64"
+    year: 2023
+    archetype: government_policy
+    domain: policy
+    country: "France"
+    wiki: {title: "2023_French_pension_reform_unrest", date: 2023-01-19}
+    features: {valence: -0.5, emotionality: 0.85, identity: 0.4, lean: 0.0, harm: 0.3, responsibility: 1.0, hype: 0.6, price: 0.6, prominence: 1.0, novelty: 0.3}
+    outcome: {awareness: 0.9, halflife_days: 20, peak_day: 60, opinion_shift: -0.3, commercial: 0.4, polarization: 0.5}
+    response: {type: stand_firm, hours: 0}
+    summary: "The reform raising the minimum pension age from 62 to 64 was pushed through in March 2023 using a constitutional power that skips a final vote. Months of strikes and protests followed, with most polls showing majorities against; the law took effect that September."
+    lessons:
+      - "A government willing to absorb unpopularity can pass a reform, but bypassing a vote turns a policy row into one about democracy."
+
+  - id: us_healthcare_gov_2013
+    name: "HealthCare.gov launch failure"
+    year: 2013
+    archetype: government_policy
+    domain: policy
+    country: "US"
+    wiki: {title: "HealthCare.gov", date: 2013-10-01}
+    features: {valence: -0.6, emotionality: 0.7, identity: 0.6, lean: -0.3, harm: 0.2, responsibility: 1.0, hype: 0.8, price: 0.5, prominence: 1.0, novelty: 0.6}
+    outcome: {awareness: 0.75, halflife_days: 12, peak_day: 10, opinion_shift: -0.2, commercial: -0.2, polarization: 0.7}
+    response: {type: apology, hours: 500}
+    summary: "The federal insurance marketplace for the Affordable Care Act opened on 1 October 2013 and largely failed: very few people could sign up in the first days. President Obama apologised, a repair team rebuilt the site, and enrolment caught up by the following spring."
+    lessons:
+      - "A flagship programme's launch is judged by whether it works on day one; critics use failure as proof the idea was wrong."
+      - "Fixing it fast and admitting the failure let the programme recover its numbers."
+
+  - id: us_tariffs_2025
+    name: "US 'Liberation Day' tariffs"
+    year: 2025
+    archetype: government_policy
+    domain: economy
+    country: "US"
+    features: {valence: -0.4, emotionality: 0.85, identity: 0.6, lean: 0.5, harm: 0.5, responsibility: 1.0, hype: 0.5, price: 0.95, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.9, halflife_days: 10, peak_day: 5, opinion_shift: -0.15, commercial: -0.3, polarization: 0.8}
+    response: {type: reversal, hours: 170}
+    summary: "On 2 April 2025 the US announced sweeping tariffs on imports from almost every country. Stock markets around the world fell sharply over the following days; on 9 April most of the higher rates were paused for 90 days, while tariffs on China were raised further before a later truce."
+    lessons:
+      - "Markets give their verdict within days, and a pause is read as flexibility or chaos depending on which side you are on."
+      - "Partisans judge the same policy in opposite ways; most movement is among people already watching prices."
+
+  - id: us_student_loans_2022
+    name: "US student loan forgiveness plan"
+    year: 2022
+    archetype: government_policy
+    domain: policy
+    country: "US"
+    features: {valence: 0.2, emotionality: 0.8, identity: 0.8, lean: -0.5, harm: 0.0, responsibility: 0.5, hype: 0.6, price: 0.9, prominence: 1.0, novelty: 0.5}
+    outcome: {awareness: 0.8, halflife_days: 6, peak_day: 1, opinion_shift: 0.0, commercial: -0.6, polarization: 0.85}
+    response: {type: stand_firm, hours: 0}
+    summary: "In August 2022 President Biden announced up to $10,000 of student debt relief per borrower, and $20,000 for Pell Grant recipients. Millions applied before courts paused the plan, and the Supreme Court struck it down in June 2023."
+    lessons:
+      - "A benefit for one group is read by others as a bill they pay; the fight splits along existing lines."
+      - "Announcing before the legal basis is secure turns gratitude into disappointment."
+
+  - id: australia_carbon_tax_2012
+    name: "Australia's carbon price and its repeal"
+    year: 2012
+    archetype: government_policy
+    domain: policy
+    country: "Australia"
+    features: {valence: -0.3, emotionality: 0.75, identity: 0.6, lean: -0.5, harm: 0.2, responsibility: 0.9, hype: 0.3, price: 0.8, prominence: 1.0, novelty: 0.4}
+    outcome: {awareness: 0.8, halflife_days: 30, peak_day: 1, opinion_shift: -0.25, commercial: -0.6, polarization: 0.8}
+    response: {type: stand_firm, hours: 0}
+    summary: "Julia Gillard's government introduced a carbon price in July 2012 after saying before the 2010 election there would be no carbon tax. The opposition's 'axe the tax' campaign helped it win the 2013 election, and the price was repealed in July 2014."
+    lessons:
+      - "A broken promise becomes the frame for the whole policy."
+      - "Simple three-word slogans beat technical explanations."
+
+  - id: nz_gun_reform_2019
+    name: "New Zealand bans semi-automatic weapons after Christchurch"
+    year: 2019
+    archetype: government_policy
+    domain: policy
+    country: "New Zealand"
+    features: {valence: 0.6, emotionality: 0.9, identity: 0.4, lean: -0.3, harm: 0.0, responsibility: 0.2, hype: 0.0, price: 0.3, prominence: 0.9, novelty: 0.8}
+    outcome: {awareness: 0.9, halflife_days: 10, peak_day: 1, opinion_shift: 0.3, commercial: 0.8, polarization: 0.3}
+    response: {type: none, hours: null}
+    summary: "After the 15 March 2019 mosque attacks, parliament banned most semi-automatic weapons within about four weeks, by 119 votes to 1, and the government ran a paid buyback. The response and the Prime Minister's handling drew wide domestic and international praise."
+    lessons:
+      - "Fast action right after a shared tragedy meets far less resistance than the same policy in normal times."
+
+  - id: china_tutoring_ban_2021
+    name: "China bans for-profit school tutoring"
+    year: 2021
+    archetype: government_policy
+    domain: economy
+    country: "China"
+    features: {valence: -0.2, emotionality: 0.6, identity: 0.3, lean: 0.0, harm: 0.4, responsibility: 1.0, hype: 0.0, price: 0.6, prominence: 0.8, novelty: 1.0}
+    outcome: {awareness: 0.6, halflife_days: 6, peak_day: 1, opinion_shift: 0.0, commercial: -0.9, polarization: 0.3}
+    response: {type: stand_firm, hours: 0}
+    summary: "In July 2021 China barred companies teaching the school curriculum from making profits, raising capital or listing shares. Shares in TAL, New Oriental and Gaotu collapsed within days, and the sector cut huge numbers of jobs."
+    lessons:
+      - "When the state turns against a sector, investors react in hours and the sector's own customers have no say."
+
+  - id: sri_lanka_fertiliser_2021
+    name: "Sri Lanka's ban on chemical fertiliser"
+    year: 2021
+    archetype: government_policy
+    domain: policy
+    country: "Sri Lanka"
+    features: {valence: -0.5, emotionality: 0.8, identity: 0.3, lean: 0.0, harm: 0.8, responsibility: 1.0, hype: 0.0, price: 0.7, prominence: 0.9, novelty: 0.9}
+    outcome: {awareness: 0.8, halflife_days: 30, peak_day: 90, opinion_shift: -0.5, commercial: -0.9, polarization: 0.4}
+    response: {type: reversal, hours: 4500}
+    summary: "In April 2021 Sri Lanka banned imports of chemical fertiliser to force a switch to organic farming. Rice and tea yields fell sharply, farmers protested and the ban was largely reversed by November 2021; the losses fed into the economic collapse of 2022."
+    lessons:
+      - "An overnight switch with no transition turns a defensible goal into a harvest failure."
+      - "Reversing after the damage is done does not restore trust."
+
+  - id: kenya_finance_bill_2024
+    name: "Kenya's 2024 finance bill protests"
+    year: 2024
+    archetype: government_policy
+    domain: policy
+    country: "Kenya"
+    wiki: {title: "2024_Kenya_Finance_Bill_protests", date: 2024-06-18}
+    features: {valence: -0.6, emotionality: 0.9, identity: 0.4, lean: 0.0, harm: 0.6, responsibility: 1.0, hype: 0.3, price: 0.95, prominence: 0.9, novelty: 0.6}
+    outcome: {awareness: 0.85, halflife_days: 10, peak_day: 7, opinion_shift: -0.5, commercial: -0.8, polarization: 0.5}
+    response: {type: reversal, hours: 190}
+    summary: "Tax rises in the 2024 finance bill drew mostly young protesters organised on social media from mid-June. On 25 June protesters breached parliament and several people were killed; the next day President Ruto withdrew the bill."
+    lessons:
+      - "Young, online-organised movements can mobilise in days around a concrete bill and a date."
+      - "Withdrawing after deaths ends the bill but not the anger at how the protests were handled."
+
+  - id: argentina_milei_2023
+    name: "Argentina's shock economic programme under Milei"
+    year: 2023
+    archetype: government_policy
+    domain: economy
+    country: "Argentina"
+    features: {valence: -0.1, emotionality: 0.8, identity: 0.7, lean: 0.6, harm: 0.6, responsibility: 1.0, hype: 0.7, price: 0.9, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.9, halflife_days: 20, peak_day: 5, opinion_shift: 0.0, commercial: 0.4, polarization: 0.85}
+    response: {type: stand_firm, hours: 0}
+    summary: "Days after taking office in December 2023, Javier Milei's government devalued the peso by more than half and began deep spending cuts. Poverty rose sharply in early 2024, then monthly inflation fell steadily through the year and his approval held up better than many expected."
+    lessons:
+      - "Voters who expected pain and voted for it judge a shock programme on whether it is working, not on how much it hurts."
+
+  - id: nigeria_naira_2023
+    name: "Nigeria's naira redesign and cash shortage"
+    year: 2023
+    archetype: government_policy
+    domain: economy
+    country: "Nigeria"
+    features: {valence: -0.5, emotionality: 0.85, identity: 0.2, lean: 0.0, harm: 0.7, responsibility: 1.0, hype: 0.2, price: 0.9, prominence: 0.9, novelty: 0.7}
+    outcome: {awareness: 0.85, halflife_days: 15, peak_day: 60, opinion_shift: -0.4, commercial: -0.6, polarization: 0.3}
+    response: {type: reversal, hours: 2000}
+    summary: "Nigeria's central bank replaced the main banknotes and set a short deadline to swap old ones ahead of the February 2023 election. New notes were scarce, people queued for hours at banks and ATMs and paid fees to get cash; the Supreme Court later ruled the old notes stayed valid."
+    lessons:
+      - "Withdrawing cash without enough replacement notes punishes the people with the fewest alternatives."
+
+  - id: eu_gdpr_2018
+    name: "EU data protection rules (GDPR) take effect"
+    year: 2018
+    archetype: government_policy
+    domain: tech
+    country: "Europe"
+    wiki: {title: "General_Data_Protection_Regulation", date: 2018-05-25}
+    features: {valence: 0.3, emotionality: 0.4, identity: 0.1, lean: 0.0, harm: 0.0, responsibility: 0.3, hype: 0.6, price: 0.2, prominence: 0.8, novelty: 0.3}
+    outcome: {awareness: 0.7, halflife_days: 4, peak_day: 0.0, opinion_shift: 0.05, commercial: 0.2, polarization: 0.1}
+    response: {type: none, hours: null}
+    summary: "The General Data Protection Regulation took effect across the EU on 25 May 2018 after a two-year run-up. Inboxes filled with consent emails and websites added cookie banners; large fines on tech companies followed in later years."
+    lessons:
+      - "A long, known deadline turns a big rule change into a single day of mild annoyance."
+
+  - id: tiktok_us_shutdown_2025
+    name: "TikTok goes dark in the US for a day"
+    year: 2025
+    archetype: government_policy
+    domain: tech
+    country: "US"
+    features: {valence: -0.2, emotionality: 0.8, identity: 0.5, lean: 0.0, harm: 0.1, responsibility: 0.6, hype: 0.7, price: 0.0, prominence: 1.0, novelty: 0.8}
+    outcome: {awareness: 0.9, halflife_days: 4, peak_day: 0.0, opinion_shift: 0.0, commercial: 0.0, polarization: 0.6}
+    response: {type: reversal, hours: 14}
+    summary: "Under a law requiring a sale or a ban, TikTok stopped working for US users on 19 January 2025. Service came back within about a day after the incoming president promised to delay enforcement; meanwhile users had flocked to the Chinese app RedNote."
+    lessons:
+      - "A ban that touches a daily habit generates intense, short attention and protest downloads of alternatives."

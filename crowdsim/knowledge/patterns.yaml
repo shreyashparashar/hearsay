@@ -1,0 +1,179 @@
+# Patterns that repeat across the event library. `when` is checked against the event's features
+# plus: response (type), response_hour, archetype, substitutes (0..1: how easy to switch away).
+# `effects` nudge the simulation (multipliers `*x` or absolute values) and are shown to the user.
+
+patterns:
+  - id: outrage_vs_behaviour
+    title: Loud outrage, little behaviour change
+    text: When a product is a habit or has network effects and switching costs something, online fury rarely turns into mass exits.
+    evidence: [netflix_sharing_2023, cambridge_analytica_2018, starbucks_cup_2015, reddit_api_2023]
+    when: {substitutes: "<0.45"}
+    effects: {churn_rate: "*0.5"}
+
+  - id: easy_substitute_boycott
+    title: Boycotts bite when switching is easy and visible
+    text: Identity-charged boycotts change behaviour when an equivalent product is one shelf away and consuming the brand is socially visible.
+    evidence: [bud_light_2023, target_pride_2023]
+    when: {identity: ">0.6", substitutes: ">0.6"}
+    effects: {churn_rate: "*1.8"}
+
+  - id: buycott
+    title: Boycott and buycott run at the same time
+    text: Values-coded moves split the public; the side that agrees often rallies and buys. Net effect depends on which side your customers sit on.
+    evidence: [nike_kaepernick_2018, gillette_2019, jaguar_2024, bud_light_2023]
+    when: {identity: ">0.6"}
+    effects: {}
+
+  - id: fast_owned_response
+    title: Fast, owned responses shorten crises
+    text: Organisations that acted within about two days, took responsibility and showed sacrifice recovered faster than those that waited or deflected.
+    evidence: [tylenol_1982, pepsi_jenner_2017, dominos_2009, crowdstrike_2024, kfc_uk_2018]
+    when: {response_hour: "<=48", response: "in:apology,recall,reversal,compensation,clarification"}
+    effects: {novelty_halflife: "*0.8"}
+
+  - id: slow_or_defensive
+    title: Silence and defensiveness extend the story
+    text: Late disclosure, days of silence or corporate jargon in the first statement turned incidents into stories about character.
+    evidence: [equifax_2017, united_3411_2017, bp_2010, cambridge_analytica_2018, no_mans_sky_2016]
+    when: {crisis: true, response_hour: ">48"}
+    effects: {novelty_halflife: "*1.3"}
+
+  - id: fast_reversal
+    title: Reversing quickly caps the damage
+    text: Walking a change back within days ended the cycle, sometimes with goodwill; the competitor or critics usually keep the narrative win.
+    evidence: [cracker_barrel_2025, pepsi_jenner_2017, xbox_drm_2013, new_coke_1985]
+    when: {response: "in:reversal"}
+    effects: {}
+
+  - id: micro_to_macro
+    title: One video can become national news in 48 hours
+    text: Individual incidents captured on camera, posted by ordinary people, repeatedly escalated into mainstream coverage within two days.
+    evidence: [united_3411_2017, dominos_2009, stanley_fire_2023, fyre_2017]
+    when: {emotionality: ">0.75"}
+    effects: {}
+
+  - id: denial_repeats_claim
+    title: Denials repeat the claim they deny
+    text: Every denial also tells new people about the rumor. Corrections help most when they offer a better story, not just a "no".
+    evidence: []
+    when: {response: "in:denial,clarification"}
+    effects: {}
+
+  - id: hype_raises_the_fall
+    title: Hype raises the fall
+    text: The higher the anticipation, the harsher the reaction to anything that falls short; expectations become the baseline.
+    evidence: [cyberpunk_2020, no_mans_sky_2016, fyre_2017, vision_pro_2024]
+    when: {hype: ">0.7"}
+    effects: {negativity_bias: "*1.3"}
+
+  - id: curiosity_not_retention
+    title: Sign-ups measure curiosity, not value
+    text: Launches riding an existing network or a novelty spike got huge first-week numbers and then lost most daily users within weeks.
+    evidence: [threads_2023, pokemon_go_2016, vision_pro_2024]
+    when: {archetype: "in:product_launch,viral_fad", hype: ">0.6"}
+    effects: {}
+
+  - id: physical_harm_escalates
+    title: Physical harm escalates through institutions
+    text: When people can get hurt, regulators, airlines and retailers act on their own, and every new incident reopens the story.
+    evidence: [note7_2016, boeing_737max, tylenol_1982]
+    when: {harm: ">0.6"}
+    effects: {novelty_halflife: "*1.5"}
+
+  - id: panic_self_fulfilling
+    title: Panic is self-fulfilling when acting is cheap and visible
+    text: Withdrawals, hoarding and selling spread fastest in dense, high-trust networks where people can see others act.
+    evidence: [svb_2023, toilet_paper_2020, gamestop_2021]
+    when: {archetype: "in:financial_panic"}
+    effects: {}
+
+  - id: humor_only_low_harm
+    title: Humour works only when the harm is small
+    text: Self-aware jokes won praise after inconveniences, but token gestures next to serious harm became the punchline.
+    evidence: [kfc_uk_2018, cybertruck_2019, crowdstrike_2024]
+    when: {response: "in:humor"}
+    effects: {}
+
+  - id: deception_worse
+    title: Deception hurts more than accidents
+    text: The public forgives failures faster than hidden decisions; once a story is about intent, every later statement is doubted.
+    evidence: [dieselgate_2015, batterygate_2017, equifax_2017]
+    when: {responsibility: ">0.85", archetype: "in:trust_scandal,data_breach"}
+    effects: {w_trust: "*1.4"}
+
+  - id: participatory_frames
+    title: Participatory frames spread themselves
+    text: Nominations, challenges and memes let every participant become a new seed; brands that amplified fan moments rode the wave.
+    evidence: [ice_bucket_2014, barbenheimer_2023, stanley_fire_2023, chatgpt_2022]
+    when: {valence: ">0.5", emotionality: ">0.6"}
+    effects: {post_rate: "*1.2"}
+
+  - id: loss_hurts_more
+    title: Taking something away hurts more than giving the same amount
+    text: Policies and price moves that remove money, cash, benefits or choices drew far more anger than equivalent gains drew thanks.
+    evidence: [india_demonetisation_2016, uk_poll_tax_1990, france_fuel_tax_2018, netflix_sharing_2023, kenya_finance_bill_2024]
+    when: {archetype: "in:government_policy,price_change", valence: "<0"}
+    effects: {negativity_bias: "*1.2"}
+
+  - id: protest_forces_rollback
+    title: Sustained protest from those who pay can force a rollback
+    text: When the people bearing the cost are organised and visible for weeks, governments have repeatedly backed down, often after the damage was done.
+    evidence: [india_farm_laws_2020, uk_poll_tax_1990, france_fuel_tax_2018, kenya_finance_bill_2024, sri_lanka_fertiliser_2021]
+    when: {archetype: "in:government_policy", harm: ">0.4"}
+    effects: {}
+
+  - id: notice_lowers_resistance
+    title: Notice and a pilot lower resistance
+    text: Rules announced well ahead, or tried first for a fixed period, met cooperation; overnight changes produced queues, rumours and hardship stories.
+    evidence: [uk_sugar_levy_2018, eu_gdpr_2018, india_odd_even_2016, india_demonetisation_2016, india_lockdown_2020, nigeria_naira_2023]
+    when: {archetype: "in:government_policy,public_health", novelty: ">0.7"}
+    effects: {}
+
+  - id: rally_round_flag
+    title: Attacks from outside rally people around their leaders
+    text: After attacks and external threats, approval of the government rose and dissent went quiet for weeks; the effect fades over months.
+    evidence: [sept11_2001, pulwama_2019, op_sindoor_2025, crimea_2014, cuban_missile_1962]
+    when: {archetype: "in:geopolitical_crisis"}
+    effects: {}
+
+  - id: national_boycotts
+    title: National boycotts hit brands seen as on the other side
+    text: In disputes between countries, brands linked to the other side were boycotted fastest where alternatives were easy, such as holidays, apps and fashion.
+    evidence: [hm_xinjiang_2021, china_nba_2019, maldives_row_2024, dolce_gabbana_2018, hyundai_kashmir_2022, turkey_boycott_india_2025]
+    when: {archetype: "in:geopolitical_crisis,values_controversy", identity: ">0.6", lean: ">0.3"}
+    effects: {churn_rate: "*1.3"}
+
+  - id: markets_overshoot
+    title: Markets overreact first and recover partly later
+    text: Prices moved hardest in the first days of a shock and recovered part of the loss once the facts settled or authorities stepped in.
+    evidence: [black_monday_1987, covid_crash_2020, deepseek_2025, us_tariffs_2025, india_election_crash_2024, adani_hindenburg_2023]
+    when: {archetype: "in:economic_shock,financial_panic"}
+    effects: {}
+
+  - id: trust_decides_compliance
+    title: Compliance follows trust in the messenger
+    text: Health advice was followed by people who trusted the source and resisted by those who did not; changes of advice without explanation fed the skeptics.
+    evidence: [us_masks_2020, india_vaccine_rollout_2021, covid_pandemic_2020, covishield_2024]
+    when: {archetype: "in:public_health"}
+    effects: {w_trust: "*1.3"}
+
+  - id: shortage_talk
+    title: Shortage talk creates shortages
+    text: When a staple's price spikes or supply wobbles, posts about empty shelves trigger the buying that empties them.
+    evidence: [toilet_paper_2020, india_onion_2019, us_eggs_2025, yes_bank_2020]
+    when: {archetype: "in:economic_shock,financial_panic", price: ">0.7"}
+    effects: {}
+
+  - id: worker_voice
+    title: Employees' own words outweigh company statements
+    text: In layoffs and workplace rows, posts by the people affected set the story; formal statements read as cold.
+    evidence: [twitter_layoffs_2022, ey_pune_2024, hollywood_strikes_2023, amazon_union_2022]
+    when: {archetype: "in:labor_dispute"}
+    effects: {}
+
+  - id: leader_remark
+    title: A leader's offhand remark can become the brand
+    text: Casual remarks by founders and chairmen about customers or how others should live spread further than any campaign and were remembered for years.
+    evidence: [ratner_1991, infosys_70h_2023, lt_90h_2025, ola_service_2024]
+    when: {responsibility: ">0.9", prominence: ">0.6", harm: "<0.2"}
+    effects: {}

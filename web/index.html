@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Hearsay · rehearse how the public will react</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%23121923'/><circle cx='5' cy='6' r='1.6' fill='%2369C2AE'/><circle cx='11' cy='5' r='1.6' fill='%23D1AE68'/><circle cx='8' cy='11' r='1.6' fill='%23E27C90'/><path d='M5 6L11 5L8 11Z' fill='none' stroke='%23D1AE68' stroke-width='.6'/></svg>">
+</head>
+<body>
+<header class="mast">
+  <div class="mast-in">
+    <div class="brand">
+      <h1 class="wordmark">Hearsay</h1>
+      <p class="tagline">Rehearse how the public will react to a launch, a policy or a headline, before it happens.</p>
+    </div>
+    <div class="mast-side">
+      <p id="modelStatus" class="status">Checking the reader…</p>
+      <nav class="tabs" aria-label="Sections">
+        <button class="tab is-on" data-view="studio">Simulator</button>
+        <button class="tab" data-view="memory">Past events</button>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main id="studio" class="view">
+  <section class="step" id="stepInput" aria-labelledby="h1">
+    <h2 id="h1" class="step-h"><span class="num">1</span>What are you deciding, or what happened?</h2>
+    <div class="input-grid">
+      <label class="field big">
+        <span class="lbl">Describe it in your own words: a product, a price change, a policy or programme, a statement, a crisis</span>
+        <textarea id="text" rows="7" placeholder="e.g. From 1 January the state will make helmets compulsory for pillion riders, with a ₹2,000 fine. Free helmets for the first 50,000 low-income riders."></textarea>
+      </label>
+      <div class="drop" id="drop" tabindex="0" role="button" aria-label="Add images: product photos, ads, screenshots">
+        <input id="files" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden>
+        <p class="drop-h">Add images</p>
+        <p class="drop-s">The ad, product shots, a screenshot of the post, a chart. Up to four. Drop, paste or click.</p>
+        <div id="thumbs" class="thumbs"></div>
+      </div>
+      <label class="field">
+        <span class="lbl">Context the reader should know (country, market, who is affected)</span>
+        <input id="context" type="text" placeholder="e.g. Uttar Pradesh, mostly two-wheeler commuters, election next year">
+      </label>
+      <div class="actions">
+        <button id="readBtn" class="btn primary">Read it</button>
+        <span class="examples">Try: <button type="button" class="linkish" data-example="launch">a product launch</button>
+          <button type="button" class="linkish" data-example="policy">a government policy</button>
+          <button type="button" class="linkish" data-example="crisis">a brand crisis</button></span>
+      </div>
+    </div>
+    <p id="readErr" class="err" role="alert" hidden></p>
+  </section>
+
+  <section class="step" id="stepSpec" hidden aria-labelledby="h2">
+    <h2 id="h2" class="step-h"><span class="num">2</span>Check what it understood</h2>
+    <p id="readerNote" class="note" hidden></p>
+    <div class="spec-grid">
+      <div class="spec-main">
+        <div class="row2">
+          <label class="field"><span class="lbl">Event</span><input id="sTitle"></label>
+          <label class="field"><span class="lbl">Organisation at the centre</span><input id="sBrand"></label>
+        </div>
+        <label class="field"><span class="lbl">How the public will hear it</span><textarea id="sSummary" rows="2"></textarea></label>
+        <label class="field"><span class="lbl">Kind of event</span><select id="sArche"></select></label>
+        <div id="obs" class="obs" hidden></div>
+
+        <h3 class="sub">How it lands</h3>
+        <div id="dials" class="dials"></div>
+
+        <h3 class="sub">Who's listening</h3>
+        <div class="table-wrap">
+          <table class="aud" id="audTable">
+            <thead><tr><th>Group</th><th>Share</th><th>Starting attitude</th><th id="thAdopt">Could take it up</th><th id="thCust">Already in</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <button id="addGroup" class="btn small" type="button">Add a group</button>
+
+        <h3 class="sub">Stories likely to emerge</h3>
+        <ol id="storyList" class="stories-in"></ol>
+      </div>
+
+      <aside class="spec-side">
+        <h3 class="sub">Your move</h3>
+        <div class="row2">
+          <label class="field"><span class="lbl">Response</span>
+            <select id="respType">
+              <option value="none">Say nothing</option>
+              <option value="apology">Apologise</option>
+              <option value="clarification">Explain or clarify with facts</option>
+              <option value="denial">Deny it</option>
+              <option value="recall">Recall or fix it</option>
+              <option value="compensation">Compensate people</option>
+              <option value="reversal">Walk it back</option>
+              <option value="stand_firm">Stand firm</option>
+              <option value="humor">Answer with humour</option>
+            </select></label>
+          <label class="field"><span class="lbl">After how many hours</span><input id="respHour" type="number" min="0" max="600" value="24"></label>
+        </div>
+
+        <h3 class="sub">The world around it</h3>
+        <div class="row2">
+          <label class="field"><span class="lbl">Economy</span>
+            <select id="economy"><option value="boom">Booming</option><option value="normal" selected>Normal</option><option value="downturn">Downturn</option></select></label>
+          <label class="field"><span class="lbl">News cycle</span>
+            <select id="newsLoad"><option value="quiet">Quiet week</option><option value="normal" selected>Normal</option><option value="busy">Busy</option><option value="saturated">Dominated by a huge story</option></select></label>
+          <label class="field"><span class="lbl">How divided society is</span>
+            <select id="polar"><option value="low">Not very</option><option value="medium" selected>Somewhat</option><option value="high">Deeply</option></select></label>
+          <label class="field"><span class="lbl">Season</span>
+            <select id="season"><option value="normal">Ordinary time</option><option value="holiday">Festive or holiday season</option></select></label>
+        </div>
+        <label class="check"><input type="checkbox" id="compete"> A bigger story breaks at hour <input id="competeHour" type="number" min="0" max="600" value="48" class="inline-num"></label>
+        <label class="check"><input type="checkbox" id="global"> Audience spread across time zones</label>
+
+        <h3 class="sub">The crowd</h3>
+        <label class="field"><span class="lbl">People simulated: <b id="agentsOut">200,000</b></span>
+          <input id="agents" type="range" min="50000" max="1000000" step="50000" value="200000"></label>
+        <div class="row2">
+          <label class="field"><span class="lbl">Days</span><input id="days" type="number" min="2" max="30" value="10"></label>
+          <label class="field"><span class="lbl">Runs, for uncertainty</span><input id="runs" type="number" min="1" max="8" value="2"></label>
+        </div>
+        <label class="check"><input type="checkbox" id="testOpts" checked> Test alternatives and recommend a plan</label>
+        <p class="hint" id="eta"></p>
+        <button id="runBtn" class="btn primary wide">Run the crowd</button>
+
+        <div id="history" class="history"></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="step" id="stepRun" hidden aria-live="polite">
+    <div class="run-head">
+      <p id="runMsg" class="run-msg"></p>
+      <div class="progress"><div id="bar" class="bar"></div></div>
+    </div>
+    <div id="netHome"></div>
+  </section>
+
+  <section class="step" id="stepResult" hidden aria-labelledby="decisionHead">
+    <div class="decision" id="decision">
+      <p class="call" id="decisionCall"></p>
+      <h2 id="decisionHead" class="decision-h"></h2>
+      <p id="bottomLine" class="bottom-line"></p>
+      <ul id="reasons" class="reasons"></ul>
+    </div>
+
+    <div id="netSlot"></div>
+
+    <section class="block">
+      <h3 class="block-h">What people thought</h3>
+      <p id="peopleLede" class="lede"></p>
+      <div id="groups" class="groups"></div>
+    </section>
+
+    <section class="block">
+      <h3 class="block-h">Who did what</h3>
+      <div id="actionTiles" class="tiles"></div>
+      <p id="whoDid" class="prose"></p>
+    </section>
+
+    <section class="block" id="optionsBlock">
+      <h3 class="block-h">The alternatives we tested</h3>
+      <p class="lede" id="optionsLede"></p>
+      <div id="options" class="options"></div>
+    </section>
+
+    <section class="block">
+      <h3 class="block-h" id="programHead">The plan to follow</h3>
+      <ol id="program" class="program"></ol>
+      <div class="two">
+        <div><h4 class="mini-h">What to change</h4><ul id="toChange" class="plain-list"></ul></div>
+        <div><h4 class="mini-h">Early warning signs</h4><ul id="watchFor" class="plain-list"></ul></div>
+      </div>
+    </section>
+
+    <details class="block detail">
+      <summary>The detail: timeline, charts, every group, individual voices, past events</summary>
+      <div id="kpis" class="kpis"></div>
+      <div class="two">
+        <div><h4 class="mini-h">Hour by hour</h4><ol id="timeline" class="timeline"></ol></div>
+        <div><h4 class="mini-h">Compared with history</h4><div id="vsHistory"></div></div>
+      </div>
+      <h4 class="mini-h">Who heard which story</h4><div id="chartReach" class="chart"></div>
+      <h4 class="mini-h">Mood of the whole population</h4><div id="chartMood" class="chart"></div>
+      <h4 class="mini-h">What people did</h4><div id="chartAct" class="chart"></div>
+      <h4 class="mini-h">Group by group</h4><div id="segments" class="segments"></div>
+      <h4 class="mini-h">Voices from the crowd</h4><div id="voices" class="voices"></div>
+      <h4 class="mini-h">Past events this resembles</h4><div id="analogs" class="analogs"></div>
+      <div id="patterns" class="patterns"></div>
+    </details>
+
+    <div class="actions end">
+      <button id="againBtn" class="btn">Change something and run again</button>
+      <button id="dlBtn" class="btn ghost">Download results (JSON)</button>
+    </div>
+    <p class="fine" id="meta"></p>
+  </section>
+
+  <!-- the live network; moved into the results once the run is done -->
+  <template id="netTpl">
+    <section class="net" id="net" aria-label="The conversation network">
+      <div class="net-head">
+        <div>
+          <h3 class="block-h">The conversation, person by person</h3>
+          <p class="net-sub" id="netSub">A real slice of the simulated society: whole friend circles from every group, plus the most-followed accounts. Every line is a tie; every pulse is someone passing a story on.</p>
+        </div>
+        <div class="net-ctl">
+          <label class="field compact"><span class="lbl">Story</span><select id="netStory"><option value="-1">All stories</option></select></label>
+          <label class="check compact"><input type="checkbox" id="netTies"> Show all ties</label>
+        </div>
+      </div>
+      <div class="net-body">
+        <div class="net-stage">
+          <canvas id="netCanvas" aria-label="Animated network of simulated people passing stories to each other"></canvas>
+          <div id="netTip" class="net-tip" hidden></div>
+          <div class="net-hud" id="netHud"></div>
+          <span id="liveTag" class="live-tag" hidden>Live</span>
+        </div>
+        <aside class="feed" aria-label="What people in this slice are posting">
+          <h4 class="mini-h">What they're saying</h4>
+          <ol id="feed" class="feed-list"></ol>
+        </aside>
+      </div>
+      <div class="net-foot">
+        <div class="scrub">
+          <button id="netPlay" class="btn small" type="button">Pause</button>
+          <input id="netScrub" type="range" min="0" max="0" value="0" aria-label="Time">
+          <output id="netTime" class="scrub-out">Hour 0</output>
+          <select id="netSpeed" aria-label="Playback speed"><option value="4">Slow</option><option value="9" selected>Normal</option><option value="20">Fast</option></select>
+        </div>
+        <div class="legend net-legend">
+          <span><i class="dot for"></i>for it</span><span><i class="dot against"></i>against it</span>
+          <span><i class="dot mixed"></i>heard, undecided</span><span><i class="dot none"></i>hasn't heard</span>
+          <span><i class="dot ring"></i>spreading something</span><span><i class="dot big"></i>most-followed accounts</span>
+          <span><i class="line trail"></i>word of mouth (who told whom)</span>
+        </div>
+        <p class="hint" id="channelStats"></p>
+      </div>
+    </section>
+  </template>
+</main>
+
+<main id="memory" class="view" hidden>
+  <section class="step">
+    <h2 class="step-h plain">What the simulator remembers</h2>
+    <p class="lede">Real public reactions to launches, policies, crises, wars and market shocks. Every number is a hand-coded estimate on a common scale; the simulator compares each new event with these and borrows their timing and patterns.</p>
+    <div class="filters">
+      <label class="field"><span class="lbl">Search</span><input id="memSearch" type="search" placeholder="Name, country or keyword"></label>
+      <label class="field"><span class="lbl">Area</span><select id="memDomain"><option value="">Everything</option></select></label>
+      <label class="field"><span class="lbl">Kind of event</span><select id="memFilter"><option value="">All kinds</option></select></label>
+    </div>
+    <p id="memCount" class="hint"></p>
+    <div id="memList" class="mem-list"></div>
+    <h3 class="sub">Patterns across events</h3>
+    <div id="memPatterns" class="patterns"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Hearsay simulates; it doesn't predict. Its numbers mean most when you compare options against each other.</p>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>
