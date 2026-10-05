@@ -14,6 +14,7 @@ import base64
 import json
 import os
 import re
+import time
 import urllib.error
 import urllib.request
 
@@ -27,7 +28,7 @@ def llm_config():
     key = os.getenv("CROWDSIM_LLM_API_KEY", "")
     model = os.getenv("CROWDSIM_LLM_MODEL")
     if not base and os.getenv("GEMINI_API_KEY"):
-         base, key, model = GEMINI_BASE, os.getenv("GEMINI_API_KEY"), model or "gemini-flash-latest"
+        base, key, model = GEMINI_BASE, os.getenv("GEMINI_API_KEY"), model or "gemini-flash-latest"
     if not base and os.getenv("CROWDSIM_USE_OLLAMA"):
         base = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
         model = model or "qwen2.5vl:7b"
@@ -41,9 +42,11 @@ def chat(messages, cfg=None, json_mode=True, timeout=120, vision=False):
     cfg = cfg or llm_config()
     if not cfg:
         raise RuntimeError("no model configured")
-    body = {"model": cfg["vision_model"] if vision else cfg["model"], "messages": messages, "temperature": 0.3}
-    if json_mode:
-        body["response_format"] = {"type": "json_object"}
+    primary = cfg["vision_model"] if vision else cfg["model"]
+    # Busy/overloaded models (503, 429, 500) get retried, then a lighter backup model is tried.
+    fallback = os.getenv("CROWDSIM_FALLBACK_MODEL",
+                         "gemini-flash-lite-latest" if cfg["base"] == GEMINI_BASE else "")
+    models = [primary] + ([fallback] if fallback and fallback != primary else [])
     headers = {"Content-Type": "application/json"}
     if cfg["key"]:
         headers["Authorization"] = f"Bearer {cfg['key']}"
@@ -53,16 +56,31 @@ def chat(messages, cfg=None, json_mode=True, timeout=120, vision=False):
         with urllib.request.urlopen(req, timeout=timeout) as r:
             return json.loads(r.read())
 
-    try:
-        data = post(body)
-    except urllib.error.HTTPError as e:
-        if e.code == 400 and json_mode:   # some providers reject response_format; retry without
-            body.pop("response_format")
-            data = post(body)
-        else:
-            detail = e.read().decode(errors="ignore")[:300]
-            raise RuntimeError(f"model request failed ({e.code}): {detail}") from e
-    return data["choices"][0]["message"]["content"]
+    last_err = None
+    for model in models:
+        body = {"model": model, "messages": messages, "temperature": 0.3}
+        if json_mode:
+            body["response_format"] = {"type": "json_object"}
+        for attempt in range(3):
+            try:
+                data = post(body)
+                return data["choices"][0]["message"]["content"]
+            except urllib.error.HTTPError as e:
+                detail = e.read().decode(errors="ignore")[:300]
+                if e.code == 400 and "response_format" in body:   # some providers reject it; retry without
+                    body.pop("response_format")
+                    continue
+                last_err = RuntimeError(f"model request failed ({e.code}): {detail}")
+                if e.code in (429, 500, 503):
+                    time.sleep(2 * (attempt + 1))   # wait 2s, then 4s, then 6s
+                    continue
+                if e.code == 404:                   # model unavailable: go straight to the backup
+                    break
+                raise last_err from e
+            except (urllib.error.URLError, TimeoutError) as e:
+                last_err = RuntimeError(f"model request failed (network): {e}")
+                time.sleep(2 * (attempt + 1))
+    raise last_err
 
 
 def parse_json(text):
