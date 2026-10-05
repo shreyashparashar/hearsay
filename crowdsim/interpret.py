@@ -27,7 +27,7 @@ def llm_config():
     key = os.getenv("CROWDSIM_LLM_API_KEY", "")
     model = os.getenv("CROWDSIM_LLM_MODEL")
     if not base and os.getenv("GEMINI_API_KEY"):
-        base, key, model = GEMINI_BASE, os.getenv("GEMINI_API_KEY"), model or "gemini-2.5-flash"
+         base, key, model = GEMINI_BASE, os.getenv("GEMINI_API_KEY"), model or "gemini-flash-latest"
     if not base and os.getenv("CROWDSIM_USE_OLLAMA"):
         base = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
         model = model or "qwen2.5vl:7b"
